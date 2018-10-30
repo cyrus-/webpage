@@ -304,6 +304,13 @@
   .practicum {
     margin-top: 4px;
   }
+
+  .project-separator {
+    color: black;
+    opacity: 0.5;
+    padding-bottom: 10px;
+    padding-left: 8px;
+  }
 </style>
 </head>
 
@@ -311,7 +318,8 @@
   <div class="header">
     <!-- <h1>Cyrus Omar <span class="tagline">designs <strong id="tagline-1"></strong> + <strong id="tagline-1">extensible user interfaces</strong> for <strong id="tagline-1">programming languages</strong>.</span></h1> -->
     <!-- <h1>Cyrus Omar <span class="tagline">designs <strong id="tagline-1">smart</strong> + <strong id="tagline-1">extensible</strong> <strong id="tagline-1">user interfaces</strong> for <strong id="tagline-1">programming languages</strong>.</span></h1> -->
-    <h1>Cyrus Omar <span class="tagline">applies <strong id="tagline-1">type theory</strong> to design <strong id="tagline-1">intelligent</strong> + <strong id="tagline-1">extensible user interfaces</strong> for <strong id="tagline-1">programming languages</strong>.</span></h1>
+    <!-- <h1>Cyrus Omar <span class="tagline">applies <strong id="tagline-1">type theory</strong> to design <strong id="tagline-1">intelligent</strong> + <strong id="tagline-1">extensible user interfaces</strong> for <strong id="tagline-1">programming languages</strong>.</span></h1> -->
+        <h1>Cyrus Omar <span class="tagline">applies <strong id="tagline-1">mathematical principles</strong> to design <strong id="tagline-1">next-generation user interfaces</strong> for <strong id="tagline-1">programming languages</strong>.</span></h1>
   </div>
   <div class="main-area">
     <div class="left-col">
@@ -494,7 +502,7 @@
           <div class="card" id="hazelnut-popl17">
             <h2>Hazel: Type-Theoretic Foundations for Live Hole-Driven Development</h2>
             <p>
-              I lead the <a href="http://hazel.org">Hazel</a> project, which is developing type-theoretic foundations for reasoning about, editing and even running programs with holes. Hazel serves as an elegant platform for research into intelligent live programming environments.
+              I lead the <a href="http://hazel.org">Hazel</a> project, which is developing type-theoretic foundations for reasoning about, editing and even running programs with holes. Hazel serves as an elegant platform for research into the future of programming environments.
             </p>
             <p>
               <div class="paper">
@@ -592,7 +600,7 @@
 
   <div class="card" id="hazelnut-live">
     <h2>Palettes: Type-Specific User Interfaces for Code Completion</h2>
-    <p>Palettes are user-defined type-specific graphical user interfaces that generate code at edit-time. Our ICSE 2012 paper empirically validated the basic idea in Eclipse, and we are now integrating palettes with live holes into Hazel.</p>     
+    <p>Palettes are user-defined graphical user interfaces that generate code of a specified type at edit-time. Our ICSE 2012 paper empirically validated the basic design in Eclipse, and we are now integrating palettes with live holes into Hazel.</p>     
     <p>
       <div class="paper">
         <div class="paper-venue">LIVE 2018</div>
@@ -665,6 +673,38 @@
           </p>
           <div>The <a href="https://github.com/cyrus-/typy">typy implementation</a> is quiet as I focus on other projects, but if you want to take the lead, contact me.</div>
         </div>
+                  <div class="card" id="hazelnut-live">
+            <h2>Information Theoretic Foundations for Brain-Computer Interfaces</h2>
+            <p>We built a provably optimal EEG-based brain-computer interface by studying the information theoretic properties of noisy asymmetric channels and developing statistical models of user intent for various types of communication/control tasks.</p>
+            <p>
+              <div class="paper">
+                <div class="paper-venue">IJHCI 2011</div>
+                <div class="paper-details">
+                  <div class="paper-title-line">
+                    <a class="major-paper" href="http://www.cs.cmu.edu/~comar/IJHCI-2011-FINAL.pdf">A Feedback Information-Theoretic Approach to the Design of Brain-Computer Interfaces</a>  
+                  </div>
+                  <div class="paper-authors">
+                    <span class="me-author">Cyrus Omar</span>, Abdullah Akce, Miles Johnson, Timothy Bretl, Rui Ma, Edward Maclin, Michael McCormick and Todd Coleman
+                  </div>
+                </div>
+              </div>
+            </p>
+            <div>I remain very interested in building tools that help people with limited mobility and other disabilities express their intent. I also remain interested in tastefully incorporating statistical models of user intent into programming environments.</div>
+              <!--<h4>LIVE 2017 Presentation</h4>
+              <p>Cyrus presented some of this work at the <a href="https://2017.splashcon.org/track/live-2017#About">LIVE 2017</a> workshop.</p>
+              <ul>
+                <li><a href="./hazelnut-dynamics-LIVE2017.pdf">Toward a Live Stepper for Typed Expressions with Holes</a> (Extended Abstract, LIVE 2017)</li>
+        <li><a href="./live-2017.pdf">Slides</a></li>
+      </ul>-->
+        <!--<h4>OBT 2017 Presentation</h4>
+        Ian presented a much earlier take on this work at the Off the Beaten Track (OBT) workshop at POPL 2017. 
+        <ul>
+          <li>
+            <a href="http://www.cs.cmu.edu/~iev/resources/dynamics-obt17.pdf">Running Incomplete Programs</a> (Extended Abstract, OBT 2017)
+          </li>
+          <li><a href="http://www.cs.cmu.edu/~iev/resources/obt17-slides.pdf">Annotated slides</a></li>-->
+        </div>
+        <div class="project-separator">Miscellaneous Science Projects</div>
         <div class="card" id="hazelnut-live">
           <h2>SciUnit: Collaborative Infrastructure for Test-Driven Scientific Model Validation</h2>
           <p>  One of the pillars of the scientific method is model
@@ -755,37 +795,7 @@
               <h4>Applications</h4>
               <p>As Hazel evolves, we plan to apply it first to teach introductory functional programming courses, and later on we plan to use Hazel to do data analysis (think a next-generation <a href="http://jupyter.org/">Jupyter</a>), music and visual art. One day, we hope that Hazel will be the foundation for a new kind of computational wiki.</p>
             </div>
-          </div>--><div class="card" id="hazelnut-live">
-            <h2>Information Theoretic Foundations for Brain-Computer Interfaces</h2>
-            <p>We built a provably optimal EEG-based brain-computer interface by studying the information theoretic properties of asymmetric channels and developing statistical models of user intent for various types of communication/control tasks.</p>
-            <p>
-              <div class="paper">
-                <div class="paper-venue">IJHCI 2011</div>
-                <div class="paper-details">
-                  <div class="paper-title-line">
-                    <a class="major-paper" href="http://www.cs.cmu.edu/~comar/IJHCI-2011-FINAL.pdf">A Feedback Information-Theoretic Approach to the Design of Brain-Computer Interfaces</a>  
-                  </div>
-                  <div class="paper-authors">
-                    <span class="me-author">Cyrus Omar</span>, Abdullah Akce, Miles Johnson, Timothy Bretl, Rui Ma, Edward Maclin, Michael McCormick and Todd Coleman
-                  </div>
-                </div>
-              </div>
-            </p>
-            <div>I remain very interested in building tools that help people with limited mobility and other disabilities express their intent. I also remain interested in tastefully incorporating statistical models of user intent into programming environments.</div>
-              <!--<h4>LIVE 2017 Presentation</h4>
-              <p>Cyrus presented some of this work at the <a href="https://2017.splashcon.org/track/live-2017#About">LIVE 2017</a> workshop.</p>
-              <ul>
-                <li><a href="./hazelnut-dynamics-LIVE2017.pdf">Toward a Live Stepper for Typed Expressions with Holes</a> (Extended Abstract, LIVE 2017)</li>
-        <li><a href="./live-2017.pdf">Slides</a></li>
-      </ul>-->
-        <!--<h4>OBT 2017 Presentation</h4>
-        Ian presented a much earlier take on this work at the Off the Beaten Track (OBT) workshop at POPL 2017. 
-        <ul>
-          <li>
-            <a href="http://www.cs.cmu.edu/~iev/resources/dynamics-obt17.pdf">Running Incomplete Programs</a> (Extended Abstract, OBT 2017)
-          </li>
-          <li><a href="http://www.cs.cmu.edu/~iev/resources/obt17-slides.pdf">Annotated slides</a></li>-->
-        </div>
+          </div>-->
       </div>
       
     </div>
