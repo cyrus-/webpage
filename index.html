@@ -57,7 +57,7 @@
   }
 
   .tagline strong {
-    font-weight: bold;
+    font-weight: normal;
   }
 
   #tagline-1 {
@@ -104,6 +104,7 @@
   }
 
   #bio-card a {
+    font-weight: normal;
     color: #f0ffb6;
   }
 
@@ -492,8 +493,7 @@
           <div class="card" id="hazelnut-popl17">
             <h2>Hazel: Semantic Foundations for Live Hole-Driven Development</h2>
             <p>
-              A programming environment must be able to reason about code as it is being written to be able to intelligently assist the programmer. The problem is that language definitions typically assign no meaning
-              to incomplete programs. I lead the <a href="http://hazel.org">Hazel</a> project, which is working to change that by developing a type-theoretic account of live hole-driven development. 
+              I lead the <a href="http://hazel.org">Hazel</a> project, which is developing type-theoretic foundations for reasoning about, editing and running programs with holes. Hazel therefore serves as an elegant platform for ongoing research into smart editor services.
             </p>
             <p>
               <div class="paper">
@@ -522,11 +522,11 @@
             <div class="image-left">
               <img src="https://twemoji.maxcdn.com/2/72x72/1f389.png" style="width: 1em">
               <div class="image-left-txt">
-                <span class="paper-venue">NSF</span> selected the proposal that we wrote for three years of funding! 
+                <span class="paper-venue">NSF</span> selected the research proposal that we wrote for three years of funding! 
                 <!-- Lots of people are excited about Hazel on Twitter. -->
               </div>
             </div>
-            <div class="image-left">
+            <div class="image-left" style="margin-top: 6px">
               <img src="https://twemoji.maxcdn.com/2/72x72/1f389.png" style="width: 1em">
               <div class="image-left-txt">
                 Lots of excitement about Hazel at <a href="https://thestrangeloop.com/2018/hazel-a-live-functional-programming-environment-with-typed-holes.html">Strange Loop</a> and on Twitter [<a href="https://twitter.com/neurocy/status/1050530173832110080">1</a>, <a href="https://twitter.com/michael_w_hicks/status/1051116945435701248">2</a>, <a href="https://twitter.com/cemerick/status/1050768505463812096">3</a>, <a href="https://twitter.com/craigstuntz/status/1052410065674805248">4</a>, <a href="https://twitter.com/strangeloop_stl/status/1052236380544409600">5</a>]!
@@ -547,7 +547,7 @@
   </div>
   <div class="card" id="hazelnut-live">
     <h2>Relit: Reasonably Programmable Literal Notation</h2>
-    <p>There are many data structures for which specialized literal notation is valuable (e.g. SQL queries). I developed a mechanism that allows library providers to install new literal notation while ensuring that client programmers can continue to reason abstractly and compositionally about the surface representation.</p> 
+    <p>My thesis research developed a mechanism that allows library providers to define new literal notation (think SQL literals) while ensuring that client programmers can continue to reason abstractly and compositionally about the surface text.</p> 
     <p>
       <div class="paper">
         <div class="paper-venue">ICFP 2018</div>
@@ -581,7 +581,7 @@
           <div class="paper-authors">
             <span class="me-author">Cyrus Omar</span>, Darya Kurilova, Ligia Nistor, Benjamin Chung, Alex Potanin and Jonathan Aldrich
           </div>
-          <div class="paper-award">
+          <div class="paper-award" style="margin-top: 4px">
             Distinguished Paper Award
           </div>
         </div>
@@ -592,7 +592,7 @@
 
   <div class="card" id="hazelnut-live">
     <h2>Palettes: Type-Specific User Interfaces for Code Completion</h2>
-    <p>There are many data structures for which a purely textual user interface isn't ideal. Palettes allow library providers to define new type-specific graphical user interfaces. Our ICSE 2012 work validated the idea in Eclipse, and the LIVE 2018 short paper below discusses our ongoing work on developing a more sophisticated variant for integration into Hazel.</p>     
+    <p>Palettes allow library providers to define new type-specific graphical user interfaces that generate code at edit-time. Our ICSE 2012 work validated the idea in Eclipse, and we are now integrating palettes with live holes into Hazel.</p>     
     <p>
       <div class="paper">
         <div class="paper-venue">LIVE 2018</div>
@@ -634,7 +634,7 @@
         </div>
         <div class="card" id="hazelnut-popl17">
           <h2>typy: Programmable Semantic Fragments</h2>
-          <p>Python is a very successful user interface for programming, but its semantics sometimes leave something to be desired. The <a href="https://github.com/cyrus-/typy">typy</a> project allows library providers to install new statically typed semantic fragments into Python. We have applied typy in the domains of security and high-performance computing.</p>
+          <p><a href="https://github.com/cyrus-/typy">typy</a> allows library providers to install new statically typed semantic fragments into Python, while leaving its syntax alone (therefore sidestepping the "expression problem"). We have applied typy to problems in security and data science.</p>
           <p>
             <div class="paper">
               <div class="paper-venue">GPCE 2016</div>
@@ -667,9 +667,9 @@
         </div>
         <div class="card" id="hazelnut-live">
           <h2>SciUnit: Collaborative Infrastructure for Test-Driven Scientific Model Validation</h2>
-          <p>  One of the pillars of the modern scientific method is model
+          <p>  One of the pillars of the scientific method is model
             validation: comparing a scientific model’s predictions against
-            empirical observations. The <a href="https://github.com/scidash/sciunit">SciUnit</a> project develops collaborative infrastructure for test-driven model validation.</p>
+            empirical data. The <a href="https://github.com/scidash/sciunit">SciUnit</a> project casts this as a form of collaborative software testing, and develops useful infrastructure.</p>
             <p>
               <div class="paper">
                 <div class="paper-venue">ICSE 2014<br /><span class="venue-note">NIER Track</span></div>
@@ -702,7 +702,7 @@
 
         <div class="card" id="hazelnut-live">
           <h2>Neurobiological Circuit Dynamics</h2>
-          <p>I started grad school as a computational neurobiologist interested in how neurobiological circuits process information.</p> 
+          <p>I started grad school as a computational neurobiologist. I am interested in how biological circuits process information, so I developed a model of how the excitatory-inhibitory circuitry in the rodent whisker barrel cortex respond to stimulation.</p> 
           <p>
             <div class="paper">
               <div class="paper-venue">J. Neurosci.<br />2012</div>
@@ -716,7 +716,7 @@
               </div>
             </div>
           </p>
-          <div>I still find brains fascinating, and I am now interested in building tools that empower scientists and other data analysts.</div>
+          <div>I still find brains fascinating, but we need more powerful tools. I am now building those tools.</div>
               <!--<h4>LIVE 2017 Presentation</h4>
               <p>Cyrus presented some of this work at the <a href="https://2017.splashcon.org/track/live-2017#About">LIVE 2017</a> workshop.</p>
               <ul>
@@ -757,7 +757,7 @@
             </div>
           </div>--><div class="card" id="hazelnut-live">
             <h2>Information Theoretic Foundations for Brain-Computer Interfaces</h2>
-            <p>Brain-computer interfaces are interesting because they are asymmetric: we can much more easily put information into the brain (e.g. via a screen) than we can read information directly out of the brain. We studied the information theoretic foundations of this kind of communication channel, and from there we built a provably optimal EEG-based BCI.</p>
+            <p>We studied the information theoretic properties of asymmetric communication channels, and from there we built a provably optimal EEG-based brain-computer interface.</p>
             <p>
               <div class="paper">
                 <div class="paper-venue">IJHCI 2011</div>
@@ -771,7 +771,7 @@
                 </div>
               </div>
             </p>
-            <div>I remain interested in building tools that empower individuals with limited mobility and other disabilities.</div>
+            <div>I remain very interested in building tools that help people with limited mobility and other disabilities express their intent.</div>
               <!--<h4>LIVE 2017 Presentation</h4>
               <p>Cyrus presented some of this work at the <a href="https://2017.splashcon.org/track/live-2017#About">LIVE 2017</a> workshop.</p>
               <ul>
