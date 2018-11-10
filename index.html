@@ -15,7 +15,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,600|Open+Sans:400,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:500,600|Open+Sans:400,700" rel="stylesheet">
 
   <title>Cyrus Omar</title>
 
@@ -408,11 +408,11 @@
             </div>
             <div class="news-item">
               <div class="news-text"><a href="https://2018.splashcon.org/track/live-2018-papers#program">LIVE</a> talk on Hazel at <a href="http://www.splashcon.org/">SPLASH</a> in Boston</div>
-              <div class="date">Nov 6, 2018 (upcoming)</div>
+              <div class="date">Nov 6, 2018</div>
             </div>
             <div class="news-item">
               <div class="news-text"><a href="https://2018.splashcon.org/track/meta-2018">META</a> talk on Relit at <a href="http://www.splashcon.org/">SPLASH</a> in Boston</div>
-              <div class="date">Nov 5, 2018 (upcoming)</div>
+              <div class="date">Nov 5, 2018</div>
             </div>
             <div class="news-item">
               <div class="news-text"><a href="https://www.cs.cmu.edu/Groups/pop/index.html">POP seminar</a> on Hazel at CMU</div>
@@ -503,7 +503,7 @@
           <div class="card" id="hazelnut-popl17">
             <h2>Hazel: Type-Theoretic Foundations for Live Hole-Driven Development</h2>
             <p>
-              I lead the <a href="http://hazel.org">Hazel</a> project, which has developed type-theoretic foundations for reasoning about, running and interactively transforming programs with holes. Hazel now serves as a platform for ongoing research into the future of programming.
+              I lead the <a href="http://hazel.org">Hazel</a> project, which has developed type-theoretic foundations for reasoning about, running and interactively editing programs with <em>holes</em>, which model the intermediate editor states that frequently arise during the programming process. Hazel now serves as a platform for our ongoing research into the future of smart programming environments.
             </p>
             <p>
               <div class="paper">
@@ -538,7 +538,7 @@
             <div class="image-left" style="margin-top: 6px">
               <img src="https://twemoji.maxcdn.com/2/72x72/1f389.png" style="width: 1em">
               <div class="image-left-txt">
-                Lots of excitement around Hazel at <a href="https://thestrangeloop.com/2018/hazel-a-live-functional-programming-environment-with-typed-holes.html">Strange Loop</a> and on Twitter [<a href="https://twitter.com/neurocy/status/1050530173832110080">1</a>, <a href="https://twitter.com/michael_w_hicks/status/1051116945435701248">2</a>, <a href="https://twitter.com/Iceland_jack/status/995460219357614085">3</a>, <a href="https://twitter.com/socrates1024/status/1050584393448861696">4</a>, <a href="https://twitter.com/cemerick/status/1050768505463812096">5</a>, <a href="https://twitter.com/craigstuntz/status/1052410065674805248">6</a>, <a href="https://twitter.com/strangeloop_stl/status/1052236380544409600">7</a>]!
+                There has been a lot of excitement about Hazel at <a href="https://thestrangeloop.com/2018/hazel-a-live-functional-programming-environment-with-typed-holes.html">Strange Loop</a> and on Twitter [<a href="https://twitter.com/neurocy/status/1050530173832110080">1</a>, <a href="https://twitter.com/michael_w_hicks/status/1051116945435701248">2</a>, <a href="https://twitter.com/Iceland_jack/status/995460219357614085">3</a>, <a href="https://twitter.com/socrates1024/status/1050584393448861696">4</a>, <a href="https://twitter.com/cemerick/status/1050768505463812096">5</a>, <a href="https://twitter.com/craigstuntz/status/1052410065674805248">6</a>, <a href="https://twitter.com/strangeloop_stl/status/1052236380544409600">7</a>]!
               </div>
             </div>
 
@@ -555,7 +555,7 @@
     -->
   </div>
   <div class="card" id="hazelnut-live">
-    <h2>Relit: Reasonably Programmable Literal Notation</h2>
+    <h2>Reasonably Programmable Literal Notation</h2>
     <p>My thesis research developed mechanisms that allow library providers to install new type-specific literal notation (e.g. SQL literals) while ensuring that client programmers can still reason abstractly and compositionally about types and binding.</p> 
     <p>
       <div class="paper">
@@ -596,7 +596,7 @@
         </div>
       </div>
     </p>
-    <p><a href="http://www.github.com/cyrus-/relit/">Relit</a> implements the mechanism from the ICFP 2018 paper into <a href="https://reasonml.github.io">Reason</a>, which is Facebook's new front-end for OCaml. The <a href="https://github.com/wyvernlang/wyvern">Wyvern</a> language implements a mechanism based on the ECOOP 2014 paper.</p>
+    <p><a href="http://www.github.com/cyrus-/relit/">Relit</a> implements the mechanism from the ICFP 2018 paper into <a href="https://reasonml.github.io">Reason</a>, which is Facebook's new front-end for OCaml. The <a href="https://github.com/wyvernlang/wyvern">Wyvern</a> language implements the mechanism from the ECOOP 2014 paper.</p>
     <div class="image-left">
       <img src="https://twemoji.maxcdn.com/2/72x72/1f389.png" style="width: 1em">
       <div class="image-left-txt">
@@ -647,39 +647,6 @@
           </li>
           <li><a href="http://www.cs.cmu.edu/~iev/resources/obt17-slides.pdf">Annotated slides</a></li>-->
         </div>
-        <div class="card" id="hazelnut-popl17">
-          <h2>typy: Programmable Semantic Fragments</h2>
-          <p><a href="https://github.com/cyrus-/typy">typy</a> allows library providers to install new statically typed semantic fragments into Python, while leaving its syntax alone (this cleverly sidesteps the "expression problem"). We have applied typy to problems in web security and data science.</p>
-          <p>
-            <div class="paper">
-              <div class="paper-venue">GPCE 2016</div>
-              <div class="paper-details">
-                <div class="paper-title-line">
-                  <a class="major-paper" href="https://github.com/cyrus-/papers/raw/master/typy-2016/typy-2016.pdf">Programmable Semantic Fragments: The Design and Implementation of typy</a>  
-                </div>
-                <div class="paper-authors">
-                  <span class="me-author">Cyrus Omar</span> and Jonathan Aldrich
-                </div>
-              </div>
-            </div>
-
-            <div class="paper">
-              <div class="paper-venue">PSP 2014</div>
-              <div class="paper-details">
-                <div class="paper-title-line">
-                  <a class="major-paper" href="https://github.com/cyrus-/papers/raw/master/sanitation-psp14/sanitation-psp14.pdf">Statically Typed String Sanitation Inside a Python</a>  
-                </div>
-                <div class="paper-authors">
-                  Nathan Fulton, <span class="me-author">Cyrus Omar</span> and Jonathan Aldrich
-                </div>
-                <div class="paper-award">
-                  Best Paper Award
-                </div>
-              </div>
-            </div>          
-          </p>
-          <div>The <a href="https://github.com/cyrus-/typy">typy implementation</a> is quiet as I focus on other projects, but if you want to take the lead, contact me.</div>
-        </div>
         <div class="card" id="hazelnut-live">
           <h2>Information Theoretic Foundations for Brain-Computer Interfaces</h2>
           <p>We built a provably optimal EEG-based brain-computer interface by studying the information theoretic properties of noisy asymmetric channels and developing statistical models of user intent for various types of communication/control tasks.</p>
@@ -712,6 +679,39 @@
           <li><a href="http://www.cs.cmu.edu/~iev/resources/obt17-slides.pdf">Annotated slides</a></li>-->
         </div>
         <div class="project-separator">Other Projects</div>
+        <div class="card" id="hazelnut-popl17">
+          <h2>typy: Programmable Semantic Fragments</h2>
+          <p><a href="https://github.com/cyrus-/typy">typy</a> allows library providers to install new statically typed semantic fragments into Python, while leaving its syntax alone (this cleverly sidesteps the "expression problem"). We have applied typy to problems in web security and data science.</p>
+          <p>
+            <div class="paper">
+              <div class="paper-venue">GPCE 2016</div>
+              <div class="paper-details">
+                <div class="paper-title-line">
+                  <a class="major-paper" href="https://github.com/cyrus-/papers/raw/master/typy-2016/typy-2016.pdf">Programmable Semantic Fragments: The Design and Implementation of typy</a>  
+                </div>
+                <div class="paper-authors">
+                  <span class="me-author">Cyrus Omar</span> and Jonathan Aldrich
+                </div>
+              </div>
+            </div>
+
+            <div class="paper">
+              <div class="paper-venue">PSP 2014</div>
+              <div class="paper-details">
+                <div class="paper-title-line">
+                  <a class="major-paper" href="https://github.com/cyrus-/papers/raw/master/sanitation-psp14/sanitation-psp14.pdf">Statically Typed String Sanitation Inside a Python</a>  
+                </div>
+                <div class="paper-authors">
+                  Nathan Fulton, <span class="me-author">Cyrus Omar</span> and Jonathan Aldrich
+                </div>
+                <div class="paper-award">
+                  Best Paper Award
+                </div>
+              </div>
+            </div>          
+          </p>
+          <div>The <a href="https://github.com/cyrus-/typy">typy implementation</a> is quiet as I focus on my other projects, but if you want to take the lead, contact me!</div>
+        </div>
         <div class="card" id="hazelnut-live">
           <h2>SciUnit: Collaborative Infrastructure for Test-Driven Scientific Model Validation</h2>
           <p>  One of the pillars of the scientific method is model
