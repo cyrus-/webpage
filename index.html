@@ -27,6 +27,7 @@
     background-color: wheat;
     font-family: 'Open Sans', Arial, sans-serif; /* Oxygen */
     padding: 0px !important;
+    min-width: 1200px;
   }
 
   .header {
@@ -76,12 +77,6 @@
     max-width: 1200px;
   }
 
-  @media screen and (max-width: 800px) {
-    .main-area {
-      grid-template-columns: 1fr;
-    }
-  }
-
   .card {
     background-color: white;
     padding: 15px;
@@ -100,7 +95,6 @@
     url(./images/cartographer.png),
     #223939;
     color: white;
-    box-shadow: 0px 2px #576f6f;
   }
 
   #bio-card a {
@@ -503,7 +497,7 @@
           <div class="card" id="hazelnut-popl17">
             <h2>Hazel: Type-Theoretic Foundations for Live Hole-Driven Development</h2>
             <p>
-              I lead the <a href="http://hazel.org">Hazel</a> project, which has developed type-theoretic foundations for reasoning about, running and semantically editing programs with <em>holes</em>, which represent incomplete editor states that otherwise confound smart language services.
+              I lead the <a href="http://hazel.org">Hazel</a> project, which has developed type-theoretic foundations for reasoning about, running and semantically editing programs with <em>holes</em>, which represent incomplete editor states that otherwise confound various editor services.
             </p>
             <p>
               <div class="paper">
@@ -529,20 +523,20 @@
                 </div>
               </div>
             </p>
-            <p> Hazel now serves as a platform for our ongoing research into the future of programming and authoring environments.</p>
+            <p> Hazel now serves as a platform for our research into the future of smart programming and authoring environments.</p>
             <!-- <p>
             This research lays the groundwork toward our vision of a live programming environment that intelligently helps humans express (and learn to express, as part of a carefully designed curriculum) clear, correct and secure code that solves interesting and important problems, or that just does something beautiful.</p> -->
             <div class="image-left">
               <img src="./images/woot.png" style="width: 1em">
               <div class="image-left-txt">
-                The <span class="award">National Science Foundation</span> selected the research that we proposed for three years (2018-2021) of funding!</div>
-            </div>
-            <div class="image-left" style="margin-top: 6px">
-              <img src="./images/woot.png" style="width: 1em">
-              <div class="image-left-txt">
-                There has been an abundance of excitement about Hazel, e.g. at <a href="https://thestrangeloop.com/2018/hazel-a-live-functional-programming-environment-with-typed-holes.html">Strange Loop</a> and on Twitter [<a href="https://twitter.com/neurocy/status/1050530173832110080">1</a>, <a href="https://twitter.com/michael_w_hicks/status/1051116945435701248">2</a>, <a href="https://twitter.com/Iceland_jack/status/995460219357614085">3</a>, <a href="https://twitter.com/socrates1024/status/1050584393448861696">4</a>, <a href="https://twitter.com/cemerick/status/1050768505463812096">5</a>, <a href="https://twitter.com/craigstuntz/status/1052410065674805248">6</a>, <a href="https://twitter.com/strangeloop_stl/status/1052236380544409600">7</a>]!
+                The <span class="award">National Science Foundation</span> recently selected the research that we proposed for three years of funding.</div>
               </div>
-            </div>
+              <div class="image-left" style="margin-top: 6px">
+                <img src="./images/woot.png" style="width: 1em">
+                <div class="image-left-txt">
+                  There has been an abundance of excitement about Hazel, e.g. at <a href="https://thestrangeloop.com/2018/hazel-a-live-functional-programming-environment-with-typed-holes.html">Strange Loop</a> and on Twitter [<a href="https://twitter.com/neurocy/status/1050530173832110080">1</a>, <a href="https://twitter.com/michael_w_hicks/status/1051116945435701248">2</a>, <a href="https://twitter.com/Iceland_jack/status/995460219357614085">3</a>, <a href="https://twitter.com/socrates1024/status/1050584393448861696">4</a>, <a href="https://twitter.com/cemerick/status/1050768505463812096">5</a>, <a href="https://twitter.com/craigstuntz/status/1052410065674805248">6</a>, <a href="https://twitter.com/strangeloop_stl/status/1052236380544409600">7</a>]!
+                </div>
+              </div>
 
       <!-- <div>We have <a href="https://github.com/hazelgrove/agda-popl17">mechanized the metatheory of Hazelnut</a> using the <a href="http://wiki.portal.chalmers.se/agda/pmwiki.php">Agda</a> proof assistant.</div>
         <div>We have <a href="https://github.com/hazelgrove/hazelnut-dynamics-agda">mechanized the metatheory of Hazelnut Live</a> using the <a href="http://wiki.portal.chalmers.se/agda/pmwiki.php">Agda</a> proof assistant.</div> -->
@@ -609,7 +603,7 @@
   
   <div class="card" id="hazelnut-live">
     <h2>Palettes: Type-Specific User Interfaces for Code Completion</h2>
-    <p>Palettes allow library providers to install new graphical user interfaces that generate code of a specified type at edit-time. We empirically validated the design and gathered use cases by conducting a 500-person survey, implemented palettes for Java as an Eclipse extension called <a href="http://www.cs.cmu.edu/~NatProg/graphite.html">Graphite</a> and performed a simple pilot study.</p>     
+    <p>Palettes allow library providers to install new graphical user interfaces that generate code of a specified type at edit-time. We empirically validated our design and gathered a large number of use cases by conducting a survey of 500 developers, then we implemented palettes for Java as an Eclipse extension called <a href="http://www.cs.cmu.edu/~NatProg/graphite.html">Graphite</a> and performed a small pilot study.</p>     
     <p>
       <!-- <div class="paper">
         <div class="paper-venue">LIVE 2018</div>
@@ -681,7 +675,7 @@
           <li><a href="http://www.cs.cmu.edu/~iev/resources/obt17-slides.pdf">Annotated slides</a></li>-->
         </div>
         <div class="project-separator">Other Projects</div>
-     <div class="card" id="hazelnut-popl17">
+        <div class="card" id="hazelnut-popl17">
           <h2>typy: Programmable Semantic Fragments</h2>
           <p><a href="https://github.com/cyrus-/typy">typy</a> allows library providers to install new statically typed semantic fragments into Python, while leaving its syntax alone (this cleverly sidesteps the "expression problem"). We have applied typy to problems in web security and data science.</p>
           <p>
@@ -780,6 +774,10 @@
           </li>
           <li><a href="http://www.cs.cmu.edu/~iev/resources/obt17-slides.pdf">Annotated slides</a></li>-->
         </div>
+        <!-- <div class="project-separator">Personal</div>
+        <div class="card" id="hazelnut-live">
+          In my free time, I enjoy exploring forests, small music festivals, poetry, science fiction, <a href="https://www.instagram.com/cyology/">photography</a> and <a href="https://soundcloud.com/neurocy/silurian-movimento-floating-points-sateliti">musical collage</a>. 
+        </div> -->
         <!-- <div class="card">
           <h2>Incubating Ideas</h2>
           <p>We have a number of ideas incubating &mdash; if you're interested in any of these, definitely get in touch. We would also love to hear about other ideas you might have.</p>
