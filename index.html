@@ -74,7 +74,7 @@
     display: grid;
     grid-template-columns: 300px 1fr;
     grid-column-gap: 12px;
-    max-width: 1200px;
+    max-width: 1210px;
   }
 
   .card {
@@ -324,8 +324,8 @@
   <div class="header">
     <!-- <h1>Cyrus Omar <span class="tagline">designs <strong id="tagline-1"></strong> + <strong id="tagline-1">extensible user interfaces</strong> for <strong id="tagline-1">programming languages</strong>.</span></h1> -->
     <!-- <h1>Cyrus Omar <span class="tagline">designs <strong id="tagline-1">smart</strong> + <strong id="tagline-1">extensible</strong> <strong id="tagline-1">user interfaces</strong> for <strong id="tagline-1">programming languages</strong>.</span></h1> -->
-    <h1>Cyrus Omar <span class="tagline">applies <strong id="tagline-1">mathematical principles</strong> to design <strong id="tagline-1">the next generation of user interfaces</strong> for <strong id="tagline-1">programming languages</strong>.</span></h1>
-    <!-- <h1>Cyrus Omar <span class="tagline">applies <strong id="tagline-1">mathematical principles</strong> to design <strong id="tagline-1">smart</strong> + <strong id="tagline-1">expressive user interfaces</strong> for <strong id="tagline-1">programming languages</strong>.</span></h1> -->
+    <!-- <h1>Cyrus Omar <span class="tagline">applies <strong id="tagline-1">mathematical principles</strong> to design expressive <strong id="tagline-1"> user interfaces for programming languages</strong>.</span></h1> -->
+    <h1>Cyrus Omar <span class="tagline">applies <strong id="tagline-1">mathematical principles</strong> to design <strong id="tagline-1">smart</strong> + <strong id="tagline-1">expressive user interfaces</strong> for <strong id="tagline-1">programming languages</strong>.</span></h1>
       <!-- <h1>Cyrus Omar <span class="tagline">applies <strong id="tagline-1">mathematical principles</strong> to design better user <strong id="tagline-1">live programming environments</strong>.</span></h1> -->
      <!-- <h1>Cyrus Omar <span class="tagline">applies <strong id="tagline-1">mathematical principles</strong> to design <strong id="tagline-1">smarter</strong> + <strong id="tagline-1">more expressive programming environments</strong>.</span></h1> -->
   </div>
@@ -440,7 +440,7 @@
           <div class="news-list">
             <div class="news-item">
               <div class="news-text"><a href="https://popl19.sigplan.org/home">POPL 2019</a> paper talk in Lisbon</div>
-              <div class="date">Jan, 2019 (upcoming)</div>
+              <div class="date">Jan 17, 2019 (upcoming)</div>
             </div>
             <div class="news-item">
               <div class="news-text"><a href="https://www.meetup.com/Chicago-Functional-Programming-Meetup/events/255760053/">FP Meetup + Reason Meetup</a> joint talk on Relit in Chicago</div>
@@ -550,7 +550,7 @@
           <div class="card" id="hazelnut-popl17">
             <h2>Hazel</h2>
             <p>
-              I lead the <a href="http://hazel.org">Hazel</a> project, which has developed a type-theoretic account of live programming with <em>holes</em>, which (1) stand for parts of the program that are not yet fully written, and (2) serve as membranes around type and binding errors.
+              I lead the <a href="http://hazel.org">Hazel</a> project, which has developed type-theoretic foundations for a new kind of live programming environment that can understand, manipulate and run incomplete programs, i.e. programs with syntactic and semantic <em>holes</em>.
             </p>
             <p>
               <div class="paper">
@@ -576,7 +576,7 @@
                 </div>
               </div>
             </p>
-            <p>These papers serve as the foundation for our ongoing research into the future of live programming environments.</p>
+            <p>These papers serve as the foundation for our ongoing research into the future of programming environments.</p>
             <!-- <p>
             This research lays the groundwork toward our vision of a live programming environment that intelligently helps humans express (and learn to express, as part of a carefully designed curriculum) clear, correct and secure code that solves interesting and important problems, or that just does something beautiful.</p> -->
             <div class="image-left">
@@ -604,8 +604,8 @@
     -->
   </div>
   <div class="card" id="hazelnut-live">
-    <h2>Relit + Wyvern: Reasonably Programmable Literal Notation</h2>
-    <p>My thesis research developed mechanisms that allow library providers to install new type-specific literal notation (e.g. SQL literals) while ensuring that client programmers can still reason abstractly and compositionally about types and binding.</p> 
+    <h2>Reasonably Programmable Literal Notation</h2>
+    <p>My thesis research developed mechanisms that allow library providers to express new type-specific literal notation (e.g. SQL literals) while ensuring that client programmers can still reason abstractly and compositionally about types and binding.</p> 
     <p>
       <div class="paper">
         <div class="paper-venue">ICFP 2018</div>
@@ -655,8 +655,8 @@
   </div>
   
   <div class="card" id="hazelnut-live">
-    <h2>Palettes: Type-Specific User Interfaces for Code Completion</h2>
-    <p>Palettes allow library providers to install new graphical user interfaces that generate code of a specified type at edit-time. We empirically validated our design and gathered a large number of use cases by conducting a survey of 500 developers, then we implemented palettes for Java as an Eclipse extension called <a href="http://www.cs.cmu.edu/~NatProg/graphite.html">Graphite</a> and performed a small pilot study.</p>     
+    <h2>Palettes: Type-Specific Interactive Graphical Notation</h2>
+    <p>Palettes are type-specific user interfaces that generate code underneath, i.e. they serve as interactive graphical notation. We have (1) implemented palettes for Java as an Eclipse extension called <a href="http://www.cs.cmu.edu/~NatProg/graphite.html">Graphite</a>, (2) surveyed nearly 500 developers to empirically validate the mechanism and to gather a wide variety of use cases, and (3) performed a small pilot study.</p>      
     <p>
       <!-- <div class="paper">
         <div class="paper-venue">LIVE 2018</div>
@@ -698,7 +698,7 @@
         </div>
                 <div class="card" id="hazelnut-popl17">
           <h2>typy: Programmable Semantic Fragments</h2>
-          <p><a href="https://github.com/cyrus-/typy">typy</a> allows library providers to install new statically typed semantic fragments into Python, while leaving its syntax alone (this cleverly sidesteps the "expression problem"). We have applied typy to problems in web security and data science.</p>
+          <p><a href="https://github.com/cyrus-/typy">typy</a> allows library providers to install new statically typed semantic fragments into Python, while leaving its syntax alone (which cleverly sidesteps the "expression problem"). We have applied typy to problems in web security and data science.</p>
           <p>
             <div class="paper">
               <div class="paper-venue">GPCE 2016</div>
@@ -730,38 +730,8 @@
           <div>The <a href="https://github.com/cyrus-/typy">typy implementation</a> is quiet as I focus on my other projects, but if you want to take the lead, contact me!</div>
         </div> 
 
-        <div class="card" id="hazelnut-live">
-          <h2>Information Theoretic Foundations for Brain-Computer Interfaces</h2>
-          <p>We built a provably optimal EEG-based brain-computer interface by studying the information theoretic properties of noisy asymmetric channels and developing statistical models of user intent for various types of communication/control tasks.</p>
-          <p>
-            <div class="paper">
-              <div class="paper-venue">IJHCI 2011<br /><span class="venue-note">BCI Issue</span></div>
-              <div class="paper-details">
-                <div class="paper-title-line">
-                  <a class="major-paper" href="http://www.cs.cmu.edu/~comar/IJHCI-2011-FINAL.pdf">A Feedback Information-Theoretic Approach to the Design of Brain-Computer Interfaces</a>  
-                </div>
-                <div class="paper-authors">
-                  <span class="me-author">Cyrus Omar</span>, Abdullah Akce, Miles Johnson, Timothy Bretl, Rui Ma, Edward Maclin, Michael McCormick and Todd Coleman
-                </div>
-              </div>
-            </div>
-          </p>
-          <div>I remain very interested in building tools that help people with limited mobility and other disabilities express their intent. I also remain very interested in tastefully incorporating statistical models of user intent into programming environments.</div>
-              <!--<h4>LIVE 2017 Presentation</h4>
-              <p>Cyrus presented some of this work at the <a href="https://2017.splashcon.org/track/live-2017#About">LIVE 2017</a> workshop.</p>
-              <ul>
-                <li><a href="./hazelnut-dynamics-LIVE2017.pdf">Toward a Live Stepper for Typed Expressions with Holes</a> (Extended Abstract, LIVE 2017)</li>
-        <li><a href="./live-2017.pdf">Slides</a></li>
-      </ul>-->
-        <!--<h4>OBT 2017 Presentation</h4>
-        Ian presented a much earlier take on this work at the Off the Beaten Track (OBT) workshop at POPL 2017. 
-        <ul>
-          <li>
-            <a href="http://www.cs.cmu.edu/~iev/resources/dynamics-obt17.pdf">Running Incomplete Programs</a> (Extended Abstract, OBT 2017)
-          </li>
-          <li><a href="http://www.cs.cmu.edu/~iev/resources/obt17-slides.pdf">Annotated slides</a></li>-->
-        </div>
-        <div class="project-separator">Other Projects</div>
+
+        <div class="project-separator">Science Projects</div>
         <div class="card" id="hazelnut-live">
           <h2>SciUnit: Collaborative Infrastructure for Test-Driven Scientific Model Validation</h2>
           <p>  One of the pillars of the scientific method is model
@@ -814,6 +784,37 @@
             </div>
           </p>
           <div>I still find brains fascinating, but I think we will need more powerful computational tools to make the next leap in understanding, so now I study programming languages and programming environments!</div>
+              <!--<h4>LIVE 2017 Presentation</h4>
+              <p>Cyrus presented some of this work at the <a href="https://2017.splashcon.org/track/live-2017#About">LIVE 2017</a> workshop.</p>
+              <ul>
+                <li><a href="./hazelnut-dynamics-LIVE2017.pdf">Toward a Live Stepper for Typed Expressions with Holes</a> (Extended Abstract, LIVE 2017)</li>
+        <li><a href="./live-2017.pdf">Slides</a></li>
+      </ul>-->
+        <!--<h4>OBT 2017 Presentation</h4>
+        Ian presented a much earlier take on this work at the Off the Beaten Track (OBT) workshop at POPL 2017. 
+        <ul>
+          <li>
+            <a href="http://www.cs.cmu.edu/~iev/resources/dynamics-obt17.pdf">Running Incomplete Programs</a> (Extended Abstract, OBT 2017)
+          </li>
+          <li><a href="http://www.cs.cmu.edu/~iev/resources/obt17-slides.pdf">Annotated slides</a></li>-->
+        </div>
+                <div class="card" id="hazelnut-live">
+          <h2>Information Theoretic Foundations for Brain-Computer Interfaces</h2>
+          <p>We built a provably optimal EEG-based brain-computer interface by studying the information theoretic properties of noisy asymmetric channels and developing statistical models of user intent for various types of communication/control tasks.</p>
+          <p>
+            <div class="paper">
+              <div class="paper-venue">IJHCI 2011<br /><span class="venue-note">BCI Issue</span></div>
+              <div class="paper-details">
+                <div class="paper-title-line">
+                  <a class="major-paper" href="http://www.cs.cmu.edu/~comar/IJHCI-2011-FINAL.pdf">A Feedback Information-Theoretic Approach to the Design of Brain-Computer Interfaces</a>  
+                </div>
+                <div class="paper-authors">
+                  <span class="me-author">Cyrus Omar</span>, Abdullah Akce, Miles Johnson, Timothy Bretl, Rui Ma, Edward Maclin, Michael McCormick and Todd Coleman
+                </div>
+              </div>
+            </div>
+          </p>
+          <div>I remain very interested in building tools that help people with limited mobility and other disabilities express their intent. I also remain very interested in tastefully incorporating statistical models of user intent into programming environments.</div>
               <!--<h4>LIVE 2017 Presentation</h4>
               <p>Cyrus presented some of this work at the <a href="https://2017.splashcon.org/track/live-2017#About">LIVE 2017</a> workshop.</p>
               <ul>
