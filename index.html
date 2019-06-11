@@ -87,6 +87,10 @@
     margin-bottom: 12px;
   }
 
+  .announcement {
+    background-color: #e6f6b0;
+  }
+
   #bio-card, #job-market {
     background: linear-gradient(
      rgba(31, 122, 122, 0.25),
@@ -325,7 +329,7 @@
     <!-- <h1>Cyrus Omar <span class="tagline">designs <strong id="tagline-1"></strong> + <strong id="tagline-1">extensible user interfaces</strong> for <strong id="tagline-1">programming languages</strong>.</span></h1> -->
     <!-- <h1>Cyrus Omar <span class="tagline">designs <strong id="tagline-1">smart</strong> + <strong id="tagline-1">extensible</strong> <strong id="tagline-1">user interfaces</strong> for <strong id="tagline-1">programming languages</strong>.</span></h1> -->
     <!-- <h1>Cyrus Omar <span class="tagline">applies <strong id="tagline-1">mathematical principles</strong> to design expressive <strong id="tagline-1"> user interfaces for programming languages</strong>.</span></h1> -->
-    <h1>Cyrus Omar <span class="tagline">applies <strong id="tagline-1">mathematical principles</strong> to design <strong id="tagline-1">smart</strong> + <strong id="tagline-1">expressive user interfaces</strong> for <strong id="tagline-1">programming languages</strong>.</span></h1>
+    <h1>Cyrus Omar <span class="tagline">applies <strong id="tagline-1">mathematical </strong>+ <strong id="tagline-1">human principles</strong> to design <strong id="tagline-1">user interfaces</strong> for <strong id="tagline-1">programming languages</strong>.</span></h1>
     <!-- <h1>Cyrus Omar <span class="tagline">applies <strong id="tagline-1">mathematical principles</strong> to design better user <strong id="tagline-1">live programming environments</strong>.</span></h1> -->
     <!-- <h1>Cyrus Omar <span class="tagline">applies <strong id="tagline-1">mathematical principles</strong> to design <strong id="tagline-1">smarter</strong> + <strong id="tagline-1">more expressive programming environments</strong>.</span></h1> -->
   </div>
@@ -439,6 +443,14 @@
           <h2>Recent &amp; Upcoming Talks</h2>
           <div class="news-list">
             <div class="news-item">
+              <div class="news-text"><a href="https://icfp19.sigplan.org/home/tyde-2019">TyDe 2019</a> talk on <a href="./livelits-tyde.pdf">livelits in Hazel</a> at <a href="https://icfp19.sigplan.org/home">ICFP</a> in Berlin</div>
+              <div class="date">August 18, 2019</div>
+            </div>
+            <div class="news-item">
+              <div class="news-text">I was <a href="https://futureofcoding.org/episodes/039.html">interviewed</a> on the <a href="https://futureofcoding.org/#episodes">Future of Coding podcast</a></div>
+              <div class="date">June 6, 2019</div>
+            </div>
+            <div class="news-item">
               <div class="news-text"><a href="https://popl19.sigplan.org/home">POPL 2019</a> paper talk in Lisbon</div>
               <div class="date">Jan 17, 2019</div>
             </div>
@@ -551,10 +563,13 @@
           </div>
         </div>
         <div class="right-col">
+          <div class="card" id="bio-card" >
+            <img src="./images/woot.png" style="width: 1em; margin-right: 0.5em"> I'll be an <strong>Assistant Professor</strong> of Computer Science &amp; Engineering at the <strong>University of Michigan</strong> in Ann Arbor this Fall!
+          </div>
           <div class="card" id="hazelnut-popl17">
             <h2>Hazel</h2>
             <p>
-              I lead the <a href="http://hazel.org">Hazel</a> project, which has developed type-theoretic foundations for a new kind of live programming environment that can understand, manipulate, and run incomplete programs, i.e. programs with both syntactic and semantic <em>holes</em>.
+              I lead the <a href="http://hazel.org">Hazel</a> project, which has developed type-theoretic foundations for a new kind of live programming environment that can understand, manipulate, and run incomplete programs, i.e. programs with <em>holes</em>.
             </p>
             <p>
               <div class="paper">
@@ -659,7 +674,7 @@
   </div>
   
   <div class="card" id="hazelnut-live">
-    <h2>Palettes: Type-Specific Interactive Graphical Notation</h2>
+    <h2>Type-Specific Interactive Graphical Notation</h2>
     <p>Palettes are type-specific user interfaces that generate code underneath, i.e. they serve as interactive graphical notation. We have (1) implemented palettes for Java as an Eclipse extension called <a href="http://www.cs.cmu.edu/~NatProg/graphite.html">Graphite</a>, (2) surveyed nearly 500 developers to empirically validate the mechanism and to gather a wide variety of use cases, and (3) performed a small pilot study.</p>      
     <p>
       <!-- <div class="paper">
@@ -685,7 +700,7 @@
         </div>
       </div>
     </p>
-    <div>We are now adding palettes with <a href="https://github.com/hazelgrove/LIVE2018/raw/master/hazel-live-2018-submission.pdf">live holes</a> to Hazel by combining this design with our ICFP 2018 and POPL 2019 work.</div>
+    <div>We are now adding palettes with <a href="./livelits-tyde.pdf">live holes</a> to Hazel by combining this design with our ICFP 2018 and POPL 2019 work. We call these <em>live literals</em>, or <em>livelits</em>.</div>
               <!--<h4>LIVE 2017 Presentation</h4>
               <p>Cyrus presented some of this work at the <a href="https://2017.splashcon.org/track/live-2017#About">LIVE 2017</a> workshop.</p>
               <ul>
