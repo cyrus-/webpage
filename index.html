@@ -77,20 +77,6 @@
     max-width: 1210px;
   }
 
-  .card {
-    background-color: white;
-    padding: 15px;
-    border-radius: 4px;
-    /* border: 1px solid tan; */
-    box-shadow: 0px 2px tan;
-    font-size: 11pt;
-    margin-bottom: 12px;
-  }
-
-  .announcement {
-    background-color: #e6f6b0;
-  }
-
   #bio-card, #job-market {
     background: linear-gradient(
      rgba(31, 122, 122, 0.25),
@@ -98,7 +84,22 @@
      ),
     url(./images/cartographer.png),
     #223939;
+    box-shadow: 0px 2px #9ea27e !important;
     color: white;
+  }
+
+  .card {
+    background-color: white;
+    padding: 15px;
+    border-radius: 4px;
+    /* border: 1px solid tan; */
+     box-shadow: 0px 2px tan; 
+    font-size: 11pt;
+    margin-bottom: 12px;
+  }
+
+  .announcement {
+    background-color: #e6f6b0;
   }
 
   #bio-card h2, #job-market h2 {
@@ -321,6 +322,11 @@
   .doc-icon {
     padding-right: 0.2em;
   }  
+
+  #talks {
+    overflow-y: auto;
+    max-height: 375px;
+  }
 </style>
 </head>
 
@@ -329,7 +335,7 @@
     <!-- <h1>Cyrus Omar <span class="tagline">designs <strong id="tagline-1"></strong> + <strong id="tagline-1">extensible user interfaces</strong> for <strong id="tagline-1">programming languages</strong>.</span></h1> -->
     <!-- <h1>Cyrus Omar <span class="tagline">designs <strong id="tagline-1">smart</strong> + <strong id="tagline-1">extensible</strong> <strong id="tagline-1">user interfaces</strong> for <strong id="tagline-1">programming languages</strong>.</span></h1> -->
     <!-- <h1>Cyrus Omar <span class="tagline">applies <strong id="tagline-1">mathematical principles</strong> to design expressive <strong id="tagline-1"> user interfaces for programming languages</strong>.</span></h1> -->
-    <h1>Cyrus Omar <span class="tagline">applies <strong id="tagline-1">mathematical </strong>+ <strong id="tagline-1">human principles</strong> to design <strong id="tagline-1">user interfaces</strong> for <strong id="tagline-1">programming languages</strong>.</span></h1>
+    <h1>Cyrus Omar <span class="tagline">applies <strong id="tagline-1">mathematical </strong>+ <strong id="tagline-1">cognitive principles</strong> to design <strong id="tagline-1">user interfaces</strong> for <strong id="tagline-1">programming languages</strong>.</span></h1>
     <!-- <h1>Cyrus Omar <span class="tagline">applies <strong id="tagline-1">mathematical principles</strong> to design better user <strong id="tagline-1">live programming environments</strong>.</span></h1> -->
     <!-- <h1>Cyrus Omar <span class="tagline">applies <strong id="tagline-1">mathematical principles</strong> to design <strong id="tagline-1">smarter</strong> + <strong id="tagline-1">more expressive programming environments</strong>.</span></h1> -->
   </div>
@@ -378,7 +384,7 @@
                   <div class="image-left">
                     <svg class="doc-icon svg-inline--fa fa-file-alt fa-w-12" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="file-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M224 136V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zm64 236c0 6.6-5.4 12-12 12H108c-6.6 0-12-5.4-12-12v-8c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12v8zm0-64c0 6.6-5.4 12-12 12H108c-6.6 0-12-5.4-12-12v-8c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12v8zm0-72v8c0 6.6-5.4 12-12 12H108c-6.6 0-12-5.4-12-12v-8c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12zm96-114.1v6.1H256V0h6.1c6.4 0 12.5 2.5 17 7l97.9 98c4.5 4.5 7 10.6 7 16.9z"></path></svg>
                     <div class="image-left-txt">
-                      <a href="./omar-cv.pdf">Curriculum Vitae (Mar 2019)</a> 
+                      <a href="./omar-cv.pdf">CV (June 2019)</a> 
                     </div>
                   </div>
                 </div>
@@ -564,12 +570,12 @@
         </div>
         <div class="right-col">
           <div class="card" id="bio-card" >
-            <img src="./images/woot.png" style="width: 1em; margin-right: 0.5em"> I'll be an <strong>Assistant Professor</strong> of Computer Science &amp; Engineering at the <strong>University of Michigan</strong> in Ann Arbor this Fall!
+            <img src="./images/woot.png" style="width: 1em; margin-right: 0.5em"> I will start as an <strong>Assistant Professor</strong> of Computer Science &amp; Engineering at the <strong>University of Michigan</strong> this Fall!
           </div>
           <div class="card" id="hazelnut-popl17">
             <h2>Hazel</h2>
             <p>
-              I lead the <a href="http://hazel.org">Hazel</a> project, which has developed type-theoretic foundations for a new kind of live programming environment that can understand, manipulate, and run incomplete programs, i.e. programs with <em>holes</em>.
+              I lead the <a href="http://hazel.org">Hazel project</a>, which has so far developed type-theoretic foundations for a new kind of live programming environment that can understand, manipulate, and run incomplete programs, i.e. programs with <em>holes</em>.
             </p>
             <p>
               <div class="paper">
