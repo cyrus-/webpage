@@ -1,0 +1,312 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0px;
+  background-color: wheat;
+  font-family: 'Open Sans', Arial, sans-serif;
+  padding: 0px !important;
+  min-width: 1280px;
+}
+
+.header {
+  font-family: Montserrat, sans-serif;
+  width: 100%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  font-size: 125%;
+  /* background-color: #063838; */
+  background: linear-gradient(
+   rgba(31, 122, 122, 0.25),
+   rgba(31, 122, 122, 0.25)
+   ),
+  url(./images/cartographer.png),
+  #223939;
+  color: white
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: Montserrat, sans-serif;
+}
+
+.tagline {
+  font-size: 14pt;
+  font-weight: normal;
+  position: relative;
+}
+
+.tagline strong {
+  font-weight: normal;
+}
+
+#tagline-1 {
+  color: #d5ffb6;
+}
+
+#tagline-2 {
+  color: #fceac5
+}
+
+.main-area {
+  padding: 15px;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  grid-column-gap: 15px;
+  max-width: 1280px;
+}
+
+#bio-card, #job-market {
+  background: linear-gradient(
+   rgba(31, 122, 122, 0.25),
+   rgba(31, 122, 122, 0.25)
+   ),
+  url(./images/cartographer.png),
+  #223939;
+  box-shadow: 0px 2px #9ea27e !important;
+  color: white;
+}
+
+.card {
+  background-color: white;
+  padding: 15px;
+  border-radius: 4px;
+  /* border: 1px solid tan; */
+   box-shadow: 0px 2px tan;
+  font-size: 11pt;
+  margin-bottom: 15px;
+}
+
+.announcement {
+  background-color: #e6f6b0;
+}
+
+#bio-card h2, #job-market h2 {
+  color: white;
+}
+
+#bio-card a, #job-market a {
+  font-weight: normal;
+  color: #f0ffb6;
+}
+
+#portrait {
+  width: 200px;
+  border-radius: 50%;
+  border: 1px solid #576f6f;
+  padding: 1px;
+  margin-bottom: 3px;
+}
+
+p {
+  margin-top: 0px;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+ul {
+  line-height: 1.4;
+}
+
+.contributor-list {
+  margin-top: 0px;
+  margin-left: -20px;
+}
+
+.news-list, .year-list {
+  padding-left: 0px;
+  margin-bottom: -10px;
+}
+
+.news-item, .year-list-item {
+  margin-bottom: 10px;
+}
+
+.date {
+  color: #999;
+  font-weight: normal;
+  font-size: 90%;
+  margin-bottom: 3px;
+}
+
+.year-list-item {
+  display: grid;
+  grid-template-columns: 3em auto;
+}
+
+.service-year {
+  color: #888;
+  font-weight: normal;
+}
+
+a {
+  color: #008068;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover {
+  color: #004048;
+}
+
+.major-paper {
+  font-weight: bold;
+}
+
+h1 {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+  font-weight: bold;
+  font-size: 20pt;
+}
+
+h2 {
+  margin-top: -3px !important;
+  padding-bottom: 5px;
+  font-weight: bold;
+  /* text-transform: uppercase; */
+  font-size: 105%;
+  color: #444;
+  border-bottom: 1px solid #DDD;
+  margin-bottom: 10px;
+}
+
+h3 {
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 105%;
+  color: #444;
+}
+
+h4 {
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 90%;
+  color: #777;
+}
+
+.btn {
+  padding: 15px;
+  background-color: purple;
+  color: white;
+  display: block;
+  width: 100%;
+  text-align: center;
+  border-radius: 5px;
+  text-decoration: none;
+  font-family: Montserrat, sans-serif;
+  font-weight: bold;
+}
+
+.source-link {
+  margin-bottom: 0px;
+}
+
+.source-link a {
+  text-decoration: none;
+}
+
+.source-link img {
+  vertical-align: middle;
+  position: relative;
+  margin-right: 2px;
+}
+
+.paper {
+  margin-top: 15px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  line-height: 1.5;
+}
+
+.paper-venue {
+  color: #446271;
+  font-weight: bold;
+  min-width: 100px;
+}
+
+.venue-note {
+  color: #888;
+  font-weight: normal;
+}
+
+.course {
+  font-weight: bold;
+}
+
+.paper-authors {
+  color: #444;
+}
+
+.me-author {
+  text-decoration: underline;
+}
+
+.image-left {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  width: 100%;
+}
+
+.image-left svg {
+  color: lightgray;
+}
+
+.image-left-img {
+  width: 1em;
+}
+
+.image-left-txt {
+  padding-left: 10px;
+  display: table-cell;
+  position: relative;
+  top: -2px;
+}
+
+.svg-inline--fa {
+  width: 1em;
+  position: relative;
+  left: +3px;
+  top: +1px;
+}
+
+.sidebar-items > div {
+  padding-left: 0px;
+  padding-right: 10px;
+  padding-top: 10px;
+}
+
+.award, .paper-award {
+  color: #642296;
+  font-weight: bold;
+}
+
+.service-year {
+  font-weight: bold;
+}
+
+.practicum {
+  margin-top: 4px;
+}
+
+.project-separator {
+  color: black;
+  opacity: 0.5;
+  padding-bottom: 10px;
+  padding-left: 8px;
+}
+
+.doc-icon {
+  padding-right: 0.2em;
+}
+
+#talks {
+  overflow-y: auto;
+  max-height: 375px;
+}
+
+.note {
+  font-size: 90%;
+  padding-bottom: 10px;
+}
