@@ -1,0 +1,89 @@
+body {
+  background: rgb(70, 42, 67);
+}
+
+.main-area {
+  max-width: 1200px;
+}
+
+.header {
+  background: linear-gradient( rgba(94, 101, 231, 0.25), rgba(181, 71, 170, 0.25) ), #222
+}
+
+.card {
+  background: ghostwhite;
+  box-shadow: 0px 0px !important;
+}
+
+.card > .info-table-label {
+  color: #444;
+}
+
+.bio-card {
+  background: linear-gradient( #009688, rgba(181, 71, 170, 1) );
+  box-shadow: 0px 0px !important;
+}
+
+.bio-card a {
+  font-weight: bold;
+}
+
+.bio-card a:hover {
+  color: yellow;
+}
+
+.info-table-label {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 90%;
+}
+
+.info-table-value {
+}
+
+.info-table {
+  display: grid;
+  grid-row-gap: 10px;
+}
+
+.main-area {
+  padding-top:0px;
+}
+
+.two-columns {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+  list-style-position: inside;
+  list-style-type: square;
+}
+
+.schedule-table {
+  width: 100%;
+  border: 1px solid black;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.schedule-table td {
+  border: 1px solid black;
+  padding: 10px;
+  vertical-align: top;
+}
+
+.schedule-table td:first-child {
+  font-weight: bold;
+  min-width: 125px;
+}
+
+.presentation-title {
+  font-weight: bold;
+}
+
+.presentation-notes {
+  margin-top: 8px;
+}
+
+.no-class {
+  background-color: #ffa39d;
+}

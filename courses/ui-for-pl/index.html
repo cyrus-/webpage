@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<!-- See github.com/cyrus-/webpage for source code; feel free to adapt to your needs -->
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-122958892-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-122958892-2');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400,700" rel="stylesheet">
+  <link href="../../style.css" rel="stylesheet" type="text/css">
+  <link href="./local-style.css" rel="stylesheet" type="text/css">
+
+  <title>User Interfaces for Programming Languages (EECS 598-015 Fa19)</title>
+</head>
+
+<body>
+  <div class="header">
+    <div class="supertitle">EECS 598-015&nbsp;&middot;&nbsp;Fall 2019&nbsp;&middot;&nbsp;University of Michigan</div>
+    <h1>
+      User Interfaces for Programming Languages
+    </h1>
+  </div>
+  <div class="main-area">
+    <div class="left-col">
+      <div class="card bio-card">
+        <div class="info-table">
+          <div class="info-table-row">
+            <div class="info-table-label">Instructor</div>
+            <div class="info-table-value">
+              <a href="http://web.eecs.umich.edu/~comar">Cyrus Omar</a> (Hi, I'm new faculty!)
+            </div>
+          </div>
+          <div class="info-table-row">
+            <div class="info-table-label">Email</div>
+            <div class="info-table-value">
+              <a href="http://web.eecs.umich.edu/~comar">comar@umich.edu</a>
+            </div>
+          </div>
+          <div class="info-table-row">
+            <div class="info-table-label">Office</div>
+            <div class="info-table-value">
+              4773 Beyster Building
+            </div>
+          </div>
+          <div class="info-table-row">
+            <div class="info-table-label">Office Hours</div>
+            <div class="info-table-value">
+              by appointment
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card bio-card">
+        <div class="info-table">
+          <div class="info-table-row">
+            <div class="info-table-label">Meeting Times</div>
+            <div class="info-table-value">
+              Tuesdays and Thursdays<br />
+              12:00-1:30pm
+              <span class="emph">(feel free to bring lunch)</span>
+            </div>
+          </div>
+          <div class="info-table-row">
+            <div class="info-table-label">Meeting Location</div>
+            <div class="info-table-value">
+              1690 Beyster Building
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card bio-card">
+        <div class="info-table">
+          <div class="info-table-row">
+            <div class="info-table-label">Course Resources</div>
+            <div class="info-table-value">
+              <ul>
+                <li><a href="mailto:EECS-598-015-FA2019-A@courses.umich.edu">Course Mailing List</a></li>
+                <li><a href="https://github.com/hazelgrove/fplab/wiki/EECS-598:-User-Interfaces-for-Programming-Languages#joining-the-course-chat">Course Chat</a></li>
+                <li>UI for PL: The Compendium [TBA]</li>
+                <li>Presentation Rubric &amp; Advice [TBA]</li>
+                <li>Writing Rubric &amp; Advice [TBA]</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card bio-card">
+        <div class="info-table">
+          <div class="info-table-row">
+            <div class="info-table-label">Online Communities</div>
+            <div class="info-table-value">
+              <ul>
+                <li><a href="https://futureofcoding.org/slack-readme.html">Future of Coding Slack</a></li>
+                <li><a href="https://futureofcoding.org/episodes">Future of Coding Podcast</a></li>
+                <li><a href="http://twitter.com/stevekrouse/following">Steve Krouse's Twitter followers</a></li>
+                 <li><a href="http://discuss.nearthespeedoflight.com/">discuss.tbd</a></li>
+                <li><a href="https://www.reddit.com/r/futureofprogramming/">r/futureofprogramming</a></li>                
+                <li><a href="https://www.reddit.com/r/nosyntax/">r/nosyntax</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="info-table-row">
+            <div class="info-table-label">Conferences &amp; Workshops</div>
+            <div class="info-table-value">
+              <ul>
+                  <li><a href="https://2019.splashcon.org/series/live">LIVE Workshop series</a></li>
+                  <li><a href="https://conf.researchr.org/series/px">PX Workshop series</a></li>
+                  <li><a href="http://www.future-programming.org/">FPW Workshop series</a></li>
+                  <li><a href="https://conf.researchr.org/series/plateau">PLATEAU Workshop series</a></li>
+                  <li><a href="http://www.ppig.org/workshops">PPIG Workshop series</a></li>             
+                  <li><a href="https://conf.researchr.org/series/tyde">TyDe Workshop series</a></li>
+                  <li><a href="https://conf.researchr.org/series/farm">FARM Workshop series</a></li>
+                  <li><a href="https://human-se.github.io/vlhcc2019/">VL/HCC Conference series</a></li>
+                  <li><a href="https://iclc.livecodenetwork.org/">ICLC Conference series</a></li>
+                  <li><a href="https://conf.researchr.org/series/onward">Onward! Conference series</a></li>
+                  <li><a href="https://www.thestrangeloop.com/">Strange Loop Conference series</a></li>                  
+                  <li><a href="https://sigchi.org/conferences/upcoming-conferences/">SIGCHI Conferences &amp; Workshops</a></li>
+                  <li><a href="https://www.sigsoft.org/events.html">SIGSOFT Conferences &amp; Workshops</a></li>                  
+                  <li><a href="https://www.sigplan.org/Conferences/">SIGPLAN Conferences &amp; Workshops</a></li> 
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>      
+    </div>
+    <div class="right-col">
+      <div class="card">
+        <div class="info-table-label">Overview</div>
+        <div>
+          Humans interact with programming languages by way of user interfaces of widely varying design. 
+        This course will provide a broad overview of the literature on user interfaces for programming languages, 
+        covering historic and contemporary designs as well as ongoing research topics. 
+        The emphasis will be on (1) thinking systematically about this large and exciting design space, 
+        and on (2) understanding how as designers we can rigorously evaluate design choices, and designs as a whole, using both qualitative and quantitative methods. 
+        </div>
+      </div>
+      <div class="card">
+        <div class="info-table-label">Potential Topics</div>
+        <ul class="two-columns" id="topic-list">
+          <li>structure editors</li>
+          <li>data analysis environments</li>
+          <li>cognitive dimensions of notation</li>
+          <li>visual dataflow programming</li>
+          <li>direct manipulation programming</li>
+          <li>live programming and live coding</li>
+          <li>predictive programming interfaces</li>
+          <li>program visualization</li>
+          <li>diagrams in programming</li>
+          <li>API usability</li>
+          <li>interactive debuggers</li>
+          <li>interactive theorem provers</li>
+          <li>extensibility in programming environments</li>          
+          <li>educational programming environments</li>          
+          <li>end-user programming environments</li>
+          <li>programming for people with disabilities</li>
+          <li>programmable physical environments</li>
+          <li>programming robotic devices</li>          
+          <li>history of programming environments</li>
+          <li>developing your design philosophy</li>
+        </ul>
+        This is an incomplete list &mdash; <strong>let me know if there are other topics that you are interested in!</strong>
+      </div>
+      <div class="card">
+        <div class="info-table-label">Course Structure</div>
+        <h3>Participation (15%)</h3>
+        Each 90 minute course meeting will include substantial time for discussion. 
+        Before some of the course meetings, you will also be asked to do a short (&lt; 30 min) activity  
+        (e.g. watching a video, reading, or playing with a tool).
+        <h3>Presentations &amp; Presentation Partners (20% + 5%)</h3>
+        <p>Each participant will be asked to lead at least one course meeting. 
+        <strong>Please email me with your topic preferences and date preferences + constraints by Wednesday, September 11.</strong></p>
+
+        <p>For each such presentation, another person will be assigned as the presentation partner. Their job is to meet with the presenter at least once before the course meeting (no later than the day before) to provide substantial feedback on a practice presentation. A presentation rubric will be posted soon.</p>
+        <h3>Compendium Contributions (25%)</h3>
+        There is no textbook for this course, so let's write one! Each participant will be asked to write the portions of the companion compendium related to their presentation, with a first draft due one week before the presentation and a final draft due one week after the presentation (to give you time to incorporate points from the discussion). A final round of revisions will be due Dec. 3. More details to follow.
+        <h3>Project (35%)</h3>
+        The semester will conclude with a course project and project presentations. The course project can consist either of:
+        <ul>
+          <li>an implementation of a user interface of the student's design, together with a lightweight evaluation,</li>
+          <li><strong>OR</strong> a substantial empirical evaluation of an existing user interface for programming.</li>
+        </ul>
+
+        Project proposals (2-3 paragraphs, by email) are due on Wed, Oct. 9th.
+      </div>
+      <div class="card">
+        <div class="info-table-label">Schedule</div>
+        <table class="schedule-table">
+          <tr>
+            <td>Tues. 9/3</td>
+            <td>
+              <div class="presentation-title">Introductions, Logistics, and Overview</div>
+              <div class="presentation-notes">
+                Tasks:
+              <ul>
+                <li>Make sure you are registered.</li>
+                <li><a href="https://github.com/hazelgrove/fplab/wiki/EECS-598:-User-Interfaces-for-Programming-Languages#joining-the-course-chat">Sign up for the course chat</a> (ASAP)</li>
+                <li>Email me with presentation topic preferences and date preferences + constraints (due Wed. 9/11)</li>
+              </ul>
+            </div>
+            </td>
+          </tr>
+          <tr>
+            <td>Thurs. 9/5</td>
+            <td>
+              <div class="presentation-title">Inventing on Principle</div>
+              <div class="presentation-notes">
+                Bret Victor's talk <a href="https://vimeo.com/36579366">Inventing on Principle</a> has inspired thousands of people to experiment with better UIs for programming.
+                Even better, it has helped people clarify their thinking and their mission in life. 
+                We'll watch it together, pausing to discuss and expand on several of his points.
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>Tues. 9/10</td>
+            <td>
+              <div class="presentation-title">Cognitive Dimensions of Notation</div>
+            </td>
+          </tr>
+          <tr>
+            <td>Thurs. 9/12</td>
+            <td>
+              <div class="presentation-title">Structure Editors</div>
+            </td>
+          </tr>
+          <tr>
+            <td>Tues. 9/17</td>
+            <td>
+              <div class="presentation-title">Live Programming Environments</div>
+            </td>
+          </tr>
+          <tr>
+            <td>Thurs. 9/19</td>
+            <td>
+              <div class="presentation-title">TBD</div>
+              <!-- <div class="presentation-notes">TBD</div> -->
+            </td>
+          </tr>
+          <tr class="no-class">
+            <td>Tues. 9/24</td>
+            <td>
+              <div class="presentation-title">No Course Meeting</div>
+            </td>
+          </tr>
+          <tr>
+            <td>Thurs. 9/26</td>
+            <td>
+              <div class="presentation-title">TBD</div>
+              <!-- <div class="presentation-notes">TBD</div> -->
+            </td>
+          </tr>
+          <tr>
+            <td>Tues. 10/1</td>
+            <td>
+              <div class="presentation-title">TBD</div>
+              <!-- <div class="presentation-notes">TBD</div> -->
+            </td>
+          </tr>
+          <tr>
+            <td>Thurs. 10/3</td>
+            <td>
+              <div class="presentation-title">TBD</div>
+              <!-- <div class="presentation-notes">TBD</div> -->
+            </td>
+          </tr>
+          <tr>
+            <td>Tues. 10/8</td>
+            <td>
+              <div class="presentation-title">TBD</div>
+              <!-- <div class="presentation-notes">TBD</div> -->
+            </td>
+          </tr>
+          <tr>
+            <td>Thurs. 10/10</td>
+            <td>
+              <div class="presentation-title">TBD</div>
+              <!-- <div class="presentation-notes">TBD</div> -->
+            </td>
+          </tr>
+          <tr class="no-class">
+            <td>Tues. 10/15</td>
+            <td>
+              <div class="presentation-title">No Course Meeting</div>
+              <div class="presentation-notes">(Fall Study Break)</div>
+            </td>
+          </tr>
+          <tr>
+            <td>Thurs. 10/17</td>
+            <td>
+              <div class="presentation-title">TBD</div>
+              <!-- <div class="presentation-notes">TBD</div> -->
+            </td>
+          </tr>
+          <tr>
+            <td>Tues. 10/22</td>
+            <td>
+              <div class="presentation-title">TBD</div>
+              <!-- <div class="presentation-notes">TBD</div> -->
+            </td>
+          </tr>
+          <tr>
+            <td>Thurs. 10/24</td>
+            <td>
+              <div class="presentation-title">TBD</div>
+              <!-- <div class="presentation-notes">TBD</div> -->
+            </td>
+          </tr>
+          <tr>
+            <td>Tues. 10/29</td>
+            <td>
+              <div class="presentation-title">TBD</div>
+              <!-- <div class="presentation-notes">TBD</div> -->
+            </td>
+          </tr>
+          <tr>
+            <td>Thurs. 10/31</td>
+            <td>
+              <div class="presentation-title">Guest Lecture: Direct Manipulation Programming in <a href="https://ravichugh.github.io/sketch-n-sketch/">Sketch-n-Sketch</a></div>
+              <div class="presentation-notes">Presenter: <a href="http://people.cs.uchicago.edu/~brianhempel/">Brian Hempel</a> (PhD student, University of Chicago)</div>
+            </td>
+          </tr>
+          <tr>
+            <td>Tues. 11/5</td>
+            <td>
+              <div class="presentation-title">TBD</div>
+              <!-- <div class="presentation-notes">TBD</div> -->
+            </td>
+          </tr>
+          <tr>
+            <td>Thurs. 11/7</td>
+            <td>
+              <div class="presentation-title">TBD</div>
+              <!-- <div class="presentation-notes">TBD</div> -->
+            </td>
+          </tr>
+          <tr>
+            <td>Tues. 11/12</td>
+            <td>
+              <div class="presentation-title">TBD</div>
+              <!-- <div class="presentation-notes">TBD</div> -->
+            </td>
+          </tr>
+          <tr>
+            <td>Thurs. 11/14</td>
+            <td>
+              <div class="presentation-title">TBD</div>
+              <!-- <div class="presentation-notes">TBD</div> -->
+            </td>
+          </tr>
+          <tr>
+            <td>Tues. 11/19</td>
+            <td>
+              <div class="presentation-title">TBD</div>
+              <!-- <div class="presentation-notes">TBD</div> -->
+            </td>
+          </tr>
+          <tr>
+            <td>Thurs. 11/21</td>
+            <td>
+              <div class="presentation-title">TBD</div>
+              <!-- <div class="presentation-notes">TBD</div> -->
+            </td>
+          </tr>
+          <tr>
+            <td>Tues. 11/26</td>
+            <td>
+              <div class="presentation-title">TBD</div>
+              <!-- <div class="presentation-notes">TBD</div> -->
+            </td>
+          </tr>
+          <tr class="no-class">
+            <td>Thurs. 11/28</td>
+            <td>
+              <div class="presentation-title">No Course Meeting</div>
+              <!-- <div class="presentation-notes">(Thanksgiving)</div> -->
+            </td>
+          </tr>
+          <tr>
+            <td>Tues. 12/3</td>
+            <td>
+              <div class="presentation-title">Project Presentations</div>
+              <!--<div class="presentation-notes">TBD</div>-->
+            </td>
+          </tr>
+          <tr>
+            <td>Thurs. 12/5</td>
+            <td>
+              <div class="presentation-title">Project Presentations</div>
+              <!--<div class="presentation-notes">TBD</div>-->
+            </td>
+          </tr>
+          <tr>
+            <td>Tues. 12/10</td>
+            <td>
+              <div class="presentation-title">Project Presentations, Reflections, and Wrap-Up</div>
+              <!--<div class="presentation-notes">TBD</div>-->
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  </div>
+</body>
+
+</html>
