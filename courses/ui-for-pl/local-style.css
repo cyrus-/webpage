@@ -87,3 +87,7 @@ body {
 .no-class {
   background-color: #ffa39d;
 }
+
+.deadline {
+  background-color: orange;
+}
