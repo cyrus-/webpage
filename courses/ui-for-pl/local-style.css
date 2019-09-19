@@ -91,3 +91,10 @@ body {
 .deadline {
   background-color: orange;
 }
+
+.additional-reading h5 {
+  margin-bottom: 5px;
+  margin-top: 5px;
+  font-family: Arial, sans-serif;
+  font-size: 10pt;
+}
