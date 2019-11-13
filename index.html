@@ -27,11 +27,13 @@
 </head>
 
 <body>
-  <div class="header">
-    <h1>Cyrus Omar <span class="tagline">applies <strong id="tagline-1">mathematical </strong>+ <strong
+  <!-- <div class="header">
+    <h1><strong>Cyrus Omar</strong>
+      <span class="tagline">applies <strong id="tagline-1">mathematical </strong>+ <strong
           id="tagline-1">cognitive principles</strong> to design <strong id="tagline-1">next-generation user
-          interfaces</strong> for <strong id="tagline-1">programming languages</strong>.</span></h1>
-  </div>
+          interfaces</strong> for <strong id="tagline-1">programming languages</strong>.</span>
+    </h1>
+  </div> -->
   <div class="main-area">
     <div class="left-col">
       <div class="card bio-card">
@@ -47,7 +49,8 @@
                 </path>
               </svg>
               <div class="image-left-txt">
-                <strong>Assistant Professor</strong> (Sep. 2019-)<br />
+                <strong>Cyrus Omar</strong><br />
+                Assistant Professor (Sep. 2019-)<br />
                 Computer Science and Engineering<br />
                 University of Michigan<br />
               </div>
@@ -188,7 +191,12 @@
         <h2>Teaching</h2>
         <div class="news-list">
           <div class="news-item">
-            <a href="./courses/ui-for-pl/" class="course">Special Topics: User Interfaces for Programming Languages (EECS
+            <span class="course">Programming Languages (EECS 490)</span>
+            <br />
+            <span class="date">Winter 2020</span>
+          </div>
+          <div class="news-item">
+            <a href="./courses/ui-for-pl/" class="course">User Interfaces for Programming Languages (EECS
               598)</a>
             <br />
             <span class="date">Fall 2019</span>
@@ -217,6 +225,10 @@
         </div>
       </div>
       <div class="card" id="contributors">
+        <h2>Advising</h2>
+        See the <a href="http://fplab.mplse.org/">FP Lab webpage</a>. 
+      </div>
+      <!-- <div class="card" id="contributors">
         <h2>Future of Programming (FP) Lab</h2>
         <div class="news-list">
           <div class="news-item">
@@ -232,16 +244,20 @@
           <div class="news-item">
             <div class="image-left">
               <img src="./images/woot.png" style="width: 1em">
-              <div class="image-left-txt">If you are interested in joining the FP Lab at Michigan, send me an email!
+              <div class="image-left-txt">If you are interested in joining FP Lab, send me an email!
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="card" id="talks">
         <h2>Recent &amp; Upcoming Talks</h2>
         <div class="news-list">
+          <div class="news-item">
+            <div class="news-text"><a href="https://purpl.cs.purdue.edu/kickoff.html">Midwest PL Summit</a> talk on Hazel at Purdue</div>
+            <div class="date">Sep. 23, 2019</div>
+          </div>
           <div class="news-item">
             <div class="news-text"><a href="https://icfp19.sigplan.org/home/tyde-2019">TyDe 2019</a> talk on <a
                 href="http://hazel.org/talks/livelits-tyde19.pdf">livelits in Hazel</a> at <a
@@ -299,6 +315,14 @@
         <h2>Service</h2>
         <div class="year-list">
           <div class="year-list-item">
+            <div class="service-year">2020</div>
+            <div class="service-item">
+              <a>TyDe</a> Co-Chair&nbsp;&middot;
+              <a>MWPLS</a> Co-Chair&nbsp;&middot;
+              <a>ICFP</a> ERC
+            </div>
+          </div>
+          <div class="year-list-item">
             <div class="service-year">2019</div>
             <div class="service-item">
               <a href="https://2019.splashcon.org/track/splash-2019-Onward-papers">Onward!</a> PC&nbsp;&middot;
@@ -352,17 +376,17 @@
     <div class="right-col">
       <div class="card bio-card">
         <div>
-          <img src="./images/woot.png" style="width: 1em; margin-right: 0.5em">I started as an <strong>Assistant
-            Professor</strong> of Computer Science and Engineering at the <strong>University of Michigan</strong> this
-          Fall!
+          I lead the <a href="http://fplab.mplse.org/"><strong>Future of Programming (FP) Lab</strong></a> at Michigan. We apply mathematical and cognitive principles to design next-generation user interfaces for next-generation programming languages. FP Lab is part of the <a href="http://mplse.org/"><strong>MPLSE</strong></a> research community.
         </div>
       </div>
+
+      <div class="project-separator">Publications &amp; Projects</div>
+
       <div class="card" id="hazelnut-popl17">
         <h2>Hazel</h2>
         <p>
-          I lead the <a href="http://hazel.org">Hazel project</a>, which has so far developed type-theoretic foundations
-          for a new kind of live programming environment that can understand, manipulate, and run incomplete programs,
-          i.e. programs with <em>holes</em>.
+          FP Lab is the academic home of <a href="http://hazel.org">Hazel</a>, a new kind of live programming environment that can understand, manipulate, and run incomplete programs,
+          i.e. programs with <em>holes</em>. The following publications develop the semantic foundations for Hazel.
         </p>
         <p>
           <div class="paper">
@@ -591,7 +615,6 @@
       </div>
 
 
-      <div class="project-separator">Science Projects</div>
       <div class="card" id="hazelnut-live">
         <h2>SciUnit: Collaborative Infrastructure for Test-Driven Scientific Model Validation</h2>
         <p> One of the pillars of the scientific method is model
