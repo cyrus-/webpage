@@ -167,31 +167,12 @@
                     <main>
                         <h1><a class="header" href="#hatra-demo" id="hatra-demo">HATRA Demo</a></h1>
 <h2><a class="header" href="#fig-1" id="fig-1">Fig. 1</a></h2>
-<pre><pre class="playground"><code class="language-rust">fn main() {
-    let s = String::from(&quot;hello&quot;);
-    takes_ownership(s);
-    let mut x = 5;
-    let y = x;
-    x = 6
-}
-</code></pre></pre>
-<div class="flex-container vis_block" style="position:relative; margin-left:-75px; margin-right:-75px; display: none;">
+<div class="flex-container vis_block" style="position:relative; margin-left:-75px; margin-right:-75px; display: flex;">
   <object type="image/svg+xml" class="hatra1 code_panel" data="assets/hatra1/vis_code.svg"></object>
   <object type="image/svg+xml" class="hatra1 tl_panel" data="assets/hatra1/vis_timeline.svg" style="width: auto;" onmouseenter="helpers('hatra1')"></object>
 </div>
 <h2><a class="header" href="#fig-2" id="fig-2">Fig. 2</a></h2>
-<pre><pre class="playground"><code class="language-rust">fn main(){
-    let mut s = String::from(&quot;hello&quot;);
-
-    let r1 = &amp;s;
-    let r2 = &amp;s;
-    assert!(compare_strings(r1, r2));
-
-    let r3 = &amp;mut s;
-    clear_string(r3)
-}
-</code></pre></pre>
-<div class="flex-container vis_block" style="position:relative; margin-left:-75px; margin-right:-75px; display: none;">
+<div class="flex-container vis_block" style="position:relative; margin-left:-75px; margin-right:-75px; display: flex;">
   <object type="image/svg+xml" class="hatra2 code_panel" data="assets/hatra2/vis_code.svg"></object>
   <object type="image/svg+xml" class="hatra2 tl_panel" data="assets/hatra2/vis_timeline.svg" style="width: auto;" onmouseenter="helpers('hatra2')"></object>
 </div>
