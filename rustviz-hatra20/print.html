@@ -170,11 +170,22 @@
                         <h1><a class="header" href="#hatra-demo" id="hatra-demo">HATRA Demo</a></h1>
 <p><a href="https://github.com/rustviz/rustviz">RustViz GitHub Repository</a></p>
 <h2><a class="header" href="#fig-1" id="fig-1">Fig. 1</a></h2>
+<ul>
+<li>Every resource has a unique <em>owner</em>.</li>
+<li>Ownership can be <em>moved</em>.</li>
+<li>A resource is <em>dropped</em> (i.e. deallocated) when its owner dies.</li>
+</ul>
 <div class="flex-container vis_block" style="position:relative; margin-left:-75px; margin-right:-75px; display: flex;">
   <object type="image/svg+xml" class="hatra1 code_panel" data="assets/hatra1/vis_code.svg"></object>
   <object type="image/svg+xml" class="hatra1 tl_panel" data="assets/hatra1/vis_timeline.svg" style="width: auto;" onmouseenter="helpers('hatra1')"></object>
 </div>
 <h2><a class="header" href="#fig-2" id="fig-2">Fig. 2</a></h2>
+<ul>
+<li><em>Borrowing</em> (i.e. taking a reference) allows use of a resource without changing the owner.</li>
+<li>Mutation is allowed through <em>mutable borrows</em> but not through <em>immutable borrows</em>.</li>
+<li>There can be multiple immutable borrows live.</li>
+<li>If a mutable borrow is live, no other borrow can be live.</li>
+</ul>
 <div class="flex-container vis_block" style="position:relative; margin-left:-75px; margin-right:-75px; display: flex;">
   <object type="image/svg+xml" class="hatra2 code_panel" data="assets/hatra2/vis_code.svg"></object>
   <object type="image/svg+xml" class="hatra2 tl_panel" data="assets/hatra2/vis_timeline.svg" style="width: auto;" onmouseenter="helpers('hatra2')"></object>
