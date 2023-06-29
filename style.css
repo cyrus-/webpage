@@ -1,4 +1,6 @@
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0px;
@@ -16,12 +18,10 @@ body {
   padding-left: 20px;
   font-size: 125%;
   /* background-color: #063838; */
-  background: linear-gradient(
-   rgba(31, 122, 122, 0.25),
-   rgba(31, 122, 122, 0.25)
-   ),
-  url(./images/cartographer.png),
-  #223939;
+  background: linear-gradient(rgba(31, 122, 122, 0.25),
+      rgba(31, 122, 122, 0.25)),
+    url(./images/cartographer.png),
+    #223939;
   color: white
 }
 
@@ -31,11 +31,16 @@ body {
   font-weight: bold;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: Montserrat, sans-serif;
 }
 
-.header > h1 {
+.header>h1 {
   font-weight: normal !important;
   font-size: 18pt;
 }
@@ -67,22 +72,20 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .bio-card {
-  background: linear-gradient(
-   rgba(31, 122, 122, 0.25),
-   rgba(31, 122, 122, 0.25)
-   ),
-  url(./images/cartographer.png),
-  #223939;
+  background: linear-gradient(rgba(31, 122, 122, 0.25),
+      rgba(31, 122, 122, 0.25)),
+    url(./images/cartographer.png),
+    #223939;
   /*box-shadow: 0px 2px #9ea27e !important;*/
   color: white;
 }
 
 .card {
-  background-color: white;
+  background-color: #fffbef;
   padding: 15px;
   /*border-radius: 4px;*/
   /* border: 1px solid tan; */
-   box-shadow: 0px 2px tan;
+  box-shadow: 0px 2px tan;
   font-size: 11pt;
   margin-bottom: 15px;
 }
@@ -127,12 +130,14 @@ ul {
   margin-left: -20px;
 }
 
-.news-list, .year-list {
+.news-list,
+.year-list {
   padding-left: 0px;
   margin-bottom: -10px;
 }
 
-.news-item, .year-list-item {
+.news-item,
+.year-list-item {
   margin-bottom: 10px;
 }
 
@@ -238,7 +243,7 @@ h4 {
 .paper-venue {
   color: #446271;
   font-weight: bold;
-  min-width: 100px;
+  min-width: 110px;
 }
 
 .venue-note {
@@ -286,13 +291,14 @@ h4 {
   top: +1px;
 }
 
-.sidebar-items > div {
+.sidebar-items>div {
   padding-left: 0px;
   padding-right: 10px;
   padding-top: 10px;
 }
 
-.award, .paper-award {
+.award,
+.paper-award {
   color: #642296;
   font-weight: bold;
 }
@@ -332,7 +338,7 @@ ul {
   padding: 5px;
 }
 
-li { 
+li {
   margin: 0;
   padding: 0;
 }
