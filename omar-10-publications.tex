@@ -1,0 +1,171 @@
+% Jason R. Blevins - Curriculum Vitae
+%
+% Copyright (C) 2004-2016 Jason R. Blevins <jrblevin@sdf.org>
+% http://jblevins.org/
+%
+% You may use use this document as a template to create your own CV
+% and you may redistribute the source code freely.  No attribution is
+% required in any resulting documents.  I do ask that you please leave
+% this notice and the above URL in the source code if you choose to
+% redistribute this file.
+
+\documentclass[10pt,letterpaper]{article}
+
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{enumitem}
+
+% Fonts
+\usepackage[T1]{fontenc}
+% \usepackage[urw-garamond]{mathdesign}
+\usepackage{mathpazo}
+\usepackage{microtype}
+% \usepackage{textcomp}
+% Set your name here
+\def\name{Cyrus Omar}
+
+% The following metadata will show up in the PDF properties
+\hypersetup{
+  colorlinks = true,
+  urlcolor = black,
+  pdfauthor = {\name},
+  pdfkeywords = {programming languages, computer science},
+  pdftitle = {\name: Curriculum Vitae},
+  pdfsubject = {Curriculum Vitae},
+  pdfpagemode = UseNone
+}
+
+\geometry{
+  body={6.5in, 9.0in},
+  left=1.0in,
+  top=1in,
+  bottom=0.9in
+}
+
+% Customize page headers
+\pagestyle{myheadings}
+\markright{\name}
+\thispagestyle{empty}
+
+% Custom section fonts
+\usepackage{sectsty}
+\sectionfont{\rmfamily\mdseries\Large}
+\subsectionfont{\rmfamily\mdseries\itshape\large}
+
+% Other possible font commands include:
+% \ttfamily for teletype,
+% \sffamily for sans serif,
+% \bfseries for bold,
+% \scshape for small caps,
+% \normalsize, \large, \Large, \LARGE sizes.
+
+% Don't indent paragraphs.
+\setlength\parindent{0em}
+
+% Make lists without bullets and compact spacing
+\renewenvironment{itemize}{
+  \begin{list}{}{
+    \setlength{\leftmargin}{1.25em}
+    \setlength{\itemsep}{0.25em}
+    \setlength{\parskip}{0pt}
+    \setlength{\parsep}{0.2em}
+  }
+}{
+  \end{list}
+}
+\setlist[enumerate]{itemsep=0.25em}
+
+\begin{document}
+
+\section*{Selected Publications -- Cyrus Omar}
+% Place name at left
+\newcommand{\advisee}[1]{#1$^\dagger$}
+$\dagger$ = primary advisor during paper preparation
+
+\begin{enumerate}[leftmargin=*, labelindent=6.5em, font=\bfseries]
+  % \item[CACM 2026] {Planet Hazel: A Live Collaborative Computational Authoring Environment}
+  % \item[OOPSLA 2025] {Computational Authoring with Live Projections}
+  % \item[OOPSLA 2025] {Incremental Type Error Localization and Recovery with Holes}
+  % \item[ESOP 2025] {Explicit Implicits}
+  % \item[Onward! 2025] {Granularly Governing the Capabilities of Agentic AIs}
+  % \item[Onward! 2025] {Query-Based Screen Reading and Commands for Accessible Coding}
+  % \item[CHI 2025]{Deckflow: Deck the Flows with Bows of Holly}
+  % \begin{itemize}
+  %   \item \advisee{A. Blinn}, \advisee{X. Liang}, \advisee{J. Kim}, \underline{C. Omar}
+  %   \item \textit{Proc. ACM Program. Lang.}, Issue: OOPSLA 2024
+  % \end{itemize}
+  % \item[ICFP 2025]{Integrating a Classroom Proof Assistant into Discrete Math}
+  % \begin{itemize}
+  %   \item \advisee{A. Blinn}, \advisee{X. Liang}, \advisee{J. Kim}, \underline{C. Omar}
+  %   \item \textit{Proc. ACM Program. Lang.}, Issue: OOPSLA 2024
+  % \end{itemize}
+  % \item[OOPSLA 2025]{Typed Program Sketching with Large Language Models}
+  % \begin{itemize}
+  %   \item \advisee{A. Blinn}, \advisee{X. Liang}, \advisee{J. Kim}, \underline{C. Omar}
+  %   \item \textit{Proc. ACM Program. Lang.}, Issue: OOPSLA 2024
+  % \end{itemize}
+  % \item[PLDI 2025]{Syntactic Completion with Material Obligations}
+  % \begin{itemize}
+  %   \item \advisee{A. Blinn}, \advisee{X. Liang}, \advisee{J. Kim}, \underline{C. Omar}
+  %   \item \textit{Proc. ACM Program. Lang.}, Issue: OOPSLA 2024
+  % \end{itemize}
+  \item[POPL 2025]{Grove: A Bidirectionally Typed Collaborative Structure Editor Calculus}
+  \begin{itemize}
+    \item \advisee{M. Adams}, \advisee{E. Griffis}, \advisee{S. Satish}, \advisee{E. Zhao}, \underline{C. Omar}
+    \item \textit{Proc. ACM Program. Lang.}, Issue: POPL 2025
+  \end{itemize}
+  \item[OOPSLA 2024]{Statically Contextualizing Large Language Models with Typed Holes}
+  \begin{itemize}
+    \item \advisee{A. Blinn}, \advisee{X. Liang}, \advisee{J. Kim}, \underline{C. Omar}
+    \item \textit{Proc. ACM Program. Lang.}, Issue: OOPSLA 2024
+  \end{itemize}
+  \item[POPL 2024] {Total Type Error Localization and Recovery with Holes}
+  \begin{itemize}
+    \item \advisee{E. Zhao}, \advisee{R. Maroof}, \advisee{A. Dukkipati}, \advisee{A. Blinn}, \advisee{Z. Pan}, \underline{C. Omar}
+    \item \textit{Proc. ACM Program. Lang.}, Issue: POPL 2024
+    \item \textbf{Distinguished Paper Award}
+  \end{itemize}
+  \item[OOPSLA 2023] {Live Pattern Matching with Typed Holes}
+        \begin{itemize}
+          \item \advisee{Y. Yuan}, \advisee{S. Guest}, \advisee{E. Griffis}, \advisee{H. Potter}, \advisee{D. Moon}, \underline{C. Omar}
+          \item \textit{Proc. ACM Program. Lang.}, Issue: OOPSLA 2023
+          \item \textbf{Distinguished Paper Award}
+        \end{itemize}
+  \item[VL/HCC 2023] {Gradual Structure Editing with Obligations}
+        \begin{itemize}
+          \item \advisee{D. Moon}, \advisee{A. Blinn}, \underline{C. Omar}
+          \item \textit{IEEE Symposium on Visual Languages and Human-Centered Computing}
+        \end{itemize}      
+  \item[VL/HCC 2022] {RustViz: Interactively Visualizing Ownership and Borrowing}
+        \begin{itemize}
+          \item \advisee{M. Almeida}, \advisee{G. Cole}, \advisee{K. Du}, \advisee{G. Luo}, \advisee{S. Pan}, \advisee{Y. Pan}, \advisee{K. Qiu}, \advisee{V. Reddy}, \advisee{H. Zhang}, \advisee{Y. Zhu}, \underline{C. Omar}
+          \item \textit{IEEE Symposium on Visual Languages and Human-Centered Computing}
+        \end{itemize}
+  \item[PLDI 2021] {Filling Typed Holes with Live GUIs}
+        \begin{itemize}
+          \item \underline{C. Omar}, \advisee{D. Moon}, \advisee{A. Blinn}, I. Voysey, N. Collins, and R. Chugh
+          \item \textit{42nd ACM SIGPLAN International Conference on Programming Language Design and Implementation}
+        \end{itemize}
+  \item[ICFP 2020] {Program Sketching with Live Bidirectional Evaluation}
+        \begin{itemize}
+          \item J. Lubin, N. Collins, \underline{C. Omar}, and R. Chugh
+          \item \textit{Proc. ACM Program. Lang.}, Issue: ICFP 2020
+        \end{itemize}
+  \item[POPL 2019] {Live Functional Programming with Typed Holes}
+        \begin{itemize}
+          \item \underline{C. Omar}, I. Voysey, R. Chugh and M. Hammer
+          \item \textit{Proc. ACM Program. Lang.}, Issue: POPL 2019
+        \end{itemize}
+  % \item[ICFP 2018] {Reasonably Programmable Literal Notation}
+  %       \begin{itemize}
+  %         \item \underline{C. Omar} and J. Aldrich
+  %         \item \textit{Proc. ACM Program. Lang.}, Issue: ICFP 2018
+  %       \end{itemize}
+  \item[POPL 2017] {Hazelnut: A Bidirectionally Typed Structure Editor Calculus}
+        \begin{itemize}
+          \item \underline{C. Omar}, I. Voysey, M. Hilton, J. Aldrich and M. Hammer
+          \item \textit{44th ACM SIGPLAN Symposium on Principles of Programming Languages} 
+        \end{itemize}
+\end{enumerate}
+
+\end{document}
