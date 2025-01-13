@@ -346,3 +346,8 @@ li {
 .project-name {
   color: #420f9c;
 }
+
+.pronouns {
+  color: #ccc;
+  margin-left: 4px;
+}
