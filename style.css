@@ -303,6 +303,11 @@ h4 {
   font-weight: bold;
 }
 
+
+.award:hover {
+  color: #35029c !important;
+}
+
 .service-year {
   font-weight: bold;
 }
