@@ -241,23 +241,22 @@
         <h2>Advising</h2>
         <h4>PhD Students</h4>
         <ul>
-          <li><a href="https://dmoon1221.github.io/">David Moon</a></li>
           <li><a href="https://andrewblinn.com/">Andrew Blinn</a></li>
           <li><a href="https://negabinary.github.io/">Matthew Keenan</a></li>
-          <li><a href="https://g.regory.dev/">Gregory Croisdale</a></li>
           <li><a href="https://bandukwala.me/">Alexander Bandukwala</a></li>
           <li><a href="https://thomasporter522.github.io/">Thomas J. Porter</a></li>
         </ul>
         <h4>Masters and Undergraduates</h4>
-        There are 30+ masters and undergraduate reseachers in FP Lab &mdash; see the <a
+        There are 15+ masters and undergraduate reseachers in FP Lab &mdash; see the <a
           href="http://fplab.mplse.org/">FP Lab
           webpage</a>!
         <h4>Former Advisees</h4>
-        FP Lab alum include 1 subsequent faculty member (Michael D. Adams), 15 subsequent PhD students, and 175+
-        students who went on to
-        MS
-        programs or
-        industry!
+        <ul>
+          <li><a href="https://dmoon.info/">David Moon</a> (PhD, 2025)</li>
+          <li><a href="https://michaeldadams.org/">Michael D. Adams</a> (Postdoc, 2019-21)</li>
+        </ul>
+
+        FP Lab alum also include 200+ undergraduate and MS students, 15 of whom went on to PhD programs!
       </div>
       <!-- <div class=" card" id="contributors">
               <h2>Future of Programming (FP) Lab</h2>
@@ -468,7 +467,7 @@
         </p>
         <p>
         <div class="paper">
-          <div class="paper-venue">OOPSLA 2025<br /><span class="venue-note">To appear</span></div>
+          <div class="paper-venue">OOPSLA 2025<br /></div>
           <div class="paper-details">
             <div class="paper-title-line">
               <a class="major-paper" href="https://arxiv.org/pdf/2504.08946">
@@ -477,6 +476,9 @@
             <div class="paper-authors">
               Thomas J. Porter, Marisa Kirisame, Ivan Wei, Pavel Panchekha, <span class="me-author">Cyrus
                 Omar</span>
+            </div>
+            <div class="paper-award" style="margin-top: 4px">
+              Distinguished Paper Award
             </div>
           </div>
         </div>
@@ -573,35 +575,27 @@
       </ul>
     -->
       </div>
-      <div class="card">
-        <h2><a href="https://hazel.org/">Grove</a>: New Foundations for Collaborative Editing</h2>
-        <p>We are developing a new semantics for collaborative editing that dispenses with diff-and-merge in favor of a
-          commutative structure edit language. This resolves a number of problems, particularly related to relocation
-          conflicts, and opens up new design avenues for a <a href="https://hazel.org/papers/propl24.pdf">computational
-            commons</a>.</p>
-        <p>
-        <div class="paper">
-          <div class="paper-venue">POPL 2025</div>
-          <div class="paper-details">
-            <div class="paper-title-line">
-              <a class="major-paper" href="https://hazel.org/papers/grove-popl25.pdf">Grove: A Bidirectionally Typed
-                Collaborative Structure Editor Calculus</a>
-            </div>
-            <div class="paper-authors">
-              Michael D. Adams, Eric Griffis, Thomas J. Porter, Sundara Vishnu Satish, Eric Zhao, <span
-                class="me-author">Cyrus Omar</span>
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="card" id="tylr">
-        <h2><a href="http://tylr.org">Tylr</a>: Eliminating Parse Errors with Holes</h2>
+        <h2><a href="http://tylr.org">Tylr</a>: Syntactic Completions with Material Obligations</h2>
         <p>
           Parse errors are a pain for beginners and experts alike. The <a href="http://tylr.org/">Tylr</a> project
           eliminates parse errors (!) by automatically tracking syntactic obligations and materializing them as holes
           and other affordances. This benefits both humans and downstream tooling.
         </p>
         <p>
+        <div class="paper">
+          <div class="paper-venue">OOPSLA 2025</div>
+          <div class="paper-details">
+            <div class="paper-title-line">
+              <a class="major-paper" href="https://arxiv.org/pdf/2508.16848">Syntactic Completions with Material
+                Obligations</a>
+            </div>
+            <div class="paper-authors">
+              David Moon, Andrew Blinn, Thomas J. Porter, and <span class="me-author">Cyrus Omar</span>
+            </div>
+          </div>
+        </div>
+
         <div class="paper">
           <div class="paper-venue">VL/HCC 2023</div>
           <div class="paper-details">
@@ -657,25 +651,34 @@
       </div>
 
       <div class="card">
+        <h2><a href="https://hazel.org/">Grove</a>: New Foundations for Collaborative Editing</h2>
+        <p>We are developing a new semantics for collaborative editing that dispenses with diff-and-merge in favor of a
+          commutative structure edit language. This resolves a number of problems, particularly related to relocation
+          conflicts, and opens up new design avenues for a <a href="https://hazel.org/papers/propl24.pdf">computational
+            commons</a>.</p>
+        <p>
+        <div class="paper">
+          <div class="paper-venue">POPL 2025</div>
+          <div class="paper-details">
+            <div class="paper-title-line">
+              <a class="major-paper" href="https://hazel.org/papers/grove-popl25.pdf">Grove: A Bidirectionally Typed
+                Collaborative Structure Editor Calculus</a>
+            </div>
+            <div class="paper-authors">
+              Michael D. Adams, Eric Griffis, Thomas J. Porter, Sundara Vishnu Satish, Eric Zhao, <span
+                class="me-author">Cyrus Omar</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
         <h2><a href="https://hazel.org/">ChatLSP</a>: Semantically Contextualizing AI Programming Assistants</h2>
         <p>We are integrating modern language implementations (i.e. language servers) with modern AI coding assistants.
           We are finding dramatic performance improvements when AI models are properly contextualized by programming
           language
           semantics (e.g. types, live run-time information, and structured/destructured task contexts)!</p>
         <p>
-        <div class="paper">
-          <div class="paper-venue">Preprint<br /><span class="venue-note">Under Review</span></div>
-          <div class="paper-details">
-            <div class="paper-title-line">
-              <a class="major-paper" href="http://arxiv.org/abs/2506.15873">DeckFlow: Iterative
-                Specification on a Multimodal Generative Canvas</a>
-            </div>
-            <div class="paper-authors">
-              Gregory Croisdale, Emily Huang, John Joon Young Chung, Anhong Guo, Xu Wang, Austin Z. Henley, <span
-                class="me-author">Cyrus Omar</span>
-            </div>
-          </div>
-        </div>
         <div class="paper">
           <div class="paper-venue">OOPSLA 2024</div>
           <div class="paper-details">
@@ -809,7 +812,7 @@
           development.</p>
         <p>
         <div class="paper">
-          <div class="paper-venue">Preprint<br /><span class="venue-note">Under Review</span></div>
+          <div class="paper-venue">VL/HCC 2025</div>
           <div class="paper-details">
             <div class="paper-title-line">
               <a class="major-paper" href="https://arxiv.org/abs/2506.10781">Hazel Deriver: A Live Editor for
@@ -859,6 +862,30 @@
         </div>
         </p>
       </div>
+      <div class="card">
+        <h2><a href="https://deckflow.org/">DeckFlow</a>: An infinite canvas for multimodal generative AI</h2>
+        <p>Generative AI holds incredible promise, but simple text-based prompting provides limited control and
+          compositionality. DeckFlow introduces a more power dataflow programming based model for prompting generative
+          AI.
+        </p>
+        <p>
+        <div class="paper">
+          <div class="paper-venue">VL/HCC 2025</div>
+          <div class="paper-details">
+            <div class="paper-title-line">
+              <a class="major-paper" href="./deckflow-vlhcc25.pdf">DeckFlow: Specification Decomposition on a
+                Multimodal Generative Canvas</a>
+            </div>
+            <div class="paper-authors">
+              Gregory Croisdale, Emily Huang, John Joon Young Chung, Anhong Guo, Xu Wang, Austin Z. Henley, <span
+                class="me-author">Cyrus Omar</span>
+            </div>
+            <div class="paper-authors"> [<a href="http://arxiv.org/abs/2506.15873">extended version</a>]</div>
+          </div>
+        </div>
+        </p>
+      </div>
+
       <div class="card" id="hazelnut-live">
         <h2><a href="https://fplab.github.io/rustviz-tutorial/">RustViz</a>: Interactively Visualizing Ownership and
           Borrowing
@@ -959,7 +986,6 @@
                       </li>
                       <li><a href="http://www.cs.cmu.edu/~iev/resources/obt17-slides.pdf">Annotated slides</a></li>-->
       </div>
-
 
       <div class="project-separator">Previous Projects &amp; Publications</div>
       <div class="card" id="hazelnut-live">
