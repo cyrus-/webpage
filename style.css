@@ -259,6 +259,14 @@ h4 {
   color: #444;
 }
 
+.paper-note {
+  margin-top: 4px;
+}
+
+.paper-note a {
+  color: #005380;
+}
+
 .me-author {
   text-decoration: underline;
 }
