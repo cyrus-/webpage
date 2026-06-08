@@ -1,0 +1,115 @@
+body {
+  background: #03045e;
+}
+
+.main-area {
+  max-width: 1200px;
+}
+
+.header {
+  background: linear-gradient( rgba(0, 245, 212, 0.35), rgba(3, 4, 94, 0.95) ), #03045e
+}
+
+.card {
+  background: ghostwhite;
+  box-shadow: 0px 0px !important;
+}
+
+.card > .info-table-label {
+  color: #444;
+}
+
+.bio-card {
+  background: linear-gradient( #0891b2, #7b2ff7 );
+  box-shadow: 0px 0px !important;
+}
+
+.bio-card a {
+  font-weight: bold;
+}
+
+.bio-card a:hover {
+  color: yellow;
+}
+
+.info-table-label {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 90%;
+}
+
+.info-table-value {
+}
+
+.info-table {
+  display: grid;
+  grid-row-gap: 10px;
+}
+
+.main-area {
+  padding-top:0px;
+}
+
+.two-columns {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+  list-style-position: inside;
+  list-style-type: square;
+}
+
+.schedule-table {
+  width: 100%;
+  border: 1px solid black;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.schedule-table td {
+  border: 1px solid black;
+  padding: 10px;
+  vertical-align: top;
+}
+
+.schedule-table td:first-child {
+  font-weight: bold;
+  min-width: 125px;
+}
+
+.presentation-title {
+  font-weight: bold;
+}
+
+.presentation-notes {
+  margin-top: 8px;
+}
+
+.no-class {
+  background-color: #ffa39d;
+}
+
+.deadline {
+  background-color: orange;
+}
+
+.additional-reading h5 {
+  margin-bottom: 5px;
+  margin-top: 5px;
+  font-family: Arial, sans-serif;
+  font-size: 10pt;
+}
+
+/* Divider between consecutive presentations within a single schedule cell */
+.presentation + .presentation {
+  border-top: 1px solid #c9c9c9;
+  margin-top: 14px;
+  padding-top: 14px;
+}
+
+/* Blue links on the content (white) cards; sidebar bio-card links are unaffected */
+.right-col a {
+  color: #1e3a8a;
+}
+.right-col a:hover {
+  color: #102a6b;
+}

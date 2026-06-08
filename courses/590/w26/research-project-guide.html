@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<!-- See github.com/cyrus-/webpage for source code; feel free to adapt to your needs -->
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-122958892-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-122958892-2');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400,700" rel="stylesheet">
+  <link href="../../../style.css" rel="stylesheet" type="text/css">
+  <link href="./local-style.css" rel="stylesheet" type="text/css">
+
+  <meta name="description" content="Research Project Guide for CSE 590 Advanced Programming Languages (Winter 2026, University of Michigan): proposal, annotated bibliography, in-class presentation, and implementation.">
+  <title>Research Project Guide &mdash; Advanced Programming Languages (CSE 590, Winter 2026)</title>
+</head>
+
+<body>
+  <div class="header">
+    <div class="supertitle"><a href="./index.html">CSE 590</a>&nbsp;&middot;&nbsp;Winter 2026&nbsp;&middot;&nbsp;University of Michigan</div>
+    <h1>Research Project Guide</h1>
+  </div>
+  <div class="main-area">
+    <div class="right-col">
+      <div class="card">
+        <p><a href="./index.html">&larr; Course home</a></p>
+
+        <h2>Overview</h2>
+        <p>The CSE 590 Research Project will ask you (either alone or with one partner) to:</p>
+        <ol>
+          <li>thoroughly research a topic about which there has been substantial prior academic research in programming languages and related fields</li>
+          <li>present the findings of your research in both written form (as a narrativized annotated bibliography) and orally (as an in-class presentation)</li>
+          <li>assist your classmates with their presentations</li>
+          <li>implement a technique from one of the papers you read, or explore a well-informed new idea of your own design, and present the results of this effort in the form of a written report</li>
+        </ol>
+
+        <h2>Project Structure and Grading</h2>
+        <p>The research project consists of the following components, with the due dates given below:</p>
+        <table class="schedule-table">
+          <tr><td><strong>Component</strong></td><td><strong>Percentage of Grade</strong></td><td><strong>Due Date</strong></td></tr>
+          <tr><td>Project Proposal</td><td>5%</td><td>W 18 Mar</td></tr>
+          <tr><td>Annotated Bibliography &mdash; Draft + Updated Implementation Proposal</td><td>10%</td><td>M 30 Mar (Later Presenters) or F 3 Apr (First Week Presenters)</td></tr>
+          <tr><td>Annotated Bibliography &mdash; Final + Updated Implementation Proposal</td><td>30%</td><td>F 17 Apr</td></tr>
+          <tr><td>In-Class Presentation</td><td>25%</td><td>To be scheduled between M 30 Mar &ndash; W 15 Apr</td></tr>
+          <tr><td>Presentation Partner Feedback</td><td>5%</td><td>No later than 24 hours before partner presentation</td></tr>
+          <tr><td>Implementation Report</td><td>25%</td><td>F 30 Apr</td></tr>
+        </table>
+
+        <h2>Project Proposal</h2>
+        <p>The first order of business is for you to submit a project proposal.</p>
+        <h3>Components of the Project Proposal</h3>
+        <ol>
+          <li>Your project team (if you choose to form a team of two, you only need to submit one proposal)</li>
+          <li>Your selected topic (brief title)</li>
+          <li>An initial set of four major papers (up to one of which can be a survey paper) related to the topic</li>
+          <li>A one-paragraph description of the topic</li>
+          <li>Indicate whether you are interested in doing your presentation in the first week that presentations are scheduled. <strong>Important</strong>: In exchange for your bravery, you will have an extra 5 days to submit the first draft of your annotated bibliography. Note that if not enough teams volunteer, you may be scheduled in the first week against your preference.</li>
+          <li>An initial description of what you plan to do for the implementation portion of the project. Since you may not have read deeply yet, we expect this will be revised, perhaps substantially, over the coming month.</li>
+        </ol>
+        <p><strong>We <u>strongly</u> suggest you speak to Cyrus or Thomas in office hours or with a Piazza post ahead of submitting your proposal.</strong></p>
+        <p>You can do the project on your own or work together with one partner.</p>
+        <h3>Partners</h3>
+        <p>If you are looking for a partner, we will post a thread on Piazza where you can comment with a set of topics you may be interested in.</p>
+        <p>Note that <strong>two-person teams will be asked to cover a larger number of papers in the annotated bibliography and the in-class presentation will be double in length (approx. 50 minutes rather than 25 minutes)</strong>, with both partners expected to present approximately half of the time.</p>
+        <h3>Suggested Topics</h3>
+        <p>Here is an incomplete list of potential research project topics to consider. Feel free to ask questions on Piazza about any of these topics in advance of making your selection.</p>
+        <ul>
+          <li>Gradual Typing (type systems that allow you to leave certain types unspecified, e.g. in TypeScript and mypy &mdash; there is a rich theory here)</li>
+          <li>Compiler Verification (systems like CompCert, CakeML, and others)</li>
+          <li>Complex System Verification (there is a body of work in verifying operating system components, network protocols, and other complex software systems)</li>
+          <li>Separation Logic (an extension of Hoare Logic, covered in class, for verifying the correctness of sophisticated heap-manipulating programs, e.g. those written in C or Rust)</li>
+          <li>Abstract Interpretation (a powerful abstraction that allows you to specify a wide variety of program analyses)</li>
+          <li>Session Typed Concurrency (type systems that encode concurrent and distributed message passing protocols, including cryptographic protocols and smart contracts)</li>
+          <li>Hardware Verification (there is a large body of work on verifying the correctness of hardware descriptions; see the work of Yatin Manerkar here at Michigan!)</li>
+          <li>Verified Numerical Methods (there is a large body of work on verifying the correctness of numerical methods, simulations involving differential equations, and applications; see the work of Jean-Baptiste Jeannin here at Michigan)</li>
+          <li>Incremental Computing / Program Derivatives (can we avoid recomputing from scratch when the input to a program only changes a little bit? this is connected to a generalized notion of derivatives!)</li>
+          <li>Program Synthesis (including AI-based methods)</li>
+          <li>Macro Systems / Metaprogramming (programs that generate programs, oh my!)</li>
+          <li>Type and Effect Systems (can we reason about the effects a function will have directly in the type system?)</li>
+          <li>Connections Between PL and Abstract Algebra / Category Theory (wide variety of topics here, but be careful &mdash; your work needs to be accessible to the other students in the class)</li>
+          <li>Live Programming (interleaving editing with execution to provide faster and better feedback; see the work of Cyrus Omar here at Michigan!)</li>
+          <li>Structure Editing and Non-Textual Notation (notation and editing can go well beyond text; see the work of Cyrus Omar here at Michigan!)</li>
+          <li>Program Visualization</li>
+          <li>Debugging Tools (bugs? in my code??)</li>
+        </ul>
+
+        <h2>Annotated Bibliography</h2>
+        <p>The next deliverable once your project proposal has been submitted is an annotated bibliography surveying at least <em>n</em> papers in your field (no more than one of which can be a survey paper), where <em>n = 6</em> if you are doing your project solo and <em>n = 8</em> if you are in a pair.</p>
+        <p>Try to find the consensus most important papers in the field (e.g. by looking up citation counts on Google Scholar), rather than more technical papers. This should include identifying the earliest work in the area, or the paper that introduced the problem (even if its solution is not state-of-the-art anymore). Try to look for papers that cover both the theoretical and practical sides of the problem.</p>
+        <p>The annotated bibliography should consist of a:</p>
+        <ol>
+          <li>2-page narrative that:
+            <ol>
+              <li>Introduces the problem space and motivates its importance</li>
+              <li>Summarizes the most important results or systems and how they influenced one another, roughly in the order that the works were published.</li>
+              <li>Concludes with a summary of open research questions in the field.</li>
+            </ol>
+          </li>
+          <li>An annotated References section that includes, for at least your <em>n</em> papers, a more detailed description of that paper consisting of:
+            <ol>
+              <li>A description of the specific problem that the paper confronts</li>
+              <li>A description of the paper's solution to that problem</li>
+              <li>A description of how the paper evaluates their solution (e.g. paper / mechanized proofs of &lt;summarize the main theorems&gt;, performance measurements of &lt;state the metrics&gt;, human evaluation of &lt;summarize the research questions&gt;, case studies &lt;summarize them&gt;, etc.)</li>
+              <li>A couple sentences on limitations and future work.</li>
+            </ol>
+          </li>
+        </ol>
+        <p>You may want to use the following LaTeX template: <a href="https://www.overleaf.com/latex/templates/annotated-bibliography-template/zycfqzgqyzgk">https://www.overleaf.com/latex/templates/annotated-bibliography-template/zycfqzgqyzgk</a></p>
+        <h3>Drafts and Final Versions</h3>
+        <p>You will receive feedback from the course staff about your first draft. Based on that feedback, and the discussion generated by your in-class presentation, you should update your initial draft into a polished final draft.</p>
+        <h3>Public Dissemination</h3>
+        <p>Annotated bibliographies like these can be useful to others investigating a topic, so we will <u>publicize</u> the final annotated bibliographies produced by everyone in the course on the course webpage (you can opt out if you prefer not to share it publicly, just email Prof. Omar).</p>
+
+        <h2>In-Class Presentation</h2>
+        <p>Next, you will be scheduled to give an in-class presentation introducing the topic to the other students in the course.</p>
+        <h3>Presentation Guidelines</h3>
+        <p>Your presentation should be structured like your annotated bibliography:</p>
+        <ol>
+          <li>Introduce the problem space and motivate its importance</li>
+          <li>Cover each of the <em>n</em> papers from your annotated bibliography for at least a few minutes each, summarizing each of the points your annotated bibliography needs to cover.</li>
+          <li><em>m</em> of the papers of your choice (not the survey paper) should be covered a little bit more in depth, around 8&ndash;10 minutes of your presentation each, where <em>m = 1</em> if you are solo and <em>m = 2</em> if you are a pair. Pull out figures or key details from the paper and help us understand it.</li>
+          <li>Conclude with a summary of open research questions in the field.</li>
+        </ol>
+        <h3>Presentation Length</h3>
+        <p>If you are doing the project solo, your presentation should be <strong>25 minutes</strong> long, including pauses for questions.</p>
+        <p>If you are doing the project as a pair, your presentation should be <strong>50 minutes</strong> long, with each member of the pair presenting for about 25 minutes each.</p>
+        <p><strong>The instructors will enforce the length limit strictly to ensure everyone can finish their presentation during the lecture slot.</strong></p>
+        <h3>Presentation Grading</h3>
+        <p>Presentations will be graded against the following rubric:</p>
+        <ol>
+          <li>The introduction summarizes the problem at a high level before getting into details.</li>
+          <li>The introduction motivates the importance of the problem.</li>
+          <li>The presentation covers the correct number of papers for an appropriate length of time.</li>
+          <li>For each paper, the presentation covers:
+            <ol>
+              <li>The specific problem being addressed</li>
+              <li>The paper's solution to the problem</li>
+              <li>The paper's evaluation of their solution, in detail</li>
+              <li>Limitations / future work</li>
+            </ol>
+          </li>
+          <li>There are logical transitions between papers</li>
+          <li>Technical terms not otherwise covered in 590 are introduced before they are used</li>
+          <li>For the <em>m</em> papers covered in greater depth, the discussion is of the appropriate length and is supported by specific details taken from the paper (screenshots, figures, tables, etc.)</li>
+          <li>The conclusion summarizes key ideas from the presentation</li>
+          <li>The conclusion includes a discussion of open problems in the area</li>
+          <li>Each presenter came prepared</li>
+          <li>Each presenter spoke clearly and loudly enough to be heard</li>
+          <li>Each presenter asked for clarifications when a comment or question is unclear</li>
+          <li>Each presenter managed time effectively</li>
+        </ol>
+        <p>Each presenter will receive an individual grade for their component of the presentation, with the introduction being shared between both.</p>
+        <h3>Presentation Partner Feedback</h3>
+        <p>Each project team will be paired with another team, whose job is to attend a practice talk at least 24 hours before the lecture in which the presentation is being given and provide both written and oral feedback.</p>
+        <ul>
+          <li>If the presenting team fails to meet with the feedback team at least 24 hours in advance, they will receive a zero on this component of the project.</li>
+          <li>In order to satisfy this requirement, each member of the feedback team should <u>separately</u> email the presenting team written feedback within 30 minutes of the end of the presentation and cc Prof. Omar on the email (<a href="mailto:comar@umich.edu">comar@umich.edu</a>).</li>
+        </ul>
+
+        <h2>Implementation</h2>
+        <p>The final component of the research project is an implementation related to the topic of your project. We expect this to take about the same amount of time as 3 weeks of homework + final exam preparation in the course (so about 20&ndash;24 hours of work). This can consist of:</p>
+        <ul>
+          <li>A reproduction of a key component in one of the papers you read</li>
+          <li>A mechanization of a proof in one of the papers you read (or a substantial effort toward this, identifying the critically difficult portions and what attempts you made)</li>
+          <li>A reasonably scoped extension of one of the papers you read, or a new idea in the area that you want to initially explore</li>
+        </ul>
+        <p>Feel free to discuss your project with Cyrus or Thomas ahead of time.</p>
+        <h3>Updated Implementation Proposals</h3>
+        <p>As you read more papers, your idea about what to implement may evolve or change entirely. For this reason, you will submit an initial implementation proposal with your project proposal, but then submit an updated project proposal with the initial draft and final draft of your annotated bibliography. We expect the ideas here to evolve substantially as we proceed through the semester.</p>
+        <h3>Implementation Report</h3>
+        <p>The final deliverable is a 3&ndash;4 page (excluding references) project report. It should include the following sections, typical of a workshop paper:</p>
+        <ol>
+          <li>Header
+            <ol>
+              <li>Title</li>
+              <li>Authorship + Affiliation (Name, University of Michigan, CSE 590)</li>
+              <li>Date</li>
+            </ol>
+          </li>
+          <li>Introduction
+            <ol>
+              <li>Introduce the big picture problem that you are working on</li>
+              <li>Introduce the specific problem that you are working on within that big picture, describing what is challenging</li>
+              <li>Summarize your solution approach</li>
+              <li>Summarize your evaluation approach</li>
+            </ol>
+          </li>
+          <li>Background / Related Work
+            <ul>
+              <li>Give a brief overview of prior work in the big picture problem described in the introduction (1 paragraph)</li>
+              <li>Describe the most closely related prior work on (or close to) the specific problem that you are solving (1&ndash;2 paragraphs)</li>
+            </ul>
+          </li>
+          <li>Solution Approach
+            <ol>
+              <li>Detail your solution approach, starting from the overall architecture of your system and then detailing each component of your system</li>
+              <li>If your system has a number of components, you may want to include a system diagram (this is not required)</li>
+              <li>If your system has a user interface or syntax, you should include a screenshot with a detailed figure caption that can be read in isolation from the rest of the narrative in this section.</li>
+              <li>Link to the GitHub repository containing your code and evaluation</li>
+            </ol>
+          </li>
+          <li>Evaluation
+            <ol>
+              <li>You need to evaluate your solution in some way. This could include a case study, performance evaluation (on a standard benchmark or a benchmark you construct), small user evaluation, systematic qualitative evaluation, or other method (feel free to discuss with the instructors if you are unsure what you should do here).</li>
+              <li>Report the results of your evaluation in detail here. Note that it is okay if there is a negative result here, e.g. you attempted to speed up an analysis but it did not work.</li>
+            </ol>
+          </li>
+          <li>Discussion and Future Work
+            <ol>
+              <li>Summarize and discuss your project</li>
+              <li>Briefly summarize some potential future directions that you or someone else working on this problem might pursue.</li>
+            </ol>
+          </li>
+          <li>References (excluded from page limit)
+            <ul>
+              <li>Make sure that your references are reasonably formatted, e.g. the title is capitalized as the paper itself indicates, the authors are listed, there is a year of publication.</li>
+            </ul>
+          </li>
+        </ol>
+        <p>(If you think you came up with an interesting result, feel free to discuss with Prof. Omar about potential future directions for the work, e.g. further work in preparation for a publication!)</p>
+        <h3>Implementation Grading</h3>
+        <p>The implementation will be graded based on whether reasonable technical approaches were taken at each step and whether it is clear that 20&ndash;24 hours of work went into the project. Substantially low-effort implementations will be docked points. In addition, you will be assessed on the quality of the writing in your implementation report, according to the outline above.</p>
+
+        <p><a href="./index.html">&larr; Course home</a></p>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

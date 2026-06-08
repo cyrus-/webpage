@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<!-- See github.com/cyrus-/webpage for source code; feel free to adapt to your needs -->
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-122958892-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-122958892-2');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400,700" rel="stylesheet">
+  <link href="../../../style.css" rel="stylesheet" type="text/css">
+  <link href="./local-style.css" rel="stylesheet" type="text/css">
+
+  <meta name="description" content="EECS/CSE 590 Advanced Programming Languages (Winter 2026, University of Michigan): schedule, syllabus, research project guide, and student presentation slides and annotated bibliographies on topics in programming languages and theorem proving.">
+  <title>Advanced Programming Languages (CSE 590, Winter 2026)</title>
+</head>
+
+<body>
+  <div class="header">
+    <div class="supertitle">CSE 590&nbsp;&middot;&nbsp;Winter 2026&nbsp;&middot;&nbsp;University of Michigan</div>
+    <h1>
+      Advanced Programming Languages
+    </h1>
+  </div>
+  <div class="main-area">
+    <div class="left-col">
+      <div class="card bio-card">
+        <div class="info-table">
+          <div class="info-table-row">
+            <div class="info-table-label">Instructor</div>
+            <div class="info-table-value">
+              <a href="https://web.eecs.umich.edu/~comar">Cyrus Omar</a>
+              (<a href="mailto:comar@umich.edu">comar@umich.edu</a>)
+            </div>
+          </div>
+          <div class="info-table-row">
+            <div class="info-table-label">GSI</div>
+            <div class="info-table-value">
+              <a href="https://thomasporter522.github.io/">Thomas Porter</a>
+              (<a href="mailto:thomasjp@umich.edu">thomasjp@umich.edu</a>)
+            </div>
+          </div>
+          <div class="info-table-row">
+            <div class="info-table-label">Grader</div>
+            <div class="info-table-value">
+              Yuganshi Agrawal (<a href="mailto:yuganshi@umich.edu">yuganshi@umich.edu</a>)
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card bio-card">
+        <div class="info-table">
+          <div class="info-table-row">
+            <div class="info-table-label">Lecture</div>
+            <div class="info-table-value">
+              Mondays &amp; Wednesdays<br />
+              1:30&ndash;3:00pm &middot; FXB 1008
+            </div>
+          </div>
+          <div class="info-table-row">
+            <div class="info-table-label">Credits</div>
+            <div class="info-table-value">4</div>
+          </div>
+        </div>
+      </div>
+      <div class="card bio-card">
+        <div class="info-table">
+          <div class="info-table-row">
+            <div class="info-table-label">Office Hours</div>
+            <div class="info-table-value">
+              <a href="https://eecsoh.eecs.umich.edu/queues/39ze3BAI7f0rpDiq1tFzW5GLPqK">Office Hours Queue</a>
+              <ul>
+                <li>Cyrus Omar &mdash; Tue 6&ndash;7pm, 4624 BBB or virtual</li>
+                <li>Thomas Porter &mdash; Thu 11:30am&ndash;12:30pm, BBB Atrium (Tishman Hall) or virtual</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card bio-card">
+        <div class="info-table">
+          <div class="info-table-row">
+            <div class="info-table-label">Course Resources</div>
+            <div class="info-table-value">
+              <ul>
+                <li><a href="./syllabus.html">Syllabus</a></li>
+                <li><a href="./research-project-guide.html">Research Project Guide</a></li>
+                <li><a href="https://eecsoh.eecs.umich.edu/queues/39ze3BAI7f0rpDiq1tFzW5GLPqK">Office Hours Queue</a></li>
+                <li><a href="https://piazza.com/umich/winter2026/cse590">Piazza</a></li>
+                <li><a href="https://umich.instructure.com/courses/818176">Canvas</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="right-col">
+      <div class="card">
+        <div class="info-table-label">Overview</div>
+        <div>
+          <p>Programming languages and proof assistants are rich mathematical structures <em>and</em> powerful user interfaces. This course covers the design and use of advanced programming languages and proof assistants. We will build up systematically from mathematical first principles while considering human factors in language design, language prototyping, and techniques for reasoning about program behavior throughout the course.</p>
+          <p>The goals of the course are:</p>
+          <ol>
+            <li>To change the way you think about programming and programming language design in ways that will remain relevant across the many technology hype cycles that you will encounter over the course of your careers.</li>
+            <li>To provide you with an introduction to contemporary tools and research results in the field of programming languages and theorem proving.</li>
+          </ol>
+          <p>See the <a href="./syllabus.html">Syllabus</a> for full details and policies, and the <a href="./research-project-guide.html">Research Project Guide</a> for the project.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="info-table-label">Course Structure</div>
+        <table class="schedule-table">
+          <tr><td>Assignments</td><td>25%</td></tr>
+          <tr><td>Mid-Semester Exam</td><td>25%</td></tr>
+          <tr><td>Course Project</td><td>40%</td></tr>
+          <tr><td>Attendance &amp; Participation</td><td>10%</td></tr>
+        </table>
+        <p>The semester concludes with a research project: a narrativized <strong>annotated bibliography</strong> and an in-class <strong>presentation</strong> on a topic in programming languages, plus an <strong>implementation</strong>. The student annotated bibliographies and slides are published below.</p>
+      </div>
+      <div class="card">
+        <div class="info-table-label">Schedule</div>
+        <table class="schedule-table">
+          <tr>
+            <td>W 7 Jan</td>
+            <td><div class="presentation-title">Course Introduction</div></td>
+          </tr>
+          <tr>
+            <td>M 12 Jan</td>
+            <td><div class="presentation-title">Syntax</div></td>
+          </tr>
+          <tr>
+            <td>W 14 Jan</td>
+            <td><div class="presentation-title">Semantics</div></td>
+          </tr>
+          <tr class="no-class">
+            <td>M 19 Jan</td>
+            <td><div class="presentation-title">No class &mdash; MLK Day Holiday</div></td>
+          </tr>
+          <tr>
+            <td>W 21 Jan</td>
+            <td><div class="presentation-title">Types</div></td>
+          </tr>
+          <tr>
+            <td>M 26 Jan</td>
+            <td><div class="presentation-title">Inductive Reasoning</div></td>
+          </tr>
+          <tr class="deadline">
+            <td>M 26 Jan</td>
+            <td><div class="presentation-title">A1 Released</div></td>
+          </tr>
+          <tr>
+            <td>W 28 Jan</td>
+            <td><div class="presentation-title">Sums and Recursion, Formally</div></td>
+          </tr>
+          <tr>
+            <td>M 2 Feb</td>
+            <td><div class="presentation-title">Constructive Logic</div></td>
+          </tr>
+          <tr>
+            <td>W 4 Feb</td>
+            <td><div class="presentation-title">Propositions as Types, Universal Types</div></td>
+          </tr>
+          <tr class="deadline">
+            <td>Th 5 Feb</td>
+            <td><div class="presentation-title">A1 Due</div></td>
+          </tr>
+          <tr class="deadline">
+            <td>F 6 Feb</td>
+            <td><div class="presentation-title">A2 Released</div></td>
+          </tr>
+          <tr>
+            <td>M 9 Feb</td>
+            <td><div class="presentation-title">Existential Types, Higher Kinds</div></td>
+          </tr>
+          <tr>
+            <td>W 11 Feb</td>
+            <td><div class="presentation-title">Dependent Types I</div></td>
+          </tr>
+          <tr>
+            <td>M 16 Feb</td>
+            <td><div class="presentation-title">Dependent Types II</div></td>
+          </tr>
+          <tr class="deadline">
+            <td>M 16 Feb</td>
+            <td><div class="presentation-title">A2 Due</div></td>
+          </tr>
+          <tr>
+            <td>W 18 Feb</td>
+            <td><div class="presentation-title">Dependent Types III</div></td>
+          </tr>
+          <tr class="deadline">
+            <td>W 18 Feb</td>
+            <td><div class="presentation-title">A3 Released</div></td>
+          </tr>
+          <tr>
+            <td>M 23 Feb</td>
+            <td><div class="presentation-title">Metatheory</div></td>
+          </tr>
+          <tr>
+            <td>W 25 Feb</td>
+            <td><div class="presentation-title">Imperative Programming</div></td>
+          </tr>
+          <tr class="deadline">
+            <td>W 25 Feb</td>
+            <td><div class="presentation-title">A3 Due &middot; A4 Released &middot; Project Guide Released</div></td>
+          </tr>
+          <tr class="no-class">
+            <td>Sa 28 Feb &ndash; Su 8 Mar</td>
+            <td><div class="presentation-title">No class &mdash; Spring Break</div></td>
+          </tr>
+          <tr>
+            <td>M 9 Mar</td>
+            <td><div class="presentation-title">Imperative Program Analysis</div></td>
+          </tr>
+          <tr class="deadline">
+            <td>M 9 Mar</td>
+            <td><div class="presentation-title">A4 Due</div></td>
+          </tr>
+          <tr>
+            <td>W 11 Mar</td>
+            <td><div class="presentation-title">Exam</div></td>
+          </tr>
+          <tr>
+            <td>M 16 Mar</td>
+            <td><div class="presentation-title">Memory Management and Ownership</div></td>
+          </tr>
+          <tr class="deadline">
+            <td>M 16 Mar</td>
+            <td><div class="presentation-title">A5 Released</div></td>
+          </tr>
+          <tr>
+            <td>W 18 Mar</td>
+            <td><div class="presentation-title">Borrowing in Rust</div></td>
+          </tr>
+          <tr class="deadline">
+            <td>Th 19 Mar</td>
+            <td><div class="presentation-title">Project Proposals Due</div></td>
+          </tr>
+          <tr class="no-class">
+            <td>M 23 Mar</td>
+            <td><div class="presentation-title">No class &mdash; read papers!</div></td>
+          </tr>
+          <tr class="deadline">
+            <td>T 24 Mar</td>
+            <td><div class="presentation-title">A5 Due</div></td>
+          </tr>
+          <tr class="no-class">
+            <td>W 25 Mar</td>
+            <td><div class="presentation-title">No class &mdash; read papers!</div></td>
+          </tr>
+
+          <tr>
+            <td>M 30 Mar</td>
+            <td>
+              <div class="presentation">
+                <div class="presentation-title"><a href="bibliographies/gradual-typing-annotated-bibliography.pdf">Gradual Typing</a></div>
+                <div class="presenter">Presenter: Kei Rockwell &middot; Partner: Jania Vandevoorde</div>
+                <div class="presentation-notes">
+                  Reading: <a href="http://scheme2006.cs.uchicago.edu/13-siek.pdf">Gradual Typing for Functional Languages</a> (Siek and Taha)
+                  <div class="materials"><a href="slides/gradual-typing-slides.pdf">slides</a> &middot; <a href="bibliographies/gradual-typing-annotated-bibliography.pdf">annotated bibliography</a></div>
+                </div>
+              </div>
+              <div class="presentation">
+                <div class="presentation-title"><a href="bibliographies/garbage-collection-annotated-bibliography.pdf">Garbage Collection Algorithms</a></div>
+                <div class="presenter">Presenter: Sam Hiken &middot; Partner: Yi Wang</div>
+                <div class="presentation-notes">
+                  Reading: <a href="https://www.cs.cmu.edu/~fp/courses/15411-f08/misc/wilson94-gc.pdf">Uniprocessor Garbage Collection Techniques</a> (Wilson, Sections 1 and 2)
+                  <div class="materials"><a href="slides/garbage-collection-slides.pdf">slides</a> (<a href="slides/garbage-collection-slides.key">Keynote source</a>) &middot; <a href="bibliographies/garbage-collection-annotated-bibliography.pdf">annotated bibliography</a></div>
+                </div>
+              </div>
+              <div class="presentation">
+                <div class="presentation-title"><a href="bibliographies/ai-assisted-verification-annotated-bibliography.pdf">AI-Assisted Verification with Interactive Synthesis</a></div>
+                <div class="presenter">Presenter: Rafe Symonds &middot; Partner: Vanshika Singla</div>
+                <div class="presentation-notes">
+                  Reading: <a href="https://www.microsoft.com/en-us/research/wp-content/uploads/2008/12/dafny_krml203.pdf">Dafny: An Automatic Program Verifier for Functional Correctness</a> (Leino)
+                  <div class="materials"><a href="slides/ai-assisted-verification-slides.pdf">slides</a> &middot; <a href="bibliographies/ai-assisted-verification-annotated-bibliography.pdf">annotated bibliography</a></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr class="deadline">
+            <td>M 30 Mar</td>
+            <td><div class="presentation-title">Annotated Bibliography Drafts due (for presentations scheduled on or after 6 Apr)</div></td>
+          </tr>
+
+          <tr>
+            <td>W 1 Apr</td>
+            <td>
+              <div class="presentation">
+                <div class="presentation-title"><a href="bibliographies/compiler-verification-annotated-bibliography.pdf">Compiler Verification</a></div>
+                <div class="presenter">Presenter: Amirali Ebrahimzadeh &middot; Partner: Conner Rose</div>
+                <div class="presentation-notes">
+                  Reading: <a href="https://www-formal.stanford.edu/jmc/mcpain.pdf">Correctness of a Compiler for Arithmetic Expressions</a> (McCarthy and Painter)
+                  <div class="materials"><a href="slides/compiler-verification-slides.pdf">slides</a> &middot; <a href="bibliographies/compiler-verification-annotated-bibliography.pdf">annotated bibliography</a></div>
+                </div>
+              </div>
+              <div class="presentation">
+                <div class="presentation-title"><a href="bibliographies/compiler-verification-ii-annotated-bibliography.pdf">Compiler Verification II</a></div>
+                <div class="presenter">Presenter: Scott Brinley &middot; Partner: Ruijie Gao</div>
+                <div class="presentation-notes">
+                  Reading: <a href="https://dl.acm.org/doi/pdf/10.1145/1538788.1538814">Formal Verification of a Realistic Compiler</a> (Leroy)
+                  <div class="materials"><a href="slides/compiler-verification-ii-slides.pdf">slides</a> &middot; <a href="bibliographies/compiler-verification-ii-annotated-bibliography.pdf">annotated bibliography</a></div>
+                </div>
+              </div>
+              <div class="presentation">
+                <div class="presentation-title"><a href="bibliographies/abstract-interpretation-annotated-bibliography.pdf">Abstract Interpretation for Program Analysis</a></div>
+                <div class="presenter">Presenter: Andre Osores &middot; Partner: Lani Quach</div>
+                <div class="presentation-notes">
+                  Reading: <a href="https://dl.acm.org/doi/pdf/10.1145/567752.567778">Systematic Design of Program Analysis Frameworks</a> (Cousot and Cousot)
+                  <div class="materials"><a href="slides/abstract-interpretation-slides.pdf">slides</a> &middot; <a href="bibliographies/abstract-interpretation-annotated-bibliography.pdf">annotated bibliography</a></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr class="deadline">
+            <td>F 3 Apr</td>
+            <td><div class="presentation-title">Annotated Bibliography Drafts due (for first-week presentations)</div></td>
+          </tr>
+
+          <tr>
+            <td>M 6 Apr</td>
+            <td>
+              <div class="presentation">
+                <div class="presentation-title"><a href="bibliographies/separation-logic-annotated-bibliography.pdf">Separation Logic</a></div>
+                <div class="presenter">Presenter: Lani Quach &middot; Partner: Andre Osores</div>
+                <div class="presentation-notes">
+                  Reading: <a href="https://www.cs.cmu.edu/~jcr/seplogic.pdf">Separation Logic: A Logic for Shared Mutable Data Structures</a> (Reynolds)
+                  <div class="materials"><a href="slides/separation-logic-slides.pdf">slides</a> &middot; <a href="bibliographies/separation-logic-annotated-bibliography.pdf">annotated bibliography</a></div>
+                </div>
+              </div>
+              <div class="presentation">
+                <div class="presentation-title"><a href="bibliographies/dataflow-analysis-annotated-bibliography.pdf">Dataflow Analysis on Control Flow Graphs</a></div>
+                <div class="presenter">Presenter: Yi Wang &middot; Partner: Sam Hiken</div>
+                <div class="presentation-notes">
+                  Reading: <a href="https://dl.acm.org/doi/pdf/10.1145/512927.512945">A Unified Approach to Global Program Optimization</a> (Kildall)
+                  <div class="materials"><a href="slides/dataflow-analysis-slides.pdf">slides</a> &middot; <a href="bibliographies/dataflow-analysis-annotated-bibliography.pdf">annotated bibliography</a></div>
+                </div>
+              </div>
+              <div class="presentation">
+                <div class="presentation-title"><a href="bibliographies/information-flow-control-annotated-bibliography.pdf">Information Flow Control and Declassification</a></div>
+                <div class="presenter">Presenter: Logan Green &middot; Partner: Amirali Ebrahimzadeh</div>
+                <div class="presentation-notes">
+                  Reading: <a href="https://dl.acm.org/doi/pdf/10.1145/360051.360056">A Lattice Model of Secure Information Flow</a> (Denning)
+                  <div class="materials"><a href="slides/information-flow-control-slides.pdf">slides</a> &middot; <a href="bibliographies/information-flow-control-annotated-bibliography.pdf">annotated bibliography</a></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>W 8 Apr</td>
+            <td>
+              <div class="presentation">
+                <div class="presentation-title"><a href="bibliographies/reflective-programming-annotated-bibliography.pdf">Reflective Programming: Origins, Methods, and Applications</a></div>
+                <div class="presenter">Presenter: Jania Vandevoorde &middot; Partner: Kei Rockwell</div>
+                <div class="presentation-notes">
+                  Reading: <a href="https://dl.acm.org/doi/pdf/10.1145/800017.800513">Reflection and Semantics in LISP</a> (Smith)
+                  <div class="materials"><a href="slides/reflective-programming-slides.pdf">slides</a> &middot; <a href="bibliographies/reflective-programming-annotated-bibliography.pdf">annotated bibliography</a></div>
+                </div>
+              </div>
+              <div class="presentation">
+                <div class="presentation-title"><a href="bibliographies/recursion-dependent-type-theory-annotated-bibliography.pdf">Recursion in Dependent Type Theory</a></div>
+                <div class="presenter">Presenter: Ivan Wei &middot; Partner: Tianyiming Jing</div>
+                <div class="presentation-notes">
+                  Reading: <a href="https://link.springer.com/article/10.1007/BF01941137">Terminating General Recursion</a> (Nordstr&ouml;m)
+                  <div class="materials"><a href="slides/recursion-dependent-type-theory-slides.pdf">slides</a> &middot; <a href="bibliographies/recursion-dependent-type-theory-annotated-bibliography.pdf">annotated bibliography</a></div>
+                </div>
+              </div>
+              <div class="presentation">
+                <div class="presentation-title"><a href="bibliographies/algebraic-structures-annotated-bibliography.pdf">Algebraic Structures in PL Theory</a></div>
+                <div class="presenter">Presenter: Conner Rose &middot; Partner: Jerry Zhu</div>
+                <div class="presentation-notes">
+                  Reading: <a href="https://dl.acm.org/doi/pdf/10.1145/143165.143169">The Essence of Functional Programming</a> (Wadler)
+                  <div class="materials"><a href="bibliographies/algebraic-structures-annotated-bibliography.pdf">annotated bibliography</a></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>M 13 Apr</td>
+            <td>
+              <div class="presentation">
+                <div class="presentation-title"><a href="bibliographies/neurosymbolic-program-synthesis-annotated-bibliography.pdf">Neurosymbolic Program Synthesis</a></div>
+                <div class="presenter">Presenter: Vanshika Singla &middot; Partner: Rafe Symonds</div>
+                <div class="presentation-notes">
+                  Reading: <a href="https://people.csail.mit.edu/asolar/papers/asplos06-final.pdf">Combinatorial Sketching for Finite Programs</a> (Solar-Lezama et al.)
+                  <div class="materials"><a href="slides/neurosymbolic-program-synthesis-slides.pdf">slides</a> (<a href="slides/neurosymbolic-program-synthesis-slides.pptx">PowerPoint source</a>) &middot; <a href="bibliographies/neurosymbolic-program-synthesis-annotated-bibliography.pdf">annotated bibliography</a></div>
+                </div>
+              </div>
+              <div class="presentation">
+                <div class="presentation-title"><a href="bibliographies/smt-invariant-synthesis-annotated-bibliography.pdf">SMT-Based Invariant Synthesis for Distributed Protocols</a></div>
+                <div class="presenter">Presenter: Jerry Y. Zhu &middot; Partner: Logan Green</div>
+                <div class="presentation-notes">
+                  Reading: <a href="https://madhu.cs.illinois.edu/CAV14ice.pdf">ICE: A Robust Framework for Learning Invariants</a> (Garg et al.)
+                  <div class="materials"><a href="bibliographies/smt-invariant-synthesis-annotated-bibliography.pdf">annotated bibliography</a></div>
+                </div>
+              </div>
+              <div class="presentation">
+                <div class="presentation-title"><a href="bibliographies/reactive-synthesis-hardware-annotated-bibliography.pdf">Reactive Synthesis for Hardware</a></div>
+                <div class="presenter">Presenter: Ruijie Gao &middot; Partner: Scott Brinley</div>
+                <div class="presentation-notes">
+                  Reading: <a href="https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1327669">Operation-Centric Hardware Description and Synthesis</a> (Hoe and Arvind)
+                  <div class="materials"><a href="slides/reactive-synthesis-hardware-slides.pdf">slides</a> &middot; <a href="bibliographies/reactive-synthesis-hardware-annotated-bibliography.pdf">annotated bibliography</a></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>W 15 Apr</td>
+            <td>
+              <div class="presentation">
+                <div class="presentation-title"><a href="bibliographies/low-code-programming-models-annotated-bibliography.pdf">Low-Code Programming Models</a></div>
+                <div class="presenter">Presenter: Tianyiming Jing &middot; Partner: Ivan Wei</div>
+                <div class="presentation-notes">
+                  Reading: <a href="https://cacm.acm.org/research/low-code-programming-models/">Low-Code Programming Models</a> (Hirzel)
+                  <div class="materials"><a href="slides/low-code-programming-models-slides.pdf">slides</a> &middot; <a href="bibliographies/low-code-programming-models-annotated-bibliography.pdf">annotated bibliography</a></div>
+                </div>
+              </div>
+              <div class="presentation">
+                <div class="presentation-title">Course Wrap-Up and Special Topics by Request</div>
+                <div class="presenter">Cyrus Omar</div>
+              </div>
+            </td>
+          </tr>
+          <tr class="deadline">
+            <td>M 20 Apr</td>
+            <td><div class="presentation-title">Annotated Bibliography Final Versions Due</div></td>
+          </tr>
+          <tr class="deadline">
+            <td>F 30 Apr</td>
+            <td><div class="presentation-title">Project Reports Due</div></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

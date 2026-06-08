@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<!-- See github.com/cyrus-/webpage for source code; feel free to adapt to your needs -->
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-122958892-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-122958892-2');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400,700" rel="stylesheet">
+  <link href="../../../style.css" rel="stylesheet" type="text/css">
+  <link href="./local-style.css" rel="stylesheet" type="text/css">
+
+  <meta name="description" content="Syllabus for CSE 590 Advanced Programming Languages (Winter 2026, University of Michigan).">
+  <title>Syllabus &mdash; Advanced Programming Languages (CSE 590, Winter 2026)</title>
+</head>
+
+<body>
+  <div class="header">
+    <div class="supertitle"><a href="./index.html">CSE 590</a>&nbsp;&middot;&nbsp;Winter 2026&nbsp;&middot;&nbsp;University of Michigan</div>
+    <h1>Syllabus</h1>
+  </div>
+  <div class="main-area">
+    <div class="right-col">
+      <div class="card">
+        <p><a href="./index.html">&larr; Course home</a></p>
+        <p>CSE 590 &middot; <strong>Advanced Programming Languages</strong> &middot; Winter 2026 &middot; 4 credits</p>
+
+        <h2>Overview</h2>
+        <p>Programming languages and proof assistants are rich mathematical structures <em>and</em> powerful user interfaces. This course covers the design and use of advanced programming languages and proof assistants. We will build up systematically from mathematical first principles while considering human factors in language design, language prototyping, and techniques for reasoning about program behavior throughout the course.</p>
+        <p>The goal of the course is:</p>
+        <ol>
+          <li>To change the way you think about programming and programming language design in ways that will remain relevant across the many technology hype cycles that you will encounter over the course of your careers.</li>
+          <li>To provide you with an introduction to contemporary tools and research results in the field of programming languages and theorem proving.</li>
+        </ol>
+
+        <h2>Prerequisites</h2>
+        <p>This course assumes substantial prior programming experience and experience with rigorous mathematical definitions and proofs. No prior courses in programming languages or compilers are required, but the course proceeds quickly and students familiar with the topics at an undergraduate level are likely to be at an advantage.</p>
+
+        <h2>Course Staff</h2>
+        <ul>
+          <li><strong>Instructor:</strong> <a href="https://web.eecs.umich.edu/~comar">Prof. Cyrus Omar</a> (<a href="mailto:comar@umich.edu">comar@umich.edu</a>)</li>
+          <li><strong>GSI:</strong> <a href="https://thomasporter522.github.io/">Thomas Porter</a> (<a href="mailto:thomasjp@umich.edu">thomasjp@umich.edu</a>)</li>
+          <li><strong>Grader:</strong> Yuganshi Agrawal (<a href="mailto:yuganshi@umich.edu">yuganshi@umich.edu</a>)</li>
+        </ul>
+
+        <h2>Lecture and Discussion</h2>
+        <ul>
+          <li><strong>Lecture:</strong> Mondays and Wednesdays &middot; 1:30&ndash;3:00pm &middot; FXB 1008</li>
+          <li><strong>Discussion:</strong> There will not be a formal discussion at the time scheduled by the registrar this semester.</li>
+        </ul>
+
+        <h2>Office Hours</h2>
+        <p>Office hours will be held regularly by the instructors and GSIs, with times and locations announced on Canvas on the course webpage.</p>
+        <p>If an office hours session needs to be rescheduled, an announcement will be made on Piazza. Please check Piazza regularly to be sure that the office hours you plan to attend is being held as scheduled.</p>
+        <p>The office hours queue is linked on the course webpage. All office hours will use the queue.</p>
+        <p>Some office hours will be hybrid or fully virtual, in which case instructions will be provided for remote participants on the queue. You are encouraged, but are not required, to turn your videocamera on. For help with mathematical questions you are working on on-paper, you may be asked to take a photo of your work and send it to the person helping you, or hold it up to the camera. For help with coding questions, you may be asked to share your screen or a specific window. You can share your screen at any time without asking for permission.</p>
+
+        <h2>Technology Requirements</h2>
+        <p>Assignments require that you use a Mac, Windows, or Linux PC with a standard keyboard, an up-to-date copy of Firefox, Chrome, or a Chromium-based browser, and a PDF reader. <strong>We cannot guarantee that an iPad or other tablet will be sufficient.</strong> CAEN computer labs have suitable PCs available if you do not have one of your own, or if your own computer does not have sufficient power to comfortably run some of the software that we use in the course (which can be CPU-intensive at times). You will also need access to a cameraphone, digital camera, or scanner to be able to take clear photos of handwritten assignment solutions OR a tablet with a stylus. Assignments are submitted online, and we do not accept physical submissions.</p>
+        <p>Virtual office hours require that your device and internet connection are capable of sustaining clear audio and screensharing. A video camera is not necessary. You are welcome to turn video on during office hours calls if you would like, but it is not required.</p>
+
+        <h2>Canvas</h2>
+        <p>Assignments and major announcements will be made via the course Canvas site. Students enrolled in the course will be added to the Canvas site automatically. Grades will only be posted on Canvas at the <strong>end of the semester</strong>.</p>
+
+        <h2>Webpage</h2>
+        <p>The course webpage is linked from the course Canvas under Announcements.</p>
+
+        <h2>Piazza</h2>
+        <p>We will be using Piazza to host a course forum, which can be found linked from the webpage and Canvas. You are required to read Piazza regularly: we will post announcements and assignment clarifications there. In addition, it will be a significant source of help and hints on the assignments and projects.</p>
+        <p><strong>We do not answer content questions via email.</strong> In order to save everyone time, we want all students to have the benefit of seeing each question and its answer, so please use Piazza. You can choose to hide your identity from other students (but not from instructors). Please search the forum before posting, to avoid questions that have already been asked and answered.</p>
+        <p>Do not post your own solutions, code, test cases, or output publicly to the forum. You may post questions that involve these things as a private question, which will be visible only to the staff. Otherwise, please favor public posts.</p>
+        <p>Please ask any questions you may have early. If you post them just before a deadline, we cannot guarantee that the course staff will be available to answer them in time, particularly outside normal working hours (9am&ndash;5pm M&ndash;F, excluding university holidays).</p>
+
+        <h2>Recording Policy</h2>
+        <p>Your participation in lectures, discussions and other recorded activities may be included in recordings. Recordings are intended for distribution only to students taking or auditing the course, and should not be distributed to others, whether or not they are within the university, without approval from the instructor.</p>
+        <p>Students are prohibited from recording/distributing any class activity themselves without written permission from the instructor or as necessary as part of approved accommodations for students with disabilities. Any approved recordings may only be used for the student's own private use.</p>
+
+        <h2>Readings</h2>
+        <p>For some of the lectures and discussions, we will post readings on the course webpage. Each reading is marked as either required or optional on the webpage.</p>
+        <p>There is no required textbook for the class. Instead, the assignment handouts include extensive expository material, and are required reading. However, the following textbooks may be useful for students who want an alternative presentation of the material, and optional readings from these books may be posted.</p>
+        <ul>
+          <li><strong>TAPL:</strong> Benjamin Pierce. Types and Programming Languages. The MIT Press, 2002.</li>
+          <li><strong>PFPL:</strong> Robert Harper. Practical Foundations for Programming Languages (2nd ed.). Cambridge University Press, 2016.</li>
+          <li><strong>RWO:</strong> Yaron Minsky, Anil Madhavapeddy, and Jason Hickey. Real World OCaml (2nd ed., in progress). Available online <a href="http://dev.realworldocaml.org/">here</a>.</li>
+          <li><strong>PLFA:</strong> Philip Wadler, Wen Kokke, and Jeremy G. Siek. Programming Language Foundations in Agda. Available online <a href="https://plfa.github.io/">here</a>.</li>
+          <li><strong>PDTT:</strong> Carlo Angiuli and Daniel Gratzer. Principles of Dependent Type Theory. Available online <a href="https://www.carloangiuli.com/papers/type-theory-book.pdf">here</a>.</li>
+        </ul>
+        <p>At least one copy of <a href="https://search.lib.umich.edu/catalog/record/012898963">TAPL</a> and <a href="https://search.lib.umich.edu/catalog/record/018254333">PFPL</a> are being held in course reserve at the Art, Architecture &amp; Engineering Library for the duration of the semester. These can be checked out for no more than 3 hours at a time. The library also has online versions available to download.</p>
+
+        <h2>Assignments</h2>
+        <p>Over the course of the semester, we will assign homework assignments periodically. The exact schedule will be announced in lecture and on Piazza. A rough calendar of assignment due dates are available on the webpage, but these are subject to small changes as the semester progresses. Assignments will involve coding, answering multiple choice questions, written short answer questions, and mathematical proofs. More details on the assignments will be posted on the course webpage.</p>
+        <h3>Corrections and Clarifications</h3>
+        <p>We will make Piazza posts in the case of critical corrections. It is your responsibility to ensure that you are reading Piazza regularly.</p>
+        <h3>Successfully Completing the Assignments</h3>
+        <p>We have found through many years of teaching experience in various courses that the most common reason for poor homework performance is <strong>not starting early enough</strong>. Plan to do some work on the assignment every day and try to have it finished a few days ahead of the due date.</p>
+        <p>The second most common reason for not doing well on the projects is not asking for help when you need it. We offer help in office hours and on the class forums. When you come to office hours, please be ready to provide access to your code, e.g. via screen sharing. Another good way to get help is to post a question to the course forum. Remember, if you find that you are stuck on a piece of your project for an undue amount of time, please see us!</p>
+        <p>An important skill in programming is to be able to test and debug your programs independently. As such, we will not debug your programs for you. Instead, we will help you try to figure out how to test and debug your program yourself. We will also ask you to demonstrate what testing and debugging techniques you have already tried, and what the results were, before providing any advice.</p>
+        <p>Finally, some of the platforms that we use do not save your work in your browser or on a server. Even for those that do, we cannot absolutely guarantee that your code is saved or that the server does not crash. To be safe, please maintain a local copy of your work on your file system and update it regularly. If you somehow lose your work, it is your responsibility and extensions will not be provided.</p>
+        <h3>Evaluation and Grading</h3>
+        <p>Each homework assignment will be evaluated for correctness with respect to the instructions, and good programming practices, e.g. avoiding excessively complex solutions, or grossly unreadable formatting. In addition, some problems may also evaluate the quality of test cases that you supply.</p>
+        <p>It is not the case that a full score from the autograder means you solved the problem correctly! All code will ultimately be manually graded.</p>
+        <h3>Due Dates</h3>
+        <p>Assignments will be due at 11:59pm ET on the indicated due date. No late submissions will be accepted for any reason. If you have a medical or personal emergency, please contact the instructors as soon as possible. In all cases, we require written proof of the emergency. An excused assignment will be dropped and your remaining assignments increased in weight correspondingly.</p>
+        <p>Other than a medical or personal emergency, we do not excuse assignments for any reason. For example, we do not excuse assignments due to crowded computing sites, long office hour queue times, slow response times on the autograder, internet access problems, accidental erasure or loss of files, buggy software, or outside conflicting commitments (including job interviews, research conferences, and so on).</p>
+        <h3>Regrade Requests</h3>
+        <p>While we work hard to grade accurately, we sometimes make mistakes. If you believe we graded an assignment of yours incorrectly, you can submit a regrade request (via Gradescope) before the announced deadline for regrades for that assignment (typically 14 days after the grades are released). We reserve the right to regrade your entire assignment, which can cause your grade to go up, go down, or remain unchanged. Regrade requests should only be made if you believe a grading error has occurred, not if you are unsatisfied with the grading criteria or problem statement. Staff decisions on a regrade request are final.</p>
+        <h3>Academic Integrity</h3>
+        <p>You may give or receive help on any of the <strong>concepts</strong> covered in lecture, discussion, reading assignments, or textbooks. You are allowed to consult with other students in the class to help you understand <strong>problem specifications and definitions</strong>.</p>
+        <p>Unless otherwise stated, all assignments are to be solved individually. This means that no one should be watching you code, looking at your partial or complete solutions, or discussing solutions or possible solutions with you. You may not derive solutions from solutions found online for identical or similar problems. If you took this course in a prior semester or have been (dishonorably) given access to prior semester's solutions, you may not refer to or submit your own prior graded solutions or look at or base your solutions in any way on posted solutions if a similar or identical problem is included in this semester's assignments or exams. You may use small code snippets found in language documentation or other reference material <strong>but you must cite the source of the snippet in a code comment</strong>.</p>
+        <p>You may not use any automated system, e.g. an AI or natural language processing system, to generate solutions to assignments. You may use these systems to learn about the material and concepts covered in the course more generally. <strong>Any AI usage pertaining to an individual assignment's contents must be disclosed in your submission by attaching the relevant transcript to your submission.</strong></p>
+        <p>You may not submit any code that attempts to subvert the grading system. The latter includes hard-coding solutions to discovered test cases, using run-time introspection to obtain information about private test cases, and so on. Code that violates these rules will summarily be given a zero.</p>
+        <p>To identify violations, we use both manual inspection and automated software to compare your solutions with each other and with prior submissions.</p>
+        <p>We reserve the right to report suspected violations to the Engineering Honor Council. The Honor Council will make final determinations about whether a violation of academic standards has occurred, as well as any sanctions. Read the Honor Code for detailed definitions of cheating, plagiarism, and other forms of academic misconduct.</p>
+
+        <h2>Grading</h2>
+        <p>The following table shows how each component of the course contributes to your overall score for the course:</p>
+        <table class="schedule-table">
+          <tr><td>Assignments</td><td>25%</td></tr>
+          <tr><td>Mid-Semester Exam</td><td>25%</td></tr>
+          <tr><td>Course Project</td><td>40%</td></tr>
+          <tr><td>Attendance and Participation</td><td>10%</td></tr>
+        </table>
+        <p>The final course letter grade will be determined by the cutoffs given in the following table:</p>
+        <table class="schedule-table">
+          <tr><td>A+ / A / A-</td><td>97.5 / 92.5 / 90.0</td></tr>
+          <tr><td>B+ / B / B-</td><td>87.5 / 82.5 / 80.0</td></tr>
+          <tr><td>C+ / C / C-</td><td>77.5 / 72.5 / 70.0</td></tr>
+          <tr><td>D+ / D / D-</td><td>67.5 / 62.5 / 60.0</td></tr>
+          <tr><td>E</td><td>60.0</td></tr>
+        </table>
+        <p>Our goal is to design assignments and exams so that a significant curve is not necessary. However, if based on the distribution of earned scores, we determine that a curve is necessary, the curve will only lower the cutoffs listed above. You can't be hurt by the curve.</p>
+
+        <h2>Exam</h2>
+        <p>We expect you to take the exam at the scheduled time. If you miss the exam and a medical or personal emergency is not involved, you will receive a zero for the exam. If you anticipate needing an accommodation for the exam, notify the instructors no later than 2 weeks prior to the exam.</p>
+
+        <h2>Accommodations for Students with Disabilities</h2>
+        <p>Some aspects of this course may be modified to facilitate your participation and progress. As soon as you make us aware of your needs, we can work with the Services for Students with Disabilities (SSD) office to help us determine appropriate academic accommodations. SSD (734-763-3000; <a href="http://ssd.umich.edu">http://ssd.umich.edu</a>) typically recommends accommodations through a Verified Individualized Services and Accommodations (VISA) form. Any information you provide is private and confidential and will be treated as such. If you think you need an accommodation for a disability, please let your instructor know within the first three weeks of the term via the SSD office.</p>
+
+        <h2>Commitment to Equal Opportunity</h2>
+        <p>As indicated in the <a href="https://bulletin.engin.umich.edu/rules/#generalstandardsofconductforengineeringstudents">General Standards of Conduct for Engineering Students</a>, we are committed to a policy of equal opportunity for all persons and do not discriminate on the basis of race, color, national origin, age, marital status, sex, sexual orientation, gender identity, gender expression, disability, religion, height, weight, or veteran status. Please feel free to contact any staff member with any problem, concern, or suggestion. All conversations will be kept confidential.</p>
+        <p>We ask that all students treat each other with kindness and respect, and try to be proactive in including one another, especially those who may not have an easy time making social connections.</p>
+
+        <h2>Students' Mental Health and Well-Being</h2>
+        <p>The university, and the course staff, are committed to helping to maintain the mental health and well-being of its students. If you or someone you know is feeling overwhelmed, depressed, or in need of support, consider the following university services:</p>
+        <ul>
+          <li>The <a href="https://care.engin.umich.edu/student-support-services/">CoE C.A.R.E. Center</a> can help you understand your individual needs, help you navigate problem-solving options, and connect you to relevant resources. Online appointments can be made, and are confidential.</li>
+          <li>For mental health concerns, contact Counseling and Psychological Services (CAPS) at (734) 764-8312 and <a href="https://caps.umich.edu">https://caps.umich.edu</a> during and after hours, on weekends and holidays, or through its counselors physically located in schools on both North and Central Campus.</li>
+          <li>You may also consult University Health Service (UHS) at (734) 764-8320 and <a href="https://www.uhs.umich.edu/mentalhealthsvcs">https://www.uhs.umich.edu/mentalhealthsvcs</a>.</li>
+          <li>For alcohol or drug concerns, see <a href="https://uhs.umich.edu/aodresources">uhs.umich.edu/aodresources</a>.</li>
+          <li>For a listing of other mental health resources available on and off campus, visit <a href="http://umich.edu/~mhealth">http://umich.edu/~mhealth</a>.</li>
+        </ul>
+
+        <h2>Research Disclosure</h2>
+        <p>Your class work and logs of your interactions with tools might be used for research purposes in de-identified form (i.e. not attached to your name, uniqname, or any other individual identifier). For example, we may use de-identified student assignments to design algorithms or build tools to help programmers. Any student who wishes to opt out can contact the instructor at any time, up to one week after final grades have been issued and we will remove your data from all research datasets being collected, no questions asked. Opting out has no impact on your grade.</p>
+
+        <h2>Research</h2>
+        <p>Students interested in considering graduate or undergraduate research can make an appointment with the instructor to talk about potential research opportunities at Michigan. I am happy to discuss undergraduate or graduate advising, independent study projects, senior or Masters theses, research internships over the summer, research work for credit, graduate school applications, industry careers, and other topics beyond those covered in the course.</p>
+
+        <h2>Right to Revise</h2>
+        <p>The course staff reserve the right to make changes to the syllabus at any time as needed to better serve the course's needs. When a revision occurs, it will be announced on Canvas, and it is your responsibility to be informed of such.</p>
+
+        <p><a href="./index.html">&larr; Course home</a></p>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
