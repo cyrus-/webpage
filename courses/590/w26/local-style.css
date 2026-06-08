@@ -1,5 +1,6 @@
 body {
   background: #03045e;
+  min-width: 0;  /* lift the global "body { min-width: 1280px }" so 590 pages are responsive */
 }
 
 .main-area {
@@ -106,10 +107,51 @@ body {
   padding-top: 14px;
 }
 
+/* Full-width single content column (syllabus / project guide pages) so it
+   spans both grid tracks instead of squeezing into the 320px sidebar track */
+.content-col {
+  grid-column: 1 / -1;
+}
+.content-col h2 {
+  margin-top: 2em !important;  /* override global "h2 { margin-top: -3px !important }" */
+}
+.content-col h3 {
+  margin-top: 1.5em;
+}
+
 /* Blue links on the content (white) cards; sidebar bio-card links are unaffected */
 .right-col a {
   color: #1e3a8a;
 }
 .right-col a:hover {
   color: #102a6b;
+}
+
+/* Document pages (syllabus, project guide): single fluid column that fills the
+   window up to a max width and centers — no two-column grid, so nothing forces
+   horizontal overflow at any screen size. */
+.doc-page .main-area {
+  display: block;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Long URLs / unbreakable words wrap instead of forcing horizontal scroll */
+.card,
+.schedule-table td,
+.info-table-value {
+  overflow-wrap: anywhere;
+}
+
+/* Responsive: collapse the fixed two-column grid to a single column on narrow
+   screens (phones/tablets) so the sidebar stacks above the content and nothing
+   overflows. Scoped to the 590 pages via this local stylesheet. */
+@media (max-width: 768px) {
+  .main-area {
+    display: block;
+    max-width: 100%;
+  }
+  .schedule-table td:first-child {
+    min-width: 0;
+  }
 }
