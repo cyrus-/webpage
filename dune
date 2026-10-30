@@ -1,3 +1,3 @@
 (vendored_dirs vendor)
 
-(dirs vendor)
+(dirs vendor site)

@@ -1,0 +1,14 @@
+version: 1
+handle: cyrus
+names: [Cyrus Omar]
+emails:
+  - address: comar@umich.edu
+organizations:
+  - name: University of Michigan
+urls:
+  - url: https://web.eecs.umich.edu/~comar/
+services:
+  - url: https://bsky.app/profile/neurocy.bsky.social
+  - url: https://x.com/neurocy
+  - url: https://github.com/cyrus-
+  - url: https://orcid.org/0000-0003-4502-7971

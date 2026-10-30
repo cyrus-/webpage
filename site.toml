@@ -1,0 +1,19 @@
+# Configuration for site/main.ml (and vendored arod).
+
+[paths]
+data_dir = "data"
+assets_dir = "assets"
+images_dir = "images"
+static_dir = "static"
+
+[site]
+base_url = "https://web.eecs.umich.edu/~comar"
+name = "Cyrus Omar"
+description = "Cyrus Omar designs intelligent user interfaces for modern programming languages."
+author_handle = "cyrus"
+author_name = "Cyrus Omar"
+author_email = "comar@umich.edu"
+author_orcid = "0000-0003-4502-7971"
+
+[feeds]
+title = "Cyrus Omar"

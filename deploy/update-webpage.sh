@@ -20,6 +20,7 @@ git pull --ff-only
 eval "$(opam env --switch="$SWITCH" --set-switch)"
 opam install . --deps-only -y
 dune build
-dune exec -- arod build --out _site
+rm -rf _site
+dune exec -- site build --prefix /~comar --out _site
 
 rsync -a --exclude='.*' _site/ "$DEST/"

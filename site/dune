@@ -1,0 +1,17 @@
+(executable
+ (name main)
+ (public_name site)
+ (package webpage)
+ (libraries
+  arod
+  arod.server
+  bushel
+  eio_main
+  re
+  unix
+  cmdliner
+  logs
+  logs.fmt
+  logs.cli
+  fmt.tty
+  fmt.cli))
