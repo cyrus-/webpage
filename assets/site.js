@@ -13,11 +13,12 @@
   });
 })();
 
-// Design preview: add ?design=1 to any URL to get a background colour
-// picker. The picked colour is remembered (localStorage) while you browse,
-// and only applies when ?design=1 is present. Not shown on the real site.
+// Design preview: add #design to any URL to get a background colour picker.
+// (A hash rather than a query string, since the preview server 404s on
+// "/?..." for the home page.) The picked colour is remembered
+// (localStorage) while you browse, and only applies in design mode.
 (function () {
-  if (!/[?&]design\b/.test(location.search)) return;
+  if (!/design/.test(location.hash) && !/[?&]design\b/.test(location.search)) return;
   var root = document.documentElement;
   function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
@@ -44,8 +45,8 @@
   document.body.appendChild(bar);
   if (get("paperColor")) setPaper(get("paperColor")); else show(current());
 
-  // keep ?design=1 on internal links while previewing
+  // keep #design on internal links while previewing
   document.querySelectorAll("a[href^='/']").forEach(function (a) {
-    if (!/[?&]design\b/.test(a.href)) a.href += (a.href.indexOf("?") < 0 ? "?" : "&") + "design=1";
+    if (a.href.indexOf("#") < 0) a.href += "#design";
   });
 })();

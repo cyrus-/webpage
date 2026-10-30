@@ -257,7 +257,7 @@ footer a { font-weight: 600; }
 
 /* {1 Design preview}
 
-   Background colour picker, only shown with ?design=1 (see site.js). */
+   Background colour picker, only shown with #design (see site.js). */
 
 .design-switcher {
   position: fixed;
