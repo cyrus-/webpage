@@ -25,3 +25,12 @@ other than `arod/bin`; and `bushel`'s `lib_sync` (HTTP thumbnail/video
 fetching) and `lib_typesense` (search indexing) subpackages.
 
 Local changes to these packages should be kept small and noted here.
+
+## Local changes
+
+- `arod/lib/arod_footer.ml`: the footer no longer hard-codes Anil's social
+  links. `Arod_footer.footer` is now a function returning a replaceable
+  value (`Arod_footer.set`); the default shows only the Atom/JSON feed
+  links. Call sites in `arod_entries.ml`, `arod_ideas.ml`,
+  `arod_projects.ml` and `arod_page.ml` updated accordingly. `site/main.ml`
+  sets the footer from the site author's contact card.

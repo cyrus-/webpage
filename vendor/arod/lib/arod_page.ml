@@ -297,4 +297,4 @@ function initGraph(graphData) {
 |}]
   ] in
 
-  page ~title ~description ~page_content:graph_html ~page_footer:Arod_footer.footer ()
+  page ~title ~description ~page_content:graph_html ~page_footer:(Arod_footer.footer ()) ()

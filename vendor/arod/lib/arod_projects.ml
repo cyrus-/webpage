@@ -241,7 +241,7 @@ let view_projects_timeline () =
 
     let intro = El.p [El.txt "Research projects and relevant publications, ideas and notes."] in
 
-    let page_footer = Arod_footer.footer in
+    let page_footer = Arod_footer.footer () in
 
     let page_content = El.splice [
       El.article [

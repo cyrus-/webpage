@@ -246,7 +246,7 @@ let view_ideas_by_project () =
 
   let intro = El.p [El.txt "These are research ideas for students at various levels (Part II, MPhil, PhD, and postdoctoral). Browse through the ideas below to find projects that interest you. You're also welcome to propose your own research ideas that align with our ongoing projects."] in
 
-  let page_footer = Arod_footer.footer in
+  let page_footer = Arod_footer.footer () in
   let page_content = El.splice [
     El.article [
       El.h1 [El.txt title];

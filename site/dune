@@ -9,6 +9,9 @@
   eio_main
   re
   unix
+  htmlit
+  ptime.clock.os
+  sortal.schema
   cmdliner
   logs
   logs.fmt

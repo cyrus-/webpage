@@ -122,7 +122,7 @@ let sort_of_ent ent =
   | `Idea _ -> "research idea", ""
   | `Video _ -> "video", ""
 
-let footer = Arod_footer.footer
+let footer () = Arod_footer.footer ()
 
 let take n l =
   let[@tail_mod_cons] rec aux n l =
@@ -155,7 +155,7 @@ let view_news ~show_all ~tags ~min:_ ~types feed =
       | x::xs -> render_feed x :: El.hr () :: intersperse_hr xs
     in
     intersperse_hr feed' in
-  let page_footer = El.splice [footer] in
+  let page_footer = El.splice [footer ()] in
   let pagination_attrs =
     let tags_str = String.concat "," (List.map Arod_model.Tags.to_raw_string tags) in
     let types_str = String.concat "," (List.map entry_type_to_string types) in
@@ -213,7 +213,7 @@ let view_entries ~show_all ~tags ~min:_ ~types ents =
     in
     add_separators rendered
   in
-  let page_footer = El.splice [footer] in
+  let page_footer = El.splice [footer ()] in
   let pagination_attrs =
     let tags_str = String.concat "," (List.map Arod_model.Tags.to_raw_string tags) in
     let types_str = String.concat "," (List.map entry_type_to_string types) in
@@ -285,14 +285,14 @@ let view_one _q ent =
   in
   let page_footer, page_content =
     if is_index then
-      let page_footer = footer in
+      let page_footer = footer () in
       let page_content = El.splice [
         El.article [eh];
         El.aside []
       ] in
       page_footer, page_content
     else
-      let page_footer = footer in
+      let page_footer = footer () in
       let references_html = match ent with
         | `Note n -> El.splice [El.hr (); Arod_view.note_references_html n]
         | _ -> El.splice []

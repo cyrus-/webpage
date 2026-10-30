@@ -56,6 +56,30 @@ let prefix_links ~prefix body =
     in
     body |> sub attr_re |> sub css_url_re
 
+(** {1 Footer}
+
+    Built from the site author's contact card (data/sortal/<handle>.yaml):
+    one link per entry in [services], labelled by its [label] field. *)
+
+let set_footer () =
+  let open Htmlit in
+  let author = Arod.Model.author () in
+  let name = Option.fold ~none:"" ~some:Sortal_schema.Contact.name author in
+  let services = Option.fold ~none:[] ~some:Sortal_schema.Contact.services author in
+  let link (svc : Sortal_schema.Contact.service) =
+    let label = Option.value svc.label ~default:svc.url in
+    El.a ~at:[ At.rel "me"; At.class' "noicon"; At.href svc.url ] [ El.txt label ]
+  in
+  let rec sep = function [] -> [] | [ x ] -> [ x ] | x :: xs -> x :: El.txt " / " :: sep xs in
+  let year = let (y, _, _), _ = Ptime.to_date_time (Ptime_clock.now ()) in y in
+  Arod.Footer.set
+    (El.splice
+       [
+         El.p [ El.em [ El.txt (Printf.sprintf "© %d %s. There are no third-party trackers on this site." year name) ] ];
+         El.p [ El.em (sep (List.map link services)) ];
+         Arod.Footer.feeds;
+       ])
+
 (** {1 Rendering} *)
 
 type page = { path : string; query : (string * string) list; file : string }
@@ -117,6 +141,7 @@ let build cfg ~out ~prefix ~extra =
   Eio_main.run @@ fun env ->
   let fs = Eio.Stdenv.fs env in
   let _entries = Arod.Model.init ~cfg fs in
+  set_footer ();
   let routes = Arod.Handlers.all_routes cfg in
   let pages = pages () in
   let ok = List.filter (render routes ~prefix ~out) pages |> List.length in
@@ -168,6 +193,7 @@ let serve_cmd =
     use_repo_contacts cfg;
     Eio_main.run @@ fun env ->
     let _entries = Arod.Model.init ~cfg (Eio.Stdenv.fs env) in
+    set_footer ();
     let memo_cache = Arod.Memo.create ~ttl:0. () in
     match Arod_server.run ~config:cfg ~memo_cache (Arod.Handlers.all_routes cfg) with
     | Ok () -> ()

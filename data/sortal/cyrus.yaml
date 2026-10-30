@@ -9,6 +9,14 @@ urls:
   - url: https://web.eecs.umich.edu/~comar/
 services:
   - url: https://bsky.app/profile/neurocy.bsky.social
+    label: Bluesky
   - url: https://x.com/neurocy
+    label: X
+  - url: https://www.instagram.com/cyology/
+    label: Instagram
+  - url: https://www.linkedin.com/in/cyrusomar/
+    label: LinkedIn
   - url: https://github.com/cyrus-
+    label: GitHub
   - url: https://orcid.org/0000-0003-4502-7971
+    label: ORCID
