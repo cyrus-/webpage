@@ -16,7 +16,9 @@ if ! command -v opam >/dev/null; then
   chmod +x "$HOME/bin/opam"
 fi
 
-[ -d "$HOME/.opam" ] || opam init -y --bare --no-setup
+# bwrap can't create directories in the networked home dir on web.eecs,
+# so opam's build sandbox doesn't work there.
+[ -d "$HOME/.opam" ] || opam init -y --bare --no-setup --disable-sandboxing
 
 if ! opam switch list --short | grep -qx "$SWITCH"; then
   opam switch create "$SWITCH" ocaml-base-compiler.5.2.0 -y
