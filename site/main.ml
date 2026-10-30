@@ -41,7 +41,7 @@ let rec copy_tree ~src ~dst =
 
 let attr_re =
   Re.(compile (seq [
-    group (seq [ alt [ str "href"; str "src"; str "action"; str "poster" ]; str "=\"" ]);
+    group (seq [ alt [ str "href"; str "src"; str "action"; str "poster"; str "data-link" ]; str "=\"" ]);
     char '/'; group (alt [ eos; compl [ char '/' ] ]) ]))
 
 let css_url_re =

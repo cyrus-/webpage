@@ -1,3 +1,18 @@
+// Bushel cross-references ([text](:slug)) are rendered by arod as
+// <side-note data-link=... data-title=...>text</side-note>. Anil's site
+// script turns these into hover previews; here they just become links.
+(function () {
+  document.querySelectorAll("side-note[data-link]").forEach(function (n) {
+    var a = document.createElement("a");
+    a.href = n.getAttribute("data-link");
+    var t = n.getAttribute("data-title");
+    if (t) a.title = t;
+    a.className = "xref";
+    while (n.firstChild) a.appendChild(n.firstChild);
+    n.replaceWith(a);
+  });
+})();
+
 // Design preview: add ?design=1 to any URL to get a background colour
 // picker. The picked colour is remembered (localStorage) while you browse,
 // and only applies when ?design=1 is present. Not shown on the real site.
