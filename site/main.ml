@@ -151,7 +151,11 @@ let build cfg ~out ~prefix ~extra =
   copy_tree ~src:paths.static_dir ~dst:(Filename.concat out "static");
   (* arod serves /papers/<slug>.pdf from <static_dir>/papers/ *)
   copy_tree ~src:(Filename.concat paths.static_dir "papers") ~dst:(Filename.concat out "papers");
-  List.iter (fun dir -> copy_tree ~src:dir ~dst:out) extra;
+  List.iter
+    (fun src ->
+      if Sys.is_directory src then copy_tree ~src ~dst:out
+      else copy_tree ~src ~dst:(Filename.concat out (Filename.basename src)))
+    extra;
   Log.app (fun m -> m "Wrote %d of %d pages to %s" ok (List.length pages) out)
 
 (** {1 CLI} *)
@@ -180,8 +184,10 @@ let build_cmd =
     Arg.(value & opt string "" & info [ "prefix" ] ~docv:"PATH" ~doc)
   in
   let extra =
-    let doc = "Directory whose contents are copied verbatim into the output root. Repeatable." in
-    Arg.(value & opt_all dir [] & info [ "extra" ] ~docv:"DIR" ~doc)
+    let doc =
+      "File, or directory whose contents, to copy verbatim into the output root. Repeatable."
+    in
+    Arg.(value & opt_all file [] & info [ "extra" ] ~docv:"PATH" ~doc)
   in
   let run () config out prefix extra = build (load_config config) ~out ~prefix ~extra in
   Cmd.v (Cmd.info "build" ~doc:"Render the whole site to static files.")

@@ -21,6 +21,6 @@ eval "$(opam env --switch="$SWITCH" --set-switch)"
 opam install . --deps-only -y
 dune build
 rm -rf _site
-dune exec -- site build --prefix /~comar --out _site
+dune exec -- site build --prefix /~comar --out _site --extra public --extra omar-cv.pdf
 
 rsync -a --exclude='.*' _site/ "$DEST/"
