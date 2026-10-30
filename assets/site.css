@@ -1,0 +1,249 @@
+/* Cyrus Omar's webpage, for pages rendered by (vendored) arod.
+   Palette and type carried over from the original hand-written site:
+   teal "cartographer" header, cream cards with a tan shadow, Montserrat
+   headings over Open Sans, teal links and purple awards. The flat wheat
+   background is replaced by a subtle paper texture. */
+
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400,400i,700&display=swap");
+
+:root {
+  --paper: #f3e6c8;
+  --paper-grain-opacity: 0.18;
+  --card: #fffbef;
+  --card-shadow: tan;
+  --ink: #222;
+  --ink-soft: #444;
+  --muted: #888;
+  --rule: #ddd;
+  --link: #008068;
+  --link-hover: #004048;
+  --venue: #446271;
+  --award: #642296;
+  --header-bg: #223939;
+  --header-tint: rgba(31, 122, 122, 0.25);
+  --header-ink: #fff;
+  --header-accent: #d5ffb6;
+  --tag-bg: #efe4c6;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #1d1a15;
+    --paper-grain-opacity: 0.08;
+    --card: #2a2620;
+    --card-shadow: #0d0c0a;
+    --ink: #e9e2d2;
+    --ink-soft: #cfc6b3;
+    --muted: #9a917f;
+    --rule: #403a30;
+    --link: #5fd0b4;
+    --link-hover: #9fe9d6;
+    --venue: #9bb8c6;
+    --award: #c49cf0;
+    --header-bg: #142424;
+    --header-tint: rgba(31, 122, 122, 0.18);
+    --tag-bg: #3a342a;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Paper texture: fractal noise over a warm parchment colour. Inline SVG, so
+   there is no image to download. */
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family: "Open Sans", Arial, sans-serif;
+  font-size: 11pt;
+  line-height: 1.5;
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.35 0 0 0 0 0.2 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-blend-mode: multiply;
+}
+
+body::before {
+  /* keep the grain subtle: the texture above sits under a translucent wash */
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--paper);
+  opacity: calc(1 - var(--paper-grain-opacity));
+  pointer-events: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: Montserrat, sans-serif;
+  color: var(--ink-soft);
+}
+
+h2 {
+  font-size: 115%;
+  margin: 0 0 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--rule);
+}
+
+h3 { font-size: 105%; margin: 15px 0 5px; }
+h4 { font-size: 95%; margin: 15px 0 5px; color: var(--muted); }
+
+p { margin: 0 0 10px; }
+
+a {
+  color: var(--link);
+  font-weight: bold;
+  text-decoration: none;
+}
+a:hover { color: var(--link-hover); }
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 15px 0;
+}
+
+/* {1 Header} */
+
+.site-header {
+  font-family: Montserrat, sans-serif;
+  color: var(--header-ink);
+  background: linear-gradient(var(--header-tint), var(--header-tint)),
+    url("../images/cartographer.png"), var(--header-bg);
+  padding: 18px 20px;
+}
+
+.header-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 28px;
+}
+
+.site-name {
+  margin: 0;
+  font-size: 20pt;
+  font-weight: 700;
+}
+.site-name a { color: var(--header-ink); }
+
+.main-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--header-accent);
+  font-weight: 400;
+}
+.nav-link:hover, .nav-link.active { color: #fff; }
+.nav-link svg { width: 1em; height: 1em; opacity: 0.8; }
+
+/* Search needs a Typesense backend, which this site doesn't run. */
+.header-right, .search-modal { display: none !important; }
+
+/* {1 Content} */
+
+.content-grid {
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 0 15px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 20px;
+}
+
+.content-grid > article,
+.content-grid > aside:not(:empty) {
+  background: var(--card);
+  box-shadow: 0 2px var(--card-shadow);
+  padding: 15px 20px;
+}
+
+.content-grid > aside:empty { display: none; }
+.content-grid:has(> aside:empty) { grid-template-columns: minmax(0, 1fr); }
+
+article img { max-width: 100%; height: auto; }
+
+/* {1 Papers} */
+
+.paper { margin-bottom: 18px; }
+
+.paper-title {
+  font-family: Montserrat, sans-serif;
+  font-size: 105%;
+  margin-bottom: 2px;
+}
+
+.paper-info p { margin-bottom: 2px; }
+
+.author { color: var(--ink-soft); }
+
+.paper-info i { font-style: normal; color: var(--muted) !important; }
+
+.award, .paper-award { color: var(--award); font-weight: bold; }
+
+/* {1 Notes and metadata} */
+
+.note-meta, .title-date {
+  color: var(--muted);
+  font-size: 90%;
+  margin: 4px 0 14px;
+}
+
+.meta-bullet { margin: 0 6px; }
+
+.tag-label {
+  background: var(--tag-bg);
+  border-radius: 3px;
+  padding: 0 5px;
+  font-size: 90%;
+}
+
+.inline-icon { width: 0.9em; height: 0.9em; vertical-align: -1px; }
+
+pre, code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 92%; }
+pre {
+  background: rgba(0, 0, 0, 0.04);
+  padding: 10px 12px;
+  overflow-x: auto;
+}
+
+blockquote {
+  margin: 10px 0;
+  padding-left: 12px;
+  border-left: 3px solid var(--rule);
+  color: var(--ink-soft);
+}
+
+/* {1 Projects timeline} */
+
+.project-card { margin-bottom: 18px; }
+.project-dates, .timeline-year, .timeline-duration { color: var(--muted); }
+
+/* {1 Footer} */
+
+footer {
+  max-width: 1100px;
+  margin: 10px auto 30px;
+  padding: 0 15px;
+  color: var(--muted);
+  font-size: 90%;
+}
+
+footer a { font-weight: 600; }
+
+/* {1 Narrow screens} */
+
+@media (max-width: 760px) {
+  .content-grid { grid-template-columns: minmax(0, 1fr); }
+  .site-header { padding: 14px 16px; }
+  .site-name { font-size: 16pt; }
+}
