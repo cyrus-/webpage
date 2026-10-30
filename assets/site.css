@@ -1,18 +1,18 @@
 /* Cyrus Omar's webpage, for pages rendered by (vendored) arod.
    Palette and type carried over from the original hand-written site:
-   teal "cartographer" header, cream cards with a tan shadow, Montserrat
-   headings over Open Sans, teal links and purple awards. The flat wheat
-   background is replaced by a subtle paper texture. */
+   teal "cartographer" header, Montserrat headings over Open Sans, teal
+   links and purple awards. Index-card style cards sit on a warm yellow
+   background that carries the same cartographer texture as the header. */
 
 @import url("https://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400,400i,700&display=swap");
 
 :root {
   /* Same look regardless of the OS light/dark setting. */
   color-scheme: only light;
-  --paper: #f3e6c8;
-  --paper-grain-opacity: 0.18;
-  --card: #fffbef;
-  --card-shadow: tan;
+  --paper: #ffe9ad;
+  /* Strength of the map lines on the page background: 0 = flat. */
+  --paper-texture: 0.3;
+  --card: #fffefa;
   --ink: #222;
   --ink-soft: #444;
   --muted: #888;
@@ -22,7 +22,9 @@
   --venue: #446271;
   --award: #642296;
   --header-bg: #223939;
-  --header-tint: rgba(31, 122, 122, 0.25);
+  /* What the header actually looks like once the texture is overlaid
+     (measured from a render); use this to match it elsewhere. */
+  --header-seen: #1c2e2e;
   --header-ink: #fff;
   --header-accent: #d5ffb6;
   --tag-bg: #efe4c6;
@@ -32,27 +34,29 @@
   box-sizing: border-box;
 }
 
-/* Paper texture: fractal noise over a warm parchment colour. Inline SVG, so
-   there is no image to download. */
 body {
   margin: 0;
   color: var(--ink);
   font-family: "Open Sans", Arial, sans-serif;
   font-size: 11pt;
   line-height: 1.5;
-  background-color: var(--paper);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.35 0 0 0 0 0.2 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-blend-mode: multiply;
+  background: var(--paper);
+  isolation: isolate;
 }
 
+/* The cartographer texture, contrast-lifted as in the header and overlaid
+   on the parchment colour. Fixed, so it stays put while the page scrolls. */
 body::before {
-  /* keep the grain subtle: the texture above sits under a translucent wash */
   content: "";
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: var(--paper);
-  opacity: calc(1 - var(--paper-grain-opacity));
+  background: url("../images/cartographer.png");
+  /* brightness 3.5 puts the texture's mean at mid-grey, so the overlay
+     leaves the parchment colour unchanged on average (no darkening). */
+  filter: brightness(3.5) contrast(2.2) blur(0.5px);
+  mix-blend-mode: overlay;
+  opacity: var(--paper-texture);
   pointer-events: none;
 }
 
@@ -89,11 +93,28 @@ hr {
 /* {1 Header} */
 
 .site-header {
+  /* Strength of the map lines: 0 = flat teal, 1 = strongest. */
+  --header-texture: 0.45;
+  position: relative;
+  isolation: isolate;
   font-family: Montserrat, sans-serif;
   color: var(--header-ink);
-  background: linear-gradient(var(--header-tint), var(--header-tint)),
-    url("../images/cartographer.png"), var(--header-bg);
+  background: var(--header-bg);
   padding: 18px 20px;
+}
+
+/* cartographer.png is very low contrast (grey levels 30-46 of 255), so its
+   lines barely show. Lift and stretch it with filters, then overlay it on
+   the teal so the lines read without changing the overall colour. */
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: url("../images/cartographer.png");
+  filter: brightness(2.8) contrast(2.2) blur(0.5px);
+  mix-blend-mode: overlay;
+  opacity: var(--header-texture);
 }
 
 .header-content {
@@ -142,10 +163,14 @@ hr {
   gap: 20px;
 }
 
+/* Index-card style: near-white, a rule in the header's (rendered) teal
+   across the top, and a soft diffuse shadow. */
 .content-grid > article,
 .content-grid > aside:not(:empty) {
   background: var(--card);
-  box-shadow: 0 2px var(--card-shadow);
+  border-top: 3px solid var(--header-seen);
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgba(60, 40, 10, 0.12), 0 6px 18px rgba(60, 40, 10, 0.10);
   padding: 15px 20px;
 }
 
