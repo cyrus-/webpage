@@ -82,6 +82,15 @@ let search_modal =
     ]
   ]
 
+(* Local change (webpage fork): the page frame (header, content area and
+   footer) is replaceable via [set_frame]; the default is arod's own. *)
+let default_frame ~header ~content ~footer =
+  [ header; El.div ~at:[At.class' "content-grid"] [content]; footer ]
+
+let frame = ref default_frame
+
+let set_frame f = frame := f
+
 let page ?(image="/assets/imagetitle-default.jpg") ?(jsonld="") ?standardsite ?(page_footer=El.splice []) ~title ~description ~page_content:content () =
   let cfg = Arod_model.get_config () in
   let page_title = if title = "" then cfg.site.name else title in
@@ -168,9 +177,7 @@ let page ?(image="/assets/imagetitle-default.jpg") ?(jsonld="") ?standardsite ?(
   let footer_el = El.footer [page_footer] in
 
   let body_el = El.body ~at:[At.class' "light"] [
-    header_el;
-    El.div ~at:[At.class' "content-grid"] [content];
-    footer_el;
+    El.splice (!frame ~header:header_el ~content ~footer:footer_el);
     search_modal;
     El.script ~at:[At.src "/assets/site.js"] []
   ] in

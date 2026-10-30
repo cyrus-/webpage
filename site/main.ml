@@ -80,9 +80,158 @@ let set_footer () =
          Arod.Footer.feeds;
        ])
 
+(** {1 Layout}
+
+    The page frame follows the original hand-written site: the header with
+    the tagline, a left column of cards (layout/sidebar.html) and a right
+    column with the intro card (layout/intro.html), a tab bar, and then the
+    page content. The partials are plain HTML with root-relative links. *)
+
+let read_file f = In_channel.with_open_bin f In_channel.input_all
+
+let tabs = [ ("Projects", "/"); ("Papers", "/papers"); ("Talks", "/talks"); ("Notes", "/notes") ]
+
+let set_frame () =
+  let open Htmlit in
+  let header = read_file "layout/header.html" in
+  let sidebar = read_file "layout/sidebar.html" in
+  let intro = read_file "layout/intro.html" in
+  let tab_bar =
+    El.nav ~at:[ At.class' "tab-bar" ]
+      (List.map (fun (label, href) -> El.a ~at:[ At.class' "tab"; At.href href ] [ El.txt label ]) tabs)
+  in
+  Arod.Page.set_frame (fun ~header:_ ~content ~footer ->
+      [
+        El.unsafe_raw header;
+        El.div ~at:[ At.class' "main-area" ]
+          [
+            El.div ~at:[ At.class' "left-col" ] [ El.unsafe_raw sidebar ];
+            El.div ~at:[ At.class' "right-col" ]
+              [ El.unsafe_raw intro; tab_bar; El.div ~at:[ At.class' "content-grid" ] [ content ] ];
+          ];
+        footer;
+      ])
+
+(** {1 Home page}
+
+    One card per project (in the order of layout/home-projects.txt), each
+    listing that project's papers marked [selected]. *)
+
+let author_name = "Cyrus Omar"
+
+(* Paper slugs end in a venue key (e.g. 2025-grove-popl); this maps it to
+   the label shown next to the paper. *)
+let venues =
+  [ ("popl", "POPL"); ("oopsla", "OOPSLA"); ("splashe", "SPLASH-E"); ("propl", "PROPL");
+    ("vlhcc", "VL/HCC"); ("aarhus", "Aarhus"); ("hatra", "HATRA"); ("hope", "HOPE");
+    ("tfp", "TFP"); ("onward", "Onward!"); ("tyde", "TyDe"); ("pldi", "PLDI"); ("icfp", "ICFP");
+    ("snapl", "SNAPL"); ("gpce", "GPCE"); ("sac", "SAC"); ("ecoop", "ECOOP"); ("psp", "PSP");
+    ("icse", "ICSE"); ("iwaco", "IWACO"); ("globaldsl", "GlobalDSL"); ("jneurosci", "J. Neuro.");
+    ("ijhci", "IJHCI"); ("acc", "ACC"); ("icassp", "ICASSP"); ("ijcnn", "IJCNN") ]
+
+let venue p =
+  let slug = Bushel.Paper.slug p in
+  let key = match String.rindex_opt slug '-' with Some i -> String.sub slug (i + 1) (String.length slug - i - 1) | None -> slug in
+  let name = Option.value (List.assoc_opt key venues) ~default:(String.uppercase_ascii key) in
+  Printf.sprintf "%s %d" name (Bushel.Paper.year p)
+
+let paper_card_entry cfg p =
+  let open Htmlit in
+  let slug = Bushel.Paper.slug p in
+  let note = Bushel.Paper.note p in
+  let award = match note with Some n when n <> "Conditionally accepted" -> Some n | _ -> None in
+  let venue_el =
+    El.div ~at:[ At.class' "paper-venue" ]
+      (El.txt (venue p)
+      :: (if note = Some "Conditionally accepted" then
+            [ El.br (); El.span ~at:[ At.class' "venue-note" ] [ El.txt "Conditionally" ] ]
+          else []))
+  in
+  let authors =
+    Bushel.Paper.authors p
+    |> List.map (fun a -> if a = author_name then El.span ~at:[ At.class' "me-author" ] [ El.txt a ] else El.txt a)
+    |> List.fold_left (fun acc a -> if acc = [] then [ a ] else acc @ [ El.txt ", "; a ]) []
+  in
+  let pdf = Sys.file_exists (Filename.concat cfg.Arod.Config.paths.static_dir ("papers/" ^ slug ^ ".pdf")) in
+  let links =
+    List.filter_map Fun.id
+      [
+        (if pdf then Some (El.a ~at:[ At.href ("/papers/" ^ slug ^ ".pdf") ] [ El.txt "PDF" ]) else None);
+        Option.map (fun d -> El.a ~at:[ At.href ("https://doi.org/" ^ d) ] [ El.txt "DOI" ]) (Bushel.Paper.doi p);
+        Some (El.a ~at:[ At.href ("/papers/" ^ slug ^ ".bib") ] [ El.txt "BIB" ]);
+        Option.map (fun u -> El.a ~at:[ At.href u ] [ El.txt "URL" ]) (Bushel.Paper.url p);
+      ]
+    |> List.fold_left (fun acc a -> if acc = [] then [ a ] else acc @ [ El.txt " · "; a ]) []
+  in
+  El.div ~at:[ At.class' "paper" ]
+    [
+      venue_el;
+      El.div ~at:[ At.class' "paper-details" ]
+        ([
+           El.div ~at:[ At.class' "paper-title-line" ]
+             [ El.a ~at:[ At.class' "major-paper"; At.href ("/papers/" ^ slug) ] [ El.txt (Bushel.Paper.title p) ] ];
+           El.div ~at:[ At.class' "paper-authors" ] authors;
+         ]
+        @ (match award with Some a -> [ El.div ~at:[ At.class' "paper-award" ] [ El.txt a ] ] | None -> [])
+        @ [ El.div ~at:[ At.class' "paper-links" ] links ]);
+    ]
+
+let project_card cfg proj =
+  let open Htmlit in
+  let slug = Bushel.Project.slug proj in
+  let papers =
+    Arod.Model.papers ()
+    |> List.filter (fun p -> Bushel.Paper.selected p && List.mem slug (Bushel.Paper.project_slugs p))
+    |> List.sort (fun a b -> compare (Bushel.Paper.year b, Bushel.Paper.slug b) (Bushel.Paper.year a, Bushel.Paper.slug a))
+  in
+  El.div ~at:[ At.class' "card project-card"; At.id slug ]
+    ([
+       El.h2 [ El.a ~at:[ At.href ("/projects/" ^ slug) ] [ El.txt (Bushel.Project.title proj) ] ];
+       El.unsafe_raw (Arod.View.md_to_html (Bushel.Project.body proj));
+     ]
+    @ List.map (paper_card_entry cfg) papers)
+
+let home cfg _req =
+  let open Htmlit in
+  let order =
+    read_file "layout/home-projects.txt" |> String.split_on_char '\n' |> List.map String.trim
+    |> List.filter (fun l -> l <> "" && l.[0] <> '#')
+  in
+  let projects = Arod.Model.projects () in
+  let cards =
+    List.filter_map
+      (fun slug -> List.find_opt (fun p -> Bushel.Project.slug p = slug) projects |> Option.map (project_card cfg))
+      order
+  in
+  let page =
+    Arod.Page.page ~title:cfg.Arod.Config.site.name ~description:cfg.site.description
+      ~page_footer:(Arod.Footer.footer ())
+      ~page_content:(El.div ~at:[ At.class' "project-cards" ] cards)
+      ()
+  in
+  Route.Response.html (El.to_string ~doctype:true page)
+
+(** Our routes: the home page first, then arod's, then (for local preview)
+    files from public/ and the CV PDF, which the static build copies in. *)
+let routes cfg =
+  let arod = Route.Routes.fold (fun r acc -> r :: acc) (Arod.Handlers.all_routes cfg) [] in
+  Route.Routes.of_list
+    ([ Route.get_ [] (home cfg) ]
+    @ arod
+    @ [
+        Route.get_ [ "omar-cv.pdf" ] (Arod.Handlers.static_file ~dir:"." "omar-cv.pdf");
+        Route.get Route.rest (fun path req ->
+            let path =
+              if Sys.file_exists ("public/" ^ path) && Sys.is_directory ("public/" ^ path) then
+                Filename.concat path "index.html"
+              else path
+            in
+            Arod.Handlers.static_file ~dir:"public" path req);
+      ])
+
 (** {1 Rendering} *)
 
-type page = { path : string; query : (string * string) list; file : string }
+type page ={ path : string; query : (string * string) list; file : string }
 
 let page ?(query = []) path file = { path; query; file }
 
@@ -142,7 +291,8 @@ let build cfg ~out ~prefix ~extra =
   let fs = Eio.Stdenv.fs env in
   let _entries = Arod.Model.init ~cfg fs in
   set_footer ();
-  let routes = Arod.Handlers.all_routes cfg in
+  set_frame ();
+  let routes = routes cfg in
   let pages = pages () in
   let ok = List.filter (render routes ~prefix ~out) pages |> List.length in
   let paths = cfg.Arod.Config.paths in
@@ -200,8 +350,9 @@ let serve_cmd =
     Eio_main.run @@ fun env ->
     let _entries = Arod.Model.init ~cfg (Eio.Stdenv.fs env) in
     set_footer ();
+    set_frame ();
     let memo_cache = Arod.Memo.create ~ttl:0. () in
-    match Arod_server.run ~config:cfg ~memo_cache (Arod.Handlers.all_routes cfg) with
+    match Arod_server.run ~config:cfg ~memo_cache (routes cfg) with
     | Ok () -> ()
     | Error e -> Log.err (fun m -> m "Server error: %s" (Printexc.to_string e))
   in

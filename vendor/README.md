@@ -34,3 +34,6 @@ Local changes to these packages should be kept small and noted here.
   links. Call sites in `arod_entries.ml`, `arod_ideas.ml`,
   `arod_projects.ml` and `arod_page.ml` updated accordingly. `site/main.ml`
   sets the footer from the site author's contact card.
+- `arod/lib/arod_page.ml`: the page frame (header, content area, footer)
+  is replaceable via `Arod_page.set_frame`; the default is unchanged.
+  `site/main.ml` uses it for the two-column layout with a tab bar.

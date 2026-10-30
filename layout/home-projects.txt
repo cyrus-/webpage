@@ -1,0 +1,16 @@
+# Project cards on the home page, in order. One project slug per line.
+# Each card lists that project's papers that are marked `selected: true`.
+hazel
+tylr
+grove
+chatlsp
+livelits
+hazel-tutor
+deckflow
+rustviz
+bastion
+relit
+typy
+sciunit
+neuro
+bci
