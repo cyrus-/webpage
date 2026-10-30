@@ -7,6 +7,8 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400,400i,700&display=swap");
 
 :root {
+  /* Same look regardless of the OS light/dark setting. */
+  color-scheme: only light;
   --paper: #f3e6c8;
   --paper-grain-opacity: 0.18;
   --card: #fffbef;
@@ -24,26 +26,6 @@
   --header-ink: #fff;
   --header-accent: #d5ffb6;
   --tag-bg: #efe4c6;
-}
-
-/* Dark palette: opt-in only (no toggle yet), so the paper look is the
-   default even when the OS is in dark mode. */
-:root[data-theme="dark"] {
-  --paper: #1d1a15;
-  --paper-grain-opacity: 0.08;
-  --card: #2a2620;
-  --card-shadow: #0d0c0a;
-  --ink: #e9e2d2;
-  --ink-soft: #cfc6b3;
-  --muted: #9a917f;
-  --rule: #403a30;
-  --link: #5fd0b4;
-  --link-hover: #9fe9d6;
-  --venue: #9bb8c6;
-  --award: #c49cf0;
-  --header-bg: #142424;
-  --header-tint: rgba(31, 122, 122, 0.18);
-  --tag-bg: #3a342a;
 }
 
 * {
