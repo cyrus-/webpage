@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
-# One-time setup on web.eecs.umich.edu: a user-local opam + OCaml 5.2
+# One-time setup on web.eecs.umich.edu: a user-local opam + OCaml 5.4
 # switch for building the webpage. Installs only under ~/bin and ~/.opam,
 # and is safe to re-run.
 set -euo pipefail
 
 OPAM_VERSION=2.3.0
+OCAML_VERSION=5.4.1
 SWITCH=webpage
 
 mkdir -p "$HOME/bin"
@@ -20,8 +21,13 @@ fi
 # so opam's build sandbox doesn't work there.
 [ -d "$HOME/.opam" ] || opam init -y --bare --no-setup --disable-sandboxing
 
+# Recreate the switch if it was made with a different compiler version.
+if opam switch list --short | grep -qx "$SWITCH" &&
+   [ "$(opam exec --switch="$SWITCH" -- ocamlc -version)" != "$OCAML_VERSION" ]; then
+  opam switch remove "$SWITCH" -y
+fi
 if ! opam switch list --short | grep -qx "$SWITCH"; then
-  opam switch create "$SWITCH" ocaml-base-compiler.5.2.0 -y
+  opam switch create "$SWITCH" "ocaml-base-compiler.$OCAML_VERSION" -y
 fi
 
 eval "$(opam env --switch="$SWITCH" --set-switch)"
