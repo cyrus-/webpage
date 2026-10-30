@@ -9,7 +9,7 @@
 :root {
   /* Same look regardless of the OS light/dark setting. */
   color-scheme: only light;
-  --paper: #ffe9ad;
+  --paper: #fff2b3;
   /* Strength of the map lines on the page background: 0 = flat. */
   --paper-texture: 0.3;
   --card: #fffefa;
