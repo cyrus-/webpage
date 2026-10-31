@@ -3,11 +3,11 @@ from one of the project's recent papers, rendered from the PDF in static/papers/
 at 300 dpi and scaled to 300px. Shown as a circle on the project card.
 
 
-hazel: the Hazel editor, https://hazel.org/build/dev/ (tutorial: holes), Oct 2026
-tylr: the tylr logo, https://tylr.fun/, Oct 2026
+hazel: the Table projector, https://hazel.org/build/dev/ (documentation: tables; from the OOPSLA 2026 lively typed tables work), Oct 2026
+tylr: the backpack in Hazel (typing `let y = if x < (1`; obligations `) then • else • in •` float above the cursor), https://hazel.org/build/dev/ scratchpad, Oct 2026
 grove: 2025-grove-popl, page 9
 chatlsp: 2024-chatlsp-oopsla, page 2
-livelits: the emotion livelit, docs/livelits-slide-emotion.png on hazelgrove/hazel branch integration/livelits-modular-editors (Matthew Hammer), Oct 2026
+livelits: the color picker livelit, two uses, on hazelgrove/hazel branch integration/livelits-modular-editors (Matthew Hammer), build.hazel.org, Oct 2026
 hazel-tutor: the conjunction commutativity derivation, https://hazel.org/build/dev/ (documentation: derivations), Oct 2026
 bastion: 2024-bastion-hope, page 2
 deckflow: 2025-deckflow-vlhcc, page 1
