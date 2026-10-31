@@ -81,8 +81,8 @@ let style = function
   | Dendrite ->
       {
         step = 2.;
-        feel = 12.;
-        blocked_at = 4.;
+        feel = 10.;
+        blocked_at = 3.6;
         avoidance = 0.25;
         turn_noise = 0.1;
         turn_memory = 0.9;
@@ -143,7 +143,7 @@ let advance r ~inside ~obstacles ~lift (w, cones) cone =
     clampf (-.s.max_turn) s.max_turn
       ((s.turn_memory *. cone.turning) +. Rng.range (Rng.key r "turn") (-.s.turn_noise) s.turn_noise)
   in
-  let lift = match cone.kind with Dendrite -> lift p | Branchlet -> 0.6 *. lift p in
+  let lift = match cone.kind with Dendrite -> lift p | Branchlet -> 1.2 *. (lift p ** 1.6) in
   let want = unit_v (dir (cone.heading +. turning) +: (lift *: v 0. (-1.)) +: (s.avoidance *: push)) in
   let a = cone.heading +. clampf (-.s.max_turn) s.max_turn (Flora.turn_to cone.heading (angle_of want)) in
   let q = p +: (s.step *: dir a) in
@@ -178,7 +178,7 @@ let advance r ~inside ~obstacles ~lift (w, cones) cone =
 
 (* New cones from the sides of existing dendrites, into free space. *)
 let sprouts r ~inside ~obstacles ~kind ~tries w =
-  let probe_at, free = match kind with Dendrite -> (11., 9.) | Branchlet -> (2.5, 1.8) in
+  let probe_at, free = match kind with Dendrite -> (9., 7.5) | Branchlet -> (2.5, 1.8) in
   List.init tries (fun i ->
       let ri = Rng.nth r i in
       let id = int_of_float (Rng.range (Rng.key ri "id") 0. (float w.next)) in
@@ -314,15 +314,28 @@ let draw ~seed:s pal =
     let rise = clampf 0. 1. ((soma.y -. q.y) /. (soma.y -. top)) in
     0.1 +. (0.2 *. rise) +. (0.9 *. (Float.max 0. ((rise -. 0.86) /. 0.14) ** 2.))
   in
-  let world = grow (Rng.key r "grow") ~seed ~cones ~inside ~obstacles ~lift ~rounds:500 ~branchlets_from:330 in
+  let world = grow (Rng.key r "grow") ~seed ~cones ~inside ~obstacles ~lift ~rounds:520 ~branchlets_from:360 in
   let nodes = Ids.fold (fun _ n acc -> n :: acc) world.by_id [] |> smooth |> smooth in
   let tips = tips nodes and kids = children nodes in
   let tips_of n = Option.value (Ids.find_opt n.id tips) ~default:1 in
   let kids_of n = Option.value (Ids.find_opt n.id kids) ~default:[] in
+  (* how far each node's dendrite (not branchlet) subtree reaches, in nodes;
+     short stubs are drawn fine, so dendrites read as smooth strokes *)
+  let reach =
+    List.sort (fun a b -> compare b.id a.id) nodes
+    |> List.fold_left
+         (fun m n ->
+           let d = if n.fine then 0 else 1 + Option.value (Ids.find_opt n.id m) ~default:0 in
+           let m = Ids.add n.id d m in
+           if n.parent < 0 then m
+           else Ids.update n.parent (fun s -> Some (max d (Option.value s ~default:0))) m)
+         Ids.empty
+  in
+  let stub n = Option.value (Ids.find_opt n.id reach) ~default:0 < 9 in
   (* pen width in tenths, after the pipe model: thick where many tips are fed *)
   (* hairs fine; dendrites at least a medium weight, heavier the more they feed *)
   let pen n =
-    if n.fine then 5. else Float.round (10. *. clampf 1.5 5. (0.85 *. (float (tips_of n) ** 0.27)))
+    if n.fine || stub n then 5. else Float.round (10. *. clampf 1.5 5. (0.85 *. (float (tips_of n) ** 0.27)))
   in
   (* unbranched runs, each one polyline of one width *)
   let rec runs from n =
