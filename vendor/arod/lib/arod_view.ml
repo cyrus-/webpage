@@ -330,6 +330,13 @@ let media_link c l =
 
 (** {1 Sidenote Rendering} *)
 
+(* Local change (webpage fork): a sidenote's trigger is a plain link to the
+   entry, so entry links work without arod's sidenote script. A bare [:slug]
+   or [@@handle] shows the entry's title (or the contact's name). *)
+let trigger_link ~link ~title t =
+  let bare = String.length t > 0 && (t.[0] = ':' || t.[0] = '@') in
+  Printf.sprintf {|<a href="%s">%s</a>|} link (html_escape_attr (if bare then title else t))
+
 let rec render_sidenote c = function
   | Bushel.Md.Contact_note (contact, trigger_text) ->
     let open Sortal_schema.Contact in
@@ -367,7 +374,7 @@ let rec render_sidenote c = function
 
     Cmarkit_renderer.Context.string c (Printf.sprintf
       {|<side-note type="contact" %s>%s</side-note>|}
-      (String.concat " " data_attrs) trigger_text);
+      (String.concat " " data_attrs) (trigger_link ~link:link_url ~title:name trigger_text));
     true
 
   | Bushel.Md.Paper_note (paper, trigger_text) ->
@@ -405,7 +412,7 @@ let rec render_sidenote c = function
 
     Cmarkit_renderer.Context.string c (Printf.sprintf
       {|<side-note type="paper" %s>%s</side-note>|}
-      (String.concat " " data_attrs) trigger_text);
+      (String.concat " " data_attrs) (trigger_link ~link:link_url ~title trigger_text));
     true
 
   | Bushel.Md.Idea_note (idea, trigger_text) ->
@@ -428,7 +435,7 @@ let rec render_sidenote c = function
 
     Cmarkit_renderer.Context.string c (Printf.sprintf
       {|<side-note type="idea" %s>%s</side-note>|}
-      (String.concat " " data_attrs) trigger_text);
+      (String.concat " " data_attrs) (trigger_link ~link:link_url ~title trigger_text));
     true
 
   | Bushel.Md.Note_note (note, trigger_text) ->
@@ -457,7 +464,7 @@ let rec render_sidenote c = function
 
     Cmarkit_renderer.Context.string c (Printf.sprintf
       {|<side-note type="note" %s>%s</side-note>|}
-      (String.concat " " data_attrs) trigger_text);
+      (String.concat " " data_attrs) (trigger_link ~link:link_url ~title trigger_text));
     true
 
   | Bushel.Md.Project_note (project, trigger_text) ->
@@ -484,7 +491,7 @@ let rec render_sidenote c = function
 
     Cmarkit_renderer.Context.string c (Printf.sprintf
       {|<side-note type="project" %s>%s</side-note>|}
-      (String.concat " " data_attrs) trigger_text);
+      (String.concat " " data_attrs) (trigger_link ~link:link_url ~title trigger_text));
     true
 
   | Bushel.Md.Video_note (video, trigger_text) ->
@@ -507,7 +514,7 @@ let rec render_sidenote c = function
 
     Cmarkit_renderer.Context.string c (Printf.sprintf
       {|<side-note type="video" %s>%s</side-note>|}
-      (String.concat " " data_attrs) trigger_text);
+      (String.concat " " data_attrs) (trigger_link ~link:link_url ~title trigger_text));
     true
 
   | Bushel.Md.Footnote_note (slug, block, trigger_text) ->

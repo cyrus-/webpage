@@ -27,6 +27,9 @@ let one_note_full n =
       let parent_title = Arod_model.Entry.title parent_ent in
       body ^ "\n\nRead more about [" ^ parent_title ^ "](:" ^ slug_ent ^ ")."
   in
+  (* Local change (webpage fork): the title heads the note, styled like a
+     card title (arod shows it in a page header the site replaces). *)
   El.div ~at:[At.class' "note"] [
+    El.h2 [El.txt n.Arod_model.Note.title];
     El.unsafe_raw (Arod_view.md_to_html body_with_ref)
   ]

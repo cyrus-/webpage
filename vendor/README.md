@@ -41,3 +41,7 @@ Local changes to these packages should be kept small and noted here.
   as their `rights`; a feed's `updated` is its newest note (the epoch when
   it has none, which used to raise); and each feed's self link is its own
   URL rather than always `/news.xml`.
+- `arod/lib/arod_view.ml`: sidenote triggers (`[:slug]`, `[@@handle]`) are
+  plain links to the entry, showing its title when the link has no text of
+  its own, so they work without arod's sidenote script.
+- `arod/lib/arod_notes.ml`: a note's page starts with its title.
