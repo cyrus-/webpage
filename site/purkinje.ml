@@ -281,12 +281,15 @@ let draw ~seed:s pal =
   in
   let at l i = List.nth l (min (List.length l - 1) i) in
   let last l = List.nth l (List.length l - 1) in
-  let wave ph s = 0.2 *. (sin ((s /. 14.) +. ph) +. (0.35 *. sin ((s /. 5.) +. (2. *. ph)))) in
-  let left = chain root 1 (fun s -> up -. 1.42 +. (0.0016 *. s) +. wave 0.3 s) 190. in
-  let left_up = chain (at left 22) 100 (fun s -> up -. 0.35 +. (0.004 *. s) +. wave 1.7 s) 58. in
-  let left_far = chain (at left 44) 150 (fun s -> up -. 0.15 +. wave 2.2 s) 30. in
-  let right = chain root 200 (fun s -> up +. 1.25 -. (0.004 *. s) -. wave 0.9 s) 110. in
-  let middle = chain root 300 (fun s -> up +. 0.22 -. (0.003 *. s) +. wave 2.9 s) 42. in
+  let rl = Rng.key r "limbs" in
+  (* each seed bends and stretches the limbs a little differently *)
+  let jig k lo hi = Rng.range (Rng.key rl k) lo hi in
+  let wave ph s = 0.2 *. (sin ((s /. 14.) +. ph +. jig "ph" 0. 6.) +. (0.35 *. sin ((s /. 5.) +. (2. *. ph)))) in
+  let left = chain root 1 (fun s -> up -. 1.42 +. jig "la" (-0.06) 0.06 +. (0.0016 *. s) +. wave 0.3 s) (190. *. jig "ll" 0.85 1.05) in
+  let left_up = chain (at left (int_of_float (jig "lui" 16. 28.))) 100 (fun s -> up -. 0.35 +. jig "lua" (-0.2) 0.2 +. (0.004 *. s) +. wave 1.7 s) (58. *. jig "lul" 0.7 1.3) in
+  let left_far = chain (at left (int_of_float (jig "lfi" 38. 52.))) 150 (fun s -> up -. 0.15 +. jig "lfa" (-0.2) 0.2 +. wave 2.2 s) (30. *. jig "lfl" 0.7 1.4) in
+  let right = chain root 200 (fun s -> up +. 1.25 +. jig "ra" (-0.1) 0.1 -. (0.004 *. s) -. wave 0.9 s) (110. *. jig "rl" 0.8 1.15) in
+  let middle = chain root 300 (fun s -> up +. 0.22 +. jig "ma" (-0.25) 0.25 -. (0.003 *. s) +. wave 2.9 s) (42. *. jig "ml" 0.7 1.4) in
   let middle_side = chain (at middle 9) 400 (fun s -> up -. 0.5 +. (0.008 *. s) +. wave 4.1 s) 30. in
   let limbs = [ left; left_up; left_far; right; middle; middle_side ] in
   let seed = root :: List.concat limbs in
@@ -299,7 +302,14 @@ let draw ~seed:s pal =
       limbs
   in
   (* the molecular layer: above the main limbs, below the pia *)
-  let inside q = q.x > 6. && q.x < w -. 6. && q.y > top && q.y < soma.y -. 14. -. (0.07 *. Float.abs (q.x -. soma.x)) in
+  (* the territory: roughly square, but with ragged sides and top *)
+  let ragged q k = 7. *. (sin ((q /. 23.) +. jig (k ^ "1") 0. 6.) +. (0.6 *. sin ((q /. 9.) +. jig (k ^ "2") 0. 6.))) in
+  let inside q =
+    q.x > 10. +. ragged q.y "l"
+    && q.x < w -. 10. -. ragged q.y "r"
+    && q.y > top +. 5. +. ragged q.x "t"
+    && q.y < soma.y -. 14. -. (0.07 *. Float.abs (q.x -. soma.x))
+  in
   let ro = Rng.key r "obstacles" in
   let obstacles =
     List.init 70 (fun i ->
