@@ -110,7 +110,7 @@ let live_reload_script =
 })();|}
 
 (* The botanical border drawn by default; the design switcher can swap it. *)
-let flora_default = "/flora/purkinje-forest.svg"
+let flora_default = "/flora/vine-forest.svg"
 
 let set_frame ~live () =
   let open Htmlit in
@@ -314,6 +314,15 @@ let routes cfg =
                 ~headers:[ ("content-type", "image/svg+xml") ]
                 (Lazy.force svg)))
         Flora.variants
+    @ [
+        (* work in progress, not in the static build: a Cajal-style Purkinje
+           cell; ?seed=N&ink=sepia|forest|indigo *)
+        Route.get_ [ "purkinje.svg" ] (fun req ->
+            let q = Route.Request.query req in
+            let seed = Option.bind (List.assoc_opt "seed" q) int_of_string_opt |> Option.value ~default:1 in
+            let svg = Purkinje.draw ~seed (Purkinje.ink_of_query q) in
+            Route.Response.raw ~status:200 ~headers:[ ("content-type", "image/svg+xml") ] svg);
+      ]
     @ arod
     @ [
         Route.get_ [ "omar-cv.pdf" ] (Arod.Handlers.static_file ~dir:"." "omar-cv.pdf");

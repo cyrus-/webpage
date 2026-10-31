@@ -1,6 +1,6 @@
 (* Flora: botanical borders for the right-hand margin of wide windows, after
-   engraved book ornaments: a flowering vine, crowned with a Purkinje cell, a
-   tree or a big flower, printed with a little risograph grain.
+   engraved book ornaments: a flowering vine, ending in a flower or crowned
+   with a tree or a big bloom, printed with a little risograph grain.
 
    Everything here is a pure function of its arguments. "Random" choices come
    from [Rng], where a value is a hash of the path of keys that leads to it,
@@ -539,48 +539,6 @@ let draw_limbs pal limbs =
          let d = List.filter (fun l -> pen l = w) limbs |> List.map (fun l -> line_d (Array.to_list l.pts)) in
          path (String.concat "" d) ([ no_fill ] @ stroke pal.ink (w /. 10.) @ round))
 
-(* Short wiggly side twigs along the thin limbs: the "spiny branchlets"
-   that fill a Purkinje cell's arbor. *)
-let twigs cfg r limbs =
-  List.concat_map
-    (fun (j, l) ->
-      if l.width > 1.05 then []
-      else
-        let n = Array.length l.pts in
-        List.init (n / 7) (fun k ->
-            let i = 3 + (k * 7) in
-            if i >= n then None
-            else
-              let rk = Rng.nth (Rng.nth r j) k in
-              let side = if k mod 2 = 0 then 1. else -1. in
-              let a = heading_at l.pts i +. (side *. Rng.range (Rng.key rk "a") 0.5 1.1) in
-              let ph = Rng.range (Rng.key rk "ph") 0. 6.28 in
-              let pts =
-                curve ~step:1.5 l.pts.(i) (Rng.range (Rng.key rk "l") 4. 8.5) (fun s -> a +. (0.35 *. sin ((s *. 0.5) +. ph)))
-                |> List.take_while cfg.inside
-              in
-              if List.length pts < 2 then None else Some { pts = Array.of_list pts; width = 0.5; tip = true })
-        |> List.filter_map Fun.id)
-    (List.mapi (fun j l -> (j, l)) limbs)
-
-(* Dendritic spines: tiny ticks along the thin limbs and twigs. *)
-let spines pal r limbs =
-  let ticks =
-    List.concat_map
-      (fun (j, l) ->
-        if l.width > 1.0 then []
-        else
-          List.init (Array.length l.pts) (fun i ->
-              if i = 0 || i mod 3 <> 0 then ""
-              else
-                let ri = Rng.nth (Rng.nth r j) i in
-                let side = if i mod 6 = 0 then 1. else -1. in
-                let a = heading_at l.pts i +. (side *. Rng.range (Rng.key ri "a") 1.0 1.9) in
-                seg_d l.pts.(i) (l.pts.(i) +: (Rng.range (Rng.key ri "l") 1.1 2.3 *: dir a))))
-      (List.mapi (fun j l -> (j, l)) limbs)
-  in
-  path (String.concat "" ticks) ([ no_fill ] @ stroke pal.ink 0.42 @ round)
-
 let in_ellipse c rx ry p =
   let dx = (p.x -. c.x) /. rx and dy = (p.y -. c.y) /. ry in
   (dx *. dx) +. (dy *. dy) < 1.
@@ -588,27 +546,23 @@ let in_ellipse c rx ry p =
 
 (** {1 Composition} *)
 
-type crown = Purkinje | Tree | Bloom
+type crown = Vine | Tree | Bloom
 
 let width = 340.
 let height = 1000.
 let cx = 170.
 
 (* Where the main stem ends and the crown begins. *)
-let crown_base = function Purkinje -> 338. | Tree -> 372. | Bloom -> 130.
+let crown_base = function Vine -> 50. | Tree -> 372. | Bloom -> 130.
 
-(* Where the stem meets the crown: off centre for the Purkinje cell, whose
-   soma sits right of the middle, with its long limb sweeping left. *)
-let stem_top_x = function Purkinje -> cx +. 28. | Tree | Bloom -> cx
-
-(* Where flowers and leaves stop on the stem (above: axon, trunk or bare stem). *)
-let plant_top = function Purkinje -> 500. | Tree -> 430. | Bloom -> 250.
+(* Where flowers and leaves stop on the stem (above: trunk or bare stem). *)
+let plant_top = function Vine -> 90. | Tree -> 430. | Bloom -> 250.
 
 (* The main stem: a spline from below the bottom edge up to the crown,
    swinging from side to side, less so near the top. *)
 let main_stem r crown =
   let top = crown_base crown in
-  let ys = List.filter (fun y -> y > top +. 30.) [ 1040.; 950.; 860.; 770.; 680.; 595.; 515.; 440. ] @ [ top ] in
+  let ys = List.filter (fun y -> y > top +. 30.) [ 1040.; 950.; 860.; 770.; 680.; 595.; 515.; 440.; 360.; 280.; 200.; 120. ] @ [ top ] in
   let k = List.length ys in
   spline
     (List.mapi
@@ -616,7 +570,7 @@ let main_stem r crown =
          let t = float i /. float (k - 1) in
          let amp = 74. *. ((1. -. t) ** 0.6) in
          let jit = Rng.range (Rng.nth (Rng.key r "stem") i) (-8.) 8. in
-         if i = k - 1 then v (stem_top_x crown) y else v (cx +. (amp *. sin (1.9 +. (1.25 *. float i))) +. jit) y)
+         if i = k - 1 then v cx y else v (cx +. (amp *. sin (1.9 +. (1.25 *. float i))) +. jit) y)
        ys)
 
 type node = { back : string list; front : string list }
@@ -718,268 +672,6 @@ let second_vine pal r =
     front = cyme pal (Rng.key r "v2c") ~at:a.(n - 1) ~heading:(heading_at a (n - 1)) ~length:36. ~curl:(-1.);
   }
 
-(** {2 Space colonization}
-
-    Runions et al.'s algorithm for trees that fill a region evenly: scatter
-    attraction points over it, then grow a step at a time toward them. Each
-    point pulls on the nearest node within [influence] and is used up once
-    a node comes within [kill]; [lift p] adds an upward pull at [p] and
-    [wobble n] turns node [n]'s next step a little. Growth starts from the [seed] tree. *)
-
-module Cells = Map.Make (struct
-  type t = int * int
-
-  let compare = compare
-end)
-
-module Ids = Map.Make (Int)
-
-type sc = { id : int; pos : v; parent : int (* -1 for the root *) }
-
-let unit_v a =
-  let l = Float.hypot a.x a.y in
-  if l < 1e-9 then a else (1. /. l) *: a
-
-let dist a b = Float.hypot (a.x -. b.x) (a.y -. b.y)
-
-let colonize ~attractors ~seed ~influence ~kill ~step ~lift ~wobble ~rounds =
-  let cell p = (int_of_float (Float.floor (p.x /. influence)), int_of_float (Float.floor (p.y /. influence))) in
-  let add grid n = Cells.update (cell n.pos) (fun l -> Some (n :: Option.value l ~default:[])) grid in
-  let nearest grid p =
-    let ci, cj = cell p in
-    List.concat_map (fun di -> List.map (fun dj -> (ci + di, cj + dj)) [ -1; 0; 1 ]) [ -1; 0; 1 ]
-    |> List.concat_map (fun c -> Option.value (Cells.find_opt c grid) ~default:[])
-    |> List.fold_left
-         (fun best n ->
-           let d = dist n.pos p in
-           match best with
-           | Some (_, bd) when bd <= d -> best
-           | _ when d < influence -> Some (n, d)
-           | _ -> best)
-         None
-  in
-  let rec go k nodes grid next attractors =
-    let pulls, alive =
-      List.fold_left
-        (fun (pulls, alive) a ->
-          match nearest grid a with
-          | Some (_, d) when d < kill -> (pulls, alive)
-          | Some (n, _) ->
-              (Ids.update n.id (fun l -> Some (n, a :: Option.fold ~none:[] ~some:snd l)) pulls, a :: alive)
-          | None -> (pulls, a :: alive))
-        (Ids.empty, []) attractors
-    in
-    let grown, next =
-      Ids.fold
-        (fun _ (n, pts) (acc, next) ->
-          let pull = List.fold_left (fun s a -> s +: unit_v (a -: n.pos)) (v 0. 0.) pts in
-          let d = unit_v (unit_v pull +: v 0. (-.lift n.pos)) in
-          let p = n.pos +: (step *: dir (angle_of d +. wobble n)) in
-          match nearest grid p with
-          | Some (_, d) when d < step *. 0.5 -> (acc, next)
-          | _ -> ({ id = next; pos = p; parent = n.id } :: acc, next + 1))
-        pulls ([], next)
-    in
-    if grown = [] || k >= rounds then nodes
-    else go (k + 1) (grown @ nodes) (List.fold_left add grid grown) next alive
-  in
-  let next = 1 + List.fold_left (fun m n -> max m n.id) 0 seed in
-  go 0 seed (List.fold_left add Cells.empty seed) next attractors
-
-(* How many tips each node feeds. Children are newer than their parents,
-   so one pass from the newest node back suffices. *)
-let tips nodes =
-  List.sort (fun a b -> compare b.id a.id) nodes
-  |> List.fold_left
-       (fun m n ->
-         let t = match Ids.find_opt n.id m with None -> 1 | Some s -> s in
-         let m = Ids.add n.id t m in
-         if n.parent < 0 then m else Ids.update n.parent (fun s -> Some (Option.value s ~default:0 + t)) m)
-       Ids.empty
-
-(* Soften the zigzags: pull each node a little toward its parent and its
-   children. *)
-let smooth nodes =
-  let by_id = List.fold_left (fun m n -> Ids.add n.id n m) Ids.empty nodes in
-  let kids =
-    List.fold_left
-      (fun m n -> if n.parent < 0 then m else Ids.update n.parent (fun l -> Some (n :: Option.value l ~default:[])) m)
-      Ids.empty nodes
-  in
-  List.map
-    (fun n ->
-      match (Ids.find_opt n.parent by_id, Ids.find_opt n.id kids) with
-      | Some p, Some (c :: _) -> { n with pos = (0.5 *: n.pos) +: (0.25 *: p.pos) +: (0.25 *: c.pos) }
-      | _ -> n)
-    nodes
-
-let soma_at c =
-  cubic_d (c +: v (-10.) 0.)
-    [
-      (c +: v (-10.5) (-8.), c +: v (-4.) (-10.), c +: v (-2.6) (-15.));
-      (c +: v 0. (-16.), c +: v 0. (-16.), c +: v 2.6 (-15.));
-      (c +: v 4. (-10.), c +: v 10.5 (-8.), c +: v 10. 0.);
-      (c +: v 9.5 10., c +: v (-9.5) 10., c +: v (-10.) 0.);
-    ]
-
-(* A Purkinje cell as Ramón y Cajal drew them: a dark soma at the bottom,
-   thick limbs spreading sideways from it, and from those, wavy dendrites
-   rising to fill a square block, fuzzy with spiny branchlets. *)
-let purkinje pal r =
-  let soma = v (stem_top_x Purkinje) (crown_base Purkinje -. 8.) in
-  let root = { id = 0; pos = soma +: v 0. (-22.); parent = -1 } in
-  (* the main limbs, drawn by hand and lopsided as in Cajal's drawing: one
-     long heavy limb sweeping far out to the left, with limbs of its own
-     rising from it, and shorter, uneven ones to the right; the rest grows
-     from these *)
-  let chain parent first heading length =
-    curve ~step:3. parent.pos length heading
-    |> List.tl
-    |> List.mapi (fun i p -> { id = first + i; pos = p; parent = (if i = 0 then parent.id else first + i - 1) })
-  in
-  let at l i = List.nth l (min (List.length l - 1) i) in
-  let wave ph s = (0.2 *. sin ((s /. 14.) +. ph)) +. (0.07 *. sin ((s /. 5.) +. (2. *. ph))) in
-  let left = chain root 1 (fun s -> up -. 1.36 +. (0.0032 *. s) +. wave 0.3 s) 180. in
-  let left_up = chain (at left 22) 100 (fun s -> up -. 0.35 +. (0.004 *. s) +. wave 1.7 s) 58. in
-  let left_far = chain (at left 44) 150 (fun s -> up -. 0.15 +. wave 2.2 s) 30. in
-  let right = chain root 200 (fun s -> up +. 0.95 -. (0.006 *. s) -. wave 0.9 s) 78. in
-  let middle = chain root 300 (fun s -> up +. 0.22 -. (0.003 *. s) +. wave 2.9 s) 42. in
-  let middle_side = chain (at middle 9) 400 (fun s -> up -. 0.5 +. (0.008 *. s) +. wave 4.1 s) 30. in
-  let seed = (root :: left) @ left_up @ left_far @ right @ middle @ middle_side in
-  (* Where the dendrites go: denser in some patches than others, with small
-     voids (where, in the cerebellum, other cells sit) that they grow
-     around, and little below the main limbs. *)
-  let ra = Rng.key r "attractors" in
-  let ph k = Rng.range (Rng.nth (Rng.key ra "ph") k) 0. 6.28 in
-  let density p =
-    0.84
-    +. (0.12 *. sin ((p.x /. 31.) +. ph 0) *. sin ((p.y /. 43.) +. ph 1))
-    +. (0.1 *. sin (((p.x +. p.y) /. 23.) +. ph 2))
-  in
-  let voids =
-    List.init 24 (fun k ->
-        let rk = Rng.nth (Rng.key ra "voids") k in
-        ( v (Rng.range (Rng.key rk "x") 10. (width -. 10.)) (Rng.range (Rng.key rk "y") 20. (soma.y -. 30.)),
-          Rng.range (Rng.key rk "rx") 7. 16.,
-          Rng.range (Rng.key rk "ry") 9. 20. ))
-  in
-  let attractors =
-    List.init 7600 (fun k ->
-        let rk = Rng.nth ra k in
-        (v (Rng.range (Rng.key rk "x") 8. (width -. 8.)) (Rng.range (Rng.key rk "y") 14. (soma.y -. 4.)), Rng.unit (Rng.key rk "keep")))
-    |> List.filter_map (fun (p, u) ->
-           if
-             u < density p
-             && p.y < soma.y -. 16. -. (0.18 *. Float.abs (p.x -. soma.x))
-             && not (List.exists (fun (c, rx, ry) -> in_ellipse c rx ry p) voids)
-           then Some p
-           else None)
-  in
-  (* height above the soma, 0 to 1: low down there is no upward pull and
-     the most curl *)
-  let rise p = Float.max 0. (Float.min 1. ((soma.y -. p.y) /. (soma.y -. 14.))) in
-  let curl p =
-    (0.55 -. (0.3 *. rise p))
-    *. (sin ((p.x /. 19.) +. ph 3) +. (0.6 *. sin ((p.y /. 13.) +. ph 4)) +. (0.4 *. sin (((p.x -. p.y) /. 9.) +. ph 5)))
-  in
-  let nodes =
-    colonize ~attractors ~seed ~influence:18. ~kill:4. ~step:2.2
-      ~lift:(fun p -> 0.3 *. rise p)
-      ~wobble:(fun n -> curl n.pos)
-      ~rounds:500
-    |> smooth
-  in
-  let tips = tips nodes in
-  let tips_of n = Option.value (Ids.find_opt n.id tips) ~default:1 in
-  let by_id = List.fold_left (fun m n -> Ids.add n.id n m) Ids.empty nodes in
-  let kids =
-    List.fold_left
-      (fun m n -> if n.parent < 0 then m else Ids.update n.parent (fun l -> Some (n :: Option.value l ~default:[])) m)
-      Ids.empty nodes
-  in
-  let kids_of n = Option.value (Ids.find_opt n.id kids) ~default:[] in
-  (* pen width in tenths, after the pipe model: thick where many tips are fed *)
-  let pen n = Float.round (10. *. Float.max 0.45 (Float.min 5.6 (0.36 *. (float (tips_of n) ** 0.55)))) in
-  (* unbranched runs, each one polyline of one width (tips, and so the pen,
-     only change where the tree forks) *)
-  let rec runs from n =
-    let rec follow n acc = match kids_of n with [ c ] -> follow c (c.pos :: acc) | _ -> (n, List.rev acc) in
-    let last, pts = follow n [ n.pos ] in
-    (pen n, line_d (from :: pts)) :: List.concat_map (runs last.pos) (kids_of last)
-  in
-  let segments = List.concat_map (runs root.pos) (kids_of root) in
-  let limbs =
-    List.sort_uniq compare (List.map fst segments)
-    |> List.map (fun w ->
-           let d = List.filter_map (fun (w', s) -> if w' = w then Some s else None) segments in
-           path (String.concat "" d) ([ no_fill ] @ stroke pal.ink (w /. 10.) @ round))
-  in
-  let heading n =
-    match Ids.find_opt n.parent by_id with Some p -> angle_of (n.pos -: p.pos) | None -> up
-  in
-  let thin = List.filter (fun n -> tips_of n <= 4) nodes in
-  let rt = Rng.key r "twigs" in
-  let twigs =
-    List.filter_map
-      (fun n ->
-        let rn = Rng.nth rt n.id in
-        if not (Rng.chance rn 0.3) then None
-        else
-          let side = if Rng.chance (Rng.key rn "s") 0.5 then 1. else -1. in
-          let a = heading n +. (side *. Rng.range (Rng.key rn "a") 0.7 1.4) in
-          let ph = Rng.range (Rng.key rn "ph") 0. 6.28 in
-          Some (line_d (curve ~step:1.5 n.pos (Rng.range (Rng.key rn "l") 3. 9.) (fun s -> a +. (0.6 *. sin ((s *. 0.7) +. ph))))))
-      thin
-  in
-  let rs = Rng.key r "spines" in
-  let spines =
-    List.filter_map
-      (fun n ->
-        let rn = Rng.nth rs n.id in
-        if not (Rng.chance rn 0.5) then None
-        else
-          let side = if Rng.chance (Rng.key rn "s") 0.5 then 1. else -1. in
-          let a = heading n +. (side *. Rng.range (Rng.key rn "a") 1.1 1.9) in
-          Some (seg_d n.pos (n.pos +: (Rng.range (Rng.key rn "l") 1.2 2.2 *: dir a))))
-      thin
-  in
-  let trunk =
-    path
-      (closed_d (ribbon (spline [ soma +: v 0. (-12.); soma +: v (-0.5) (-18.); root.pos ]) (fun t -> lerp 6. 5.4 t)))
-      [ fill pal.ink ]
-  in
-  ( [],
-    limbs
-    @ [
-        path (String.concat "" twigs) ([ no_fill ] @ stroke pal.ink 0.45 @ round);
-        path (String.concat "" spines) ([ no_fill ] @ stroke pal.ink 0.4 @ round);
-        trunk;
-        path (soma_at soma) ([ fill pal.ink ] @ stroke pal.ink 0.6);
-      ] )
-
-(* The axon: from the soma down to where the vine takes over, sheathed in
-   myelin with gaps (nodes of Ranvier), with one recurrent collateral. *)
-let axon pal stem =
-  let a = Array.of_list stem in
-  let lengths = arc_lengths a in
-  let total = lengths.(Array.length lengths - 1) in
-  let between s0 s1 = List.filteri (fun i _ -> lengths.(i) >= s0 && lengths.(i) <= s1) stem in
-  let internodes =
-    List.init (int_of_float ((total -. 26.) /. 19.)) (fun k ->
-        let s0 = 8. +. (float k *. 19.) in
-        between s0 (s0 +. 15.))
-    |> List.filter (fun l -> List.length l >= 2)
-  in
-  let sheath w c = List.map (fun l -> path (line_d l) ([ no_fill ] @ stroke c w @ round)) internodes in
-  let j = index_at_length lengths (total *. 0.6) in
-  let collateral = curve ~step:1.5 a.(j) 46. (fun s -> heading_at a j +. 2.2 +. (s *. 0.022)) in
-  let boutons = List.filteri (fun i _ -> i > 0 && i mod 8 = 0) collateral in
-  let _, _, myelin = pal.bloom2 in
-  [ path (line_d stem) ([ no_fill ] @ stroke pal.ink 1.2 @ round) ]
-  @ sheath 5.0 pal.ink @ sheath 3.0 myelin
-  @ [ path (line_d collateral) ([ no_fill ] @ stroke pal.ink 0.6 @ round) ]
-  @ List.map (fun p -> circle p 1.3 [ fill pal.ink ]) boutons
-
 (* A tree: the stem thickens into a trunk that branches into a round,
    leafy crown hung with a few red fruit. *)
 let tree pal r =
@@ -1032,6 +724,10 @@ let tree pal r =
   in
   ([], (trunk :: draw_limbs pal main) @ foliage @ fruit)
 
+(* The vine simply ends in a flower. *)
+let vine_top pal r =
+  ([], [ flower5 pal (Rng.key r "top") ~grad:"pa" ~at:(v cx (crown_base Vine)) ~radius:26. ~tilt:(-18.) ~squash:0.82 ])
+
 (* One big open flower with two buds, as at the head of an engraved border. *)
 let bloom pal r =
   let c = v cx (crown_base Bloom) in
@@ -1063,7 +759,7 @@ let fade =
     (int_of_float width) (int_of_float height) (int_of_float width) (int_of_float height)
 
 let svg ~crown pal =
-  let r = Rng.make (match crown with Purkinje -> 1 | Tree -> 2 | Bloom -> 3) in
+  let r = Rng.make (match crown with Vine -> 1 | Tree -> 2 | Bloom -> 3) in
   let stem = main_stem r crown in
   let a = Array.of_list stem in
   let lengths = arc_lengths a in
@@ -1075,14 +771,10 @@ let svg ~crown pal =
   let plant = List.filteri (fun i _ -> i <= split) stem in
   let above = List.filteri (fun i _ -> i >= split) stem in
   let w0, w1, w2 =
-    match crown with Purkinje -> (6.6, 2.4, 2.4) | Tree -> (8., 5.6, 7.) | Bloom -> (6.6, 3.2, 2.6)
+    match crown with Vine -> (6.6, 2.2, 1.8) | Tree -> (8., 5.6, 7.) | Bloom -> (6.6, 3.2, 2.6)
   in
   let plant_stem = path (closed_d (ribbon plant (fun t -> lerp w0 w1 t))) [ fill pal.ink ] in
-  let upper =
-    match crown with
-    | Purkinje -> axon pal above
-    | Tree | Bloom -> [ path (closed_d (ribbon above (fun t -> lerp w1 w2 t))) [ fill pal.ink ] ]
-  in
+  let upper = path (closed_d (ribbon above (fun t -> lerp w1 w2 t))) [ fill pal.ink ] in
   (* a pale line down one side of the stem, to make it look round *)
   let highlight =
     let ns = normals a in
@@ -1108,12 +800,12 @@ let svg ~crown pal =
   in
   let vine = second_vine pal (Rng.key r "vine") in
   let crown_back, crown_front =
-    match crown with Purkinje -> purkinje pal r | Tree -> tree pal r | Bloom -> bloom pal r
+    match crown with Vine -> vine_top pal r | Tree -> tree pal r | Bloom -> bloom pal r
   in
   let body =
     vine.back @ crown_back
     @ List.concat_map (fun n -> n.back) nodes
-    @ [ plant_stem; highlight ] @ upper @ vine.front
+    @ [ plant_stem; highlight; upper ] @ vine.front
     @ List.concat_map (fun n -> n.front) nodes
     @ crown_front
   in
@@ -1125,7 +817,7 @@ let svg ~crown pal =
     (grain_filter ~w:(int_of_float width) ~h:(int_of_float height))
     (String.concat "" body)
 
-let crowns = [ ("purkinje", Purkinje); ("tree", Tree); ("bloom", Bloom) ]
+let crowns = [ ("vine", Vine); ("tree", Tree); ("bloom", Bloom) ]
 let palettes = [ forest; indigo ]
 
 (** Every variant, as (file name, lazily drawn SVG). *)

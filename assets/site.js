@@ -232,13 +232,14 @@
   // crown and ink, e.g. /flora/purkinje-forest.svg)
   var floraImg = document.querySelector(".flora img");
   if (floraImg) {
-    var flora = { crown: get("floraCrown") || "purkinje", ink: get("floraInk") || "forest" };
+    var flora = { crown: get("floraCrown") || "vine", ink: get("floraInk") || "forest" };
+    if (["vine", "tree", "bloom", "off"].indexOf(flora.crown) < 0) flora.crown = "vine";
     var showFlora = function () {
       if (flora.crown === "off") { root.setAttribute("data-flora", "off"); return; }
       root.removeAttribute("data-flora");
       floraImg.src = floraImg.src.replace(/[a-z]+-[a-z]+\.svg$/, flora.crown + "-" + flora.ink + ".svg");
     };
-    [["flora", "crown", "floraCrown", ["purkinje", "tree", "bloom", "off"]],
+    [["flora", "crown", "floraCrown", ["vine", "tree", "bloom", "off"]],
      ["ink", "ink", "floraInk", ["forest", "indigo"]]].forEach(function (g) {
       var frow = document.createElement("div");
       frow.className = "row";
