@@ -723,8 +723,8 @@ let second_vine pal r =
     Runions et al.'s algorithm for trees that fill a region evenly: scatter
     attraction points over it, then grow a step at a time toward them. Each
     point pulls on the nearest node within [influence] and is used up once
-    a node comes within [kill]; [lift] adds an upward pull and [wobble n]
-    turns node [n]'s next step a little. Growth starts from the [seed] tree. *)
+    a node comes within [kill]; [lift p] adds an upward pull at [p] and
+    [wobble n] turns node [n]'s next step a little. Growth starts from the [seed] tree. *)
 
 module Cells = Map.Make (struct
   type t = int * int
@@ -773,7 +773,7 @@ let colonize ~attractors ~seed ~influence ~kill ~step ~lift ~wobble ~rounds =
       Ids.fold
         (fun _ (n, pts) (acc, next) ->
           let pull = List.fold_left (fun s a -> s +: unit_v (a -: n.pos)) (v 0. 0.) pts in
-          let d = unit_v (unit_v pull +: v 0. (-.lift)) in
+          let d = unit_v (unit_v pull +: v 0. (-.lift n.pos)) in
           let p = n.pos +: (step *: dir (angle_of d +. wobble n)) in
           match nearest grid p with
           | Some (_, d) when d < step *. 0.5 -> (acc, next)
@@ -838,7 +838,7 @@ let purkinje pal r =
     |> List.mapi (fun i p -> { id = first + i; pos = p; parent = (if i = 0 then parent.id else first + i - 1) })
   in
   let at l i = List.nth l (min (List.length l - 1) i) in
-  let wave ph s = (0.1 *. sin ((s /. 11.) +. ph)) +. (0.05 *. sin ((s /. 4.3) +. (2. *. ph))) in
+  let wave ph s = (0.2 *. sin ((s /. 14.) +. ph)) +. (0.07 *. sin ((s /. 5.) +. (2. *. ph))) in
   let left = chain root 1 (fun s -> up -. 1.36 +. (0.0032 *. s) +. wave 0.3 s) 180. in
   let left_up = chain (at left 22) 100 (fun s -> up -. 0.35 +. (0.004 *. s) +. wave 1.7 s) 58. in
   let left_far = chain (at left 44) 150 (fun s -> up -. 0.15 +. wave 2.2 s) 30. in
@@ -852,19 +852,19 @@ let purkinje pal r =
   let ra = Rng.key r "attractors" in
   let ph k = Rng.range (Rng.nth (Rng.key ra "ph") k) 0. 6.28 in
   let density p =
-    0.68
-    +. (0.18 *. sin ((p.x /. 31.) +. ph 0) *. sin ((p.y /. 43.) +. ph 1))
-    +. (0.14 *. sin (((p.x +. p.y) /. 23.) +. ph 2))
+    0.84
+    +. (0.12 *. sin ((p.x /. 31.) +. ph 0) *. sin ((p.y /. 43.) +. ph 1))
+    +. (0.1 *. sin (((p.x +. p.y) /. 23.) +. ph 2))
   in
   let voids =
-    List.init 70 (fun k ->
+    List.init 24 (fun k ->
         let rk = Rng.nth (Rng.key ra "voids") k in
         ( v (Rng.range (Rng.key rk "x") 10. (width -. 10.)) (Rng.range (Rng.key rk "y") 20. (soma.y -. 30.)),
-          Rng.range (Rng.key rk "rx") 4. 10.,
-          Rng.range (Rng.key rk "ry") 7. 17. ))
+          Rng.range (Rng.key rk "rx") 7. 16.,
+          Rng.range (Rng.key rk "ry") 9. 20. ))
   in
   let attractors =
-    List.init 7000 (fun k ->
+    List.init 7600 (fun k ->
         let rk = Rng.nth ra k in
         (v (Rng.range (Rng.key rk "x") 8. (width -. 8.)) (Rng.range (Rng.key rk "y") 14. (soma.y -. 4.)), Rng.unit (Rng.key rk "keep")))
     |> List.filter_map (fun (p, u) ->
@@ -875,10 +875,17 @@ let purkinje pal r =
            then Some p
            else None)
   in
-  let rw = Rng.key r "wobble" in
+  (* height above the soma, 0 to 1: low down there is no upward pull and
+     the most curl *)
+  let rise p = Float.max 0. (Float.min 1. ((soma.y -. p.y) /. (soma.y -. 14.))) in
+  let curl p =
+    (0.55 -. (0.3 *. rise p))
+    *. (sin ((p.x /. 19.) +. ph 3) +. (0.6 *. sin ((p.y /. 13.) +. ph 4)) +. (0.4 *. sin (((p.x -. p.y) /. 9.) +. ph 5)))
+  in
   let nodes =
-    colonize ~attractors ~seed ~influence:24. ~kill:5. ~step:2.5 ~lift:0.55
-      ~wobble:(fun n -> Rng.range (Rng.nth rw n.id) (-0.4) 0.4)
+    colonize ~attractors ~seed ~influence:18. ~kill:4. ~step:2.2
+      ~lift:(fun p -> 0.3 *. rise p)
+      ~wobble:(fun n -> curl n.pos)
       ~rounds:500
     |> smooth
   in
@@ -910,18 +917,18 @@ let purkinje pal r =
   let heading n =
     match Ids.find_opt n.parent by_id with Some p -> angle_of (n.pos -: p.pos) | None -> up
   in
-  let thin = List.filter (fun n -> tips_of n <= 2) nodes in
+  let thin = List.filter (fun n -> tips_of n <= 4) nodes in
   let rt = Rng.key r "twigs" in
   let twigs =
     List.filter_map
       (fun n ->
         let rn = Rng.nth rt n.id in
-        if not (Rng.chance rn 0.22) then None
+        if not (Rng.chance rn 0.3) then None
         else
           let side = if Rng.chance (Rng.key rn "s") 0.5 then 1. else -1. in
           let a = heading n +. (side *. Rng.range (Rng.key rn "a") 0.7 1.4) in
           let ph = Rng.range (Rng.key rn "ph") 0. 6.28 in
-          Some (line_d (curve ~step:1.5 n.pos (Rng.range (Rng.key rn "l") 3. 7.) (fun s -> a +. (0.5 *. sin ((s *. 0.7) +. ph))))))
+          Some (line_d (curve ~step:1.5 n.pos (Rng.range (Rng.key rn "l") 3. 9.) (fun s -> a +. (0.6 *. sin ((s *. 0.7) +. ph))))))
       thin
   in
   let rs = Rng.key r "spines" in
