@@ -10,8 +10,6 @@ module N = Arod_model.Note
 module C = Sortal_schema.Contact
 module X = Syndic.Atom
 
-let anil_copyright = "(c) 1998-2025 Anil Madhavapeddy, all rights reserved"
-
 let author c =
   let uri = Option.map Uri.of_string (C.best_url c) in
   let email = match C.emails c with e :: _ -> Some e.C.address | [] -> None in
@@ -36,8 +34,8 @@ let link cfg e =
   let hreflang = None in
   {X.href; rel; type_media; title; length; hreflang}
 
-let news_feed_link cfg =
-  let href = form_uri cfg "/news.xml" in
+let self_link cfg uri =
+  let href = form_uri cfg uri in
   let rel = X.Self in
   let type_media = None in
   let title = cfg.Arod_config.site.name in
@@ -60,7 +58,6 @@ let atom_of_note cfg ~author note =
   let categories = List.map (fun tag ->
     X.category tag
   ) (N.tags note) in
-  let rights : X.title = X.Text anil_copyright in
   let source = None in
   let title : X.title = X.Text note.N.title in
   let published = N.origdate note in
@@ -107,7 +104,7 @@ let atom_of_note cfg ~author note =
       content, links
   in
   let entry = Syndic.Atom.entry
-    ~categories ~links ~published ~rights ?content
+    ~categories ~links ~published ?content
     ?source ~title ~updated
     ~id ~authors ()
   in
@@ -123,13 +120,17 @@ let feed cfg uri entries =
     let author = author @@ (Arod_model.lookup_by_handle cfg.Arod_config.site.author_handle |> Option.get) in
     let authors = [author] in
     let icon = Uri.of_string (cfg.site.base_url ^ "/assets/favicon.ico") in
-    let links = [news_feed_link cfg] in
+    let links = [self_link cfg uri] in
     let atom_entries = List.filter_map (atom_of_entry cfg ~author) entries in
     let title : X.text_construct = X.Text (cfg.site.name ^ "'s feed") in
-    let updated = Arod_model.Entry.datetime (List.hd entries) in
+    (* the newest note in the feed (entries of other kinds are left out) *)
+    let updated =
+      List.fold_left (fun acc e -> match e with
+        | `Note n when Ptime.is_later (N.datetime n) ~than:acc -> N.datetime n
+        | _ -> acc) Ptime.epoch entries
+    in
     let id = form_uri cfg uri in
-    let rights : X.title = X.Text anil_copyright in
-    X.feed ~id ~rights ~authors ~title ~updated ~icon ~links atom_entries
+    X.feed ~id ~authors ~title ~updated ~icon ~links atom_entries
   with exn -> Printexc.print_backtrace stdout; print_endline "x"; raise exn
 
 let feed_string cfg uri f =

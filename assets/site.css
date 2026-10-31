@@ -179,6 +179,9 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 15px 0; }
 .image-left svg { color: lightgray; }
 .image-left-img { width: 1em; }
 .image-left-txt { padding-left: 10px; position: relative; top: -2px; }
+/* X, Instagram, LinkedIn, GitHub, ORCID: a row of icons under Bluesky */
+.social-links { display: flex; align-items: center; gap: 13px; min-height: 1.5em; top: 0; }
+.social-links svg { display: block; width: 15px; height: 15px; color: inherit; }
 .svg-inline--fa { width: 1em; position: relative; left: 3px; top: 1px; }
 
 .news-list, .year-list { padding-left: 0; margin-bottom: -10px; }

@@ -37,3 +37,7 @@ Local changes to these packages should be kept small and noted here.
 - `arod/lib/arod_page.ml`: the page frame (header, content area, footer)
   is replaceable via `Arod_page.set_frame`; the default is unchanged.
   `site/main.ml` uses it for the two-column layout with a tab bar.
+- `arod/lib/arod_feed.ml`: the Atom feeds no longer carry Anil's copyright
+  as their `rights`; a feed's `updated` is its newest note (the epoch when
+  it has none, which used to raise); and each feed's self link is its own
+  URL rather than always `/news.xml`.

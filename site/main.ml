@@ -58,27 +58,10 @@ let prefix_links ~prefix body =
 
 (** {1 Footer}
 
-    Built from the site author's contact card (data/sortal/<handle>.yaml):
-    one link per entry in [services], labelled by its [label] field. *)
+    Just the feed links; the social links are in the sidebar
+    (layout/sidebar.html). *)
 
-let set_footer () =
-  let open Htmlit in
-  let author = Arod.Model.author () in
-  let name = Option.fold ~none:"" ~some:Sortal_schema.Contact.name author in
-  let services = Option.fold ~none:[] ~some:Sortal_schema.Contact.services author in
-  let link (svc : Sortal_schema.Contact.service) =
-    let label = Option.value svc.label ~default:svc.url in
-    El.a ~at:[ At.rel "me"; At.class' "noicon"; At.href svc.url ] [ El.txt label ]
-  in
-  let rec sep = function [] -> [] | [ x ] -> [ x ] | x :: xs -> x :: El.txt " / " :: sep xs in
-  let year = let (y, _, _), _ = Ptime.to_date_time (Ptime_clock.now ()) in y in
-  Arod.Footer.set
-    (El.splice
-       [
-         El.p [ El.em [ El.txt (Printf.sprintf "© %d %s. There are no third-party trackers on this site." year name) ] ];
-         El.p [ El.em (sep (List.map link services)) ];
-         Arod.Footer.feeds;
-       ])
+let set_footer () = Arod.Footer.set Arod.Footer.feeds
 
 (** {1 Layout}
 
@@ -425,11 +408,25 @@ let use_repo_contacts cfg =
     let dir = if Filename.is_relative dir then Filename.concat (Sys.getcwd ()) dir else dir in
     Unix.putenv "SORTAL_DATA_DIR" dir
 
+(* Draft notes show in the preview server but are left out of the built
+   site: its pages, listings and feeds. *)
+let drop_drafts () =
+  let e = Arod.Model.get_entries () in
+  let module E = Bushel.Entry in
+  Arod.Model.entries :=
+    Some
+      (E.v
+         ~papers:(E.papers e @ E.old_papers e)
+         ~notes:(List.filter (fun n -> not (Bushel.Note.draft n)) (E.notes e))
+         ~projects:(E.projects e) ~ideas:(E.ideas e) ~videos:(E.videos e) ~contacts:(E.contacts e)
+         ~images:(E.images e) ~doi_entries:(E.doi_entries e) ~data_dir:(E.data_dir e) ())
+
 let build cfg ~out ~prefix ~extra =
   use_repo_contacts cfg;
   Eio_main.run @@ fun env ->
   let fs = Eio.Stdenv.fs env in
   let _entries = Arod.Model.init ~cfg fs in
+  drop_drafts ();
   set_footer ();
   set_frame ~live:false ();
   let routes = routes cfg in
