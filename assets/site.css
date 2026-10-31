@@ -10,6 +10,8 @@
   /* Same look regardless of the OS light/dark setting. */
   color-scheme: only light;
   --paper: wheat; /* #f5deb3, as on the original site */
+  /* Boldness of the tan map lines on the page (0 = flat wheat). */
+  --paper-lines: 12;
   --card: #fffbef;
   --ink: #222;
   --ink-soft: #444;
@@ -55,7 +57,7 @@ body::before {
   inset: 0;
   z-index: -1;
   background: url("../images/cartographer.png");
-  filter: blur(0.7px) invert(1) brightness(0.583) contrast(12);
+  filter: blur(0.7px) invert(1) brightness(0.583) contrast(var(--paper-lines));
   mix-blend-mode: soft-light;
   opacity: var(--paper-texture);
   pointer-events: none;
@@ -354,6 +356,7 @@ footer a { font-weight: 600; }
 }
 .design-switcher .row { display: flex; align-items: center; gap: 6px; }
 .design-switcher .row > span { min-width: 74px; }
+.design-switcher input[type="range"] { width: 140px; accent-color: var(--header-accent); }
 .design-switcher input[type="color"] { width: 44px; height: 24px; padding: 0; border: 0; background: none; cursor: pointer; }
 .design-switcher code { color: #fff; min-width: 64px; }
 .design-switcher button {

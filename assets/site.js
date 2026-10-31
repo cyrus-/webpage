@@ -107,6 +107,34 @@
   };
   [lab, input, hex, reset].forEach(function (el) { row.appendChild(el); });
   bar.appendChild(row);
+
+  // boldness of the tan map lines on the page background
+  var lrow = document.createElement("div");
+  lrow.className = "row";
+  var llab = document.createElement("span");
+  llab.textContent = "lines";
+  var slider = document.createElement("input");
+  slider.type = "range"; slider.min = "0"; slider.max = "30"; slider.step = "1";
+  var lval = document.createElement("code");
+  function setLines(v) {
+    root.style.setProperty("--paper-lines", v);
+    slider.value = v; lval.textContent = v; set("paperLines", v);
+  }
+  slider.oninput = function () { setLines(slider.value); };
+  var lreset = document.createElement("button");
+  lreset.className = "reset";
+  lreset.textContent = "reset";
+  lreset.onclick = function () {
+    root.style.removeProperty("--paper-lines");
+    try { localStorage.removeItem("paperLines"); } catch (e) {}
+    var v = getComputedStyle(root).getPropertyValue("--paper-lines").trim();
+    slider.value = v; lval.textContent = v;
+  };
+  [llab, slider, lval, lreset].forEach(function (el) { lrow.appendChild(el); });
+  bar.appendChild(lrow);
+  if (get("paperLines")) setLines(get("paperLines"));
+  else { var v0 = getComputedStyle(root).getPropertyValue("--paper-lines").trim(); slider.value = v0; lval.textContent = v0; }
+
   document.body.appendChild(bar);
   if (get("paperColor")) setPaper(get("paperColor")); else show(current());
 
