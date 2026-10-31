@@ -303,6 +303,40 @@ footer a { font-weight: 600; }
 
 /* {1 Narrow screens} */
 
+/* {1 Flora}
+
+   A botanical border (drawn by site/flora.ml) in the right margin, only
+   when the window is wide enough for a third column. It stays in view as
+   the page scrolls; the image is absolutely placed so it never makes the
+   page taller. */
+
+.flora { display: none; }
+
+@media (min-width: 1500px) {
+  .main-area {
+    max-width: none;
+    grid-template-columns: 320px minmax(0, 915px) minmax(0, 1fr);
+  }
+  .flora {
+    display: block;
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: min(100vh, 100%);
+  }
+  .flora img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: left top;
+  }
+  :root[data-flora="off"] .flora { display: none; }
+}
+
+@media print { .flora { display: none; } }
+
 @media (max-width: 900px) {
   .main-area { grid-template-columns: minmax(0, 1fr); }
   footer { padding-left: 15px; }

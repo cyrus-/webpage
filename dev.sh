@@ -22,7 +22,8 @@ stop() { [ -n "$server_pid" ] && kill "$server_pid" 2>/dev/null && wait "$server
 trap 'stop; kill $watch_pid 2>/dev/null; exit 0' INT TERM
 
 fingerprint() {
-  find data layout site.toml _build/default/site/main.exe -type f -exec stat -f '%m %N' {} + 2>/dev/null | sort | shasum
+  # (main.exe briefly disappears while dune relinks it; that must not stop us)
+  find data layout site.toml _build/default/site/main.exe -type f -exec stat -f '%m %N' {} + 2>/dev/null | sort | shasum || true
 }
 
 start "$@"

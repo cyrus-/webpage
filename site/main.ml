@@ -109,6 +109,9 @@ let live_reload_script =
   check();
 })();|}
 
+(* The botanical border drawn by default; the design switcher can swap it. *)
+let flora_default = "/flora/purkinje-forest.svg"
+
 let set_frame ~live () =
   let open Htmlit in
   let header = read_file "layout/header.html" in
@@ -126,6 +129,10 @@ let set_frame ~live () =
             El.div ~at:[ At.class' "left-col" ] [ El.unsafe_raw sidebar ];
             El.div ~at:[ At.class' "right-col" ]
               [ El.unsafe_raw intro; tab_bar; El.div ~at:[ At.class' "content-grid" ] [ content ] ];
+            (* botanical border, shown only on wide windows (see Flora) *)
+            El.aside
+              ~at:[ At.class' "flora"; At.v "aria-hidden" "true" ]
+              [ El.img ~at:[ At.src flora_default; At.v "alt" ""; At.v "loading" "lazy" ] () ];
           ];
         footer;
       ]
@@ -300,6 +307,13 @@ let routes cfg =
        Route.get_ [ "talks" ] (talks_tab cfg);
        Route.get_ [ "videos" ] (talks_tab cfg);
      ]
+    @ List.map
+        (fun (name, svg) ->
+          Route.get_ [ "flora"; name ] (fun _req ->
+              Route.Response.raw ~status:200
+                ~headers:[ ("content-type", "image/svg+xml") ]
+                (Lazy.force svg)))
+        Flora.variants
     @ arod
     @ [
         Route.get_ [ "omar-cv.pdf" ] (Arod.Handlers.static_file ~dir:"." "omar-cv.pdf");
@@ -354,6 +368,7 @@ let pages () =
       entry_pages "ideas" (List.map Bushel.Idea.slug (Arod.Model.ideas ()));
       entry_pages "projects" (List.map Bushel.Project.slug (Arod.Model.projects ()));
       entry_pages "videos" (List.map Bushel.Video.slug (Arod.Model.videos ()));
+      List.map (fun (name, _) -> page ("/flora/" ^ name) ("flora/" ^ name)) Flora.variants;
       List.map
         (fun f -> page ("/" ^ f) f)
         [ "news.xml"; "feed.json"; "perma.xml"; "perma.json"; "sitemap.xml"; "robots.txt";

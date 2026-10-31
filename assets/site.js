@@ -228,6 +228,38 @@
   if (get("cardRadius")) setRadius(get("cardRadius"));
   else { var r0 = parseInt(getComputedStyle(root).getPropertyValue("--card-radius"), 10) || 0; rslider.value = r0; rval.textContent = r0 + "px"; }
 
+  // botanical border in the right margin (site/flora.ml draws one SVG per
+  // crown and ink, e.g. /flora/purkinje-forest.svg)
+  var floraImg = document.querySelector(".flora img");
+  if (floraImg) {
+    var flora = { crown: get("floraCrown") || "purkinje", ink: get("floraInk") || "forest" };
+    var showFlora = function () {
+      if (flora.crown === "off") { root.setAttribute("data-flora", "off"); return; }
+      root.removeAttribute("data-flora");
+      floraImg.src = floraImg.src.replace(/[a-z]+-[a-z]+\.svg$/, flora.crown + "-" + flora.ink + ".svg");
+    };
+    [["flora", "crown", "floraCrown", ["purkinje", "tree", "bloom", "off"]],
+     ["ink", "ink", "floraInk", ["forest", "indigo"]]].forEach(function (g) {
+      var frow = document.createElement("div");
+      frow.className = "row";
+      var flab = document.createElement("span");
+      flab.textContent = g[0];
+      frow.appendChild(flab);
+      g[3].forEach(function (o) {
+        var b = document.createElement("button");
+        b.textContent = o;
+        b.setAttribute("aria-pressed", String(flora[g[1]] === o));
+        b.onclick = function () {
+          flora[g[1]] = o; set(g[2], o); showFlora();
+          frow.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+        };
+        frow.appendChild(b);
+      });
+      bar.appendChild(frow);
+    });
+    showFlora();
+  }
+
   document.body.appendChild(bar);
   if (get("paperColor")) setPaper(get("paperColor")); else show(current());
 
