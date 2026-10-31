@@ -11,7 +11,7 @@
   color-scheme: only light;
   --paper: wheat; /* #f5deb3, as on the original site */
   /* Boldness of the tan map lines on the page (0 = flat wheat). */
-  --paper-lines: 12;
+  --paper-lines: 40;
   --card: #fffbef;
   --ink: #222;
   --ink-soft: #444;
