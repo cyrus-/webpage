@@ -51,3 +51,5 @@ Local changes to these packages should be kept small and noted here.
   site's own paper listings.
 - `arod/lib/arod_projects.ml`: no type icon before each item in a
   project's activity list.
+- `arod/lib/arod_papers.ml`: a paper's own page shows its note (an award,
+  or "Conditionally accepted").

@@ -263,6 +263,8 @@ article img { max-width: 100%; height: auto; }
 .paper-links svg { display: block; width: 15px; height: 15px; }
 .paper-links a { font-weight: normal; color: var(--venue); }
 .paper-links a:hover { color: var(--link); }
+/* a paper's own page (arod's markup) reuses .paper, but is not a two-column entry */
+.paper:has(> .paper-info) { display: block; }
 /* in arod's paper listings (project pages, a paper's own page) */
 .paper-info .paper-links { margin: 4px 0 12px; }
 

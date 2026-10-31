@@ -227,6 +227,13 @@ let one_paper_full p =
       El.h2 [El.txt (MP.title p)];
       El.p [authors p; El.txt "."];
       El.p [paper_publisher p; El.txt "."];
+      (* Local change (webpage fork): the paper's note (an award, or that it is
+         conditionally accepted), styled as in the site's paper listings. *)
+      (match MP.note p with
+       | None -> El.splice []
+       | Some n ->
+         let cl = if n = "Conditionally accepted" then "venue-note" else "paper-award" in
+         El.p ~at:[At.class' cl] [El.txt n]);
       El.p [paper_bar_for_feed p]
     ];
     img_el;
