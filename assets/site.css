@@ -13,7 +13,7 @@
   /* Boldness of the tan map lines on the page (0 = flat wheat). */
   --paper-lines: 40;
   /* "Vellum": translucent cream, so the map lines show faintly through. */
-  --card: rgba(255, 255, 255, 0.72);
+  --card: rgba(255, 253, 247, 0.72);
   /* Card outline ("pale"). */
   --card-border: #efe2bd;
   --ink: #222;
