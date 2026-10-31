@@ -560,11 +560,12 @@ let hangs = function Tree -> false | Vine | Bloom -> true
 let fy crown y = if hangs crown then height -. y else y
 let fa crown a = if hangs crown then -.a else a
 
-(* Where the main stem ends and the crown begins. *)
-let crown_base = function Vine -> 50. | Tree -> 372. | Bloom -> 130.
+(* Where the main stem ends and the crown begins. (The hanging ones end a
+   tenth of the way short of the bottom of the window.) *)
+let crown_base = function Vine -> 150. | Tree -> 372. | Bloom -> 230.
 
 (* Where flowers and leaves stop on the stem (above: trunk or bare stem). *)
-let plant_top = function Vine -> 90. | Tree -> 430. | Bloom -> 250.
+let plant_top = function Vine -> 190. | Tree -> 430. | Bloom -> 350.
 
 (* The main stem: a spline from below the bottom edge up to the crown,
    swinging from side to side, less so near the top. *)

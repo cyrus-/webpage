@@ -323,7 +323,7 @@ footer a { font-weight: 600; }
     position: relative;
     margin-top: -15px; /* up through .main-area's padding */
     align-self: start;
-    height: 90vh; /* ends a little above the bottom of the window */
+    height: 100vh;
   }
   .flora img {
     position: absolute;
