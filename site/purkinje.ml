@@ -300,8 +300,18 @@ let draw ~seed:s pal =
         let n = last l and m = at l (List.length l - 2) in
         { at = n; heading = angle_of (n.pos -: m.pos); turning = 0.; order = 1; kind = Dendrite; trail = [ n.id; m.id ] })
       limbs
+    (* and, like a candelabrum, secondaries rising at intervals along the
+       long sideways limbs *)
+    @ List.concat_map
+        (fun (key, l) ->
+          List.filteri (fun i _ -> i > 4 && i < List.length l - 3) l
+          |> List.filteri (fun i _ -> i mod 7 = 3)
+          |> List.map (fun n ->
+                 let rn = Rng.nth (Rng.key rl key) n.id in
+                 { at = n; heading = up +. Rng.range rn (-0.35) 0.35; turning = 0.; order = 2; kind = Dendrite;
+                   trail = [ n.id; n.parent ] }))
+        [ ("lc", left); ("rc", right) ]
   in
-  (* the molecular layer: above the main limbs, below the pia *)
   (* the territory: roughly square, but with ragged sides and top *)
   let ragged q k = 7. *. (sin ((q /. 23.) +. jig (k ^ "1") 0. 6.) +. (0.6 *. sin ((q /. 9.) +. jig (k ^ "2") 0. 6.))) in
   let inside q =
@@ -326,7 +336,8 @@ let draw ~seed:s pal =
   in
   let world = grow (Rng.key r "grow") ~seed ~cones ~inside ~obstacles ~lift ~rounds:520 ~branchlets_from:360 in
   let nodes = Ids.fold (fun _ n acc -> n :: acc) world.by_id [] |> smooth |> smooth in
-  let tips = tips nodes and kids = children nodes in
+  (* widths follow the dendrites alone, not the fine strands on them *)
+  let tips = tips (List.filter (fun n -> not n.fine) nodes) and kids = children nodes in
   let tips_of n = Option.value (Ids.find_opt n.id tips) ~default:1 in
   let kids_of n = Option.value (Ids.find_opt n.id kids) ~default:[] in
   (* how far each node's dendrite (not branchlet) subtree reaches, in nodes;
@@ -341,11 +352,11 @@ let draw ~seed:s pal =
            else Ids.update n.parent (fun s -> Some (max d (Option.value s ~default:0))) m)
          Ids.empty
   in
-  let stub n = Option.value (Ids.find_opt n.id reach) ~default:0 < 9 in
+  let stub n = Option.value (Ids.find_opt n.id reach) ~default:0 < 12 in
   (* pen width in tenths, after the pipe model: thick where many tips are fed *)
   (* hairs fine; dendrites at least a medium weight, heavier the more they feed *)
   let pen n =
-    if n.fine || stub n then 5. else Float.round (10. *. clampf 1.5 5. (0.85 *. (float (tips_of n) ** 0.27)))
+    if n.fine || stub n then 5. else Float.round (10. *. clampf 2. 5.5 (0.8 *. (float (tips_of n) ** 0.38)))
   in
   (* unbranched runs, each one polyline of one width *)
   let rec runs from n =
