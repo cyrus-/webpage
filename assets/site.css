@@ -9,7 +9,7 @@
 :root {
   /* Same look regardless of the OS light/dark setting. */
   color-scheme: only light;
-  --paper: #fff2b3;
+  --paper: wheat; /* #f5deb3, as on the original site */
   --card: #fffbef;
   --ink: #222;
   --ink-soft: #444;
