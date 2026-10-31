@@ -348,6 +348,13 @@ footer a { font-weight: 600; }
 
 @media (max-width: 900px) {
   .main-area { grid-template-columns: minmax(0, 1fr); }
+  /* One column: the intro card comes straight after the bio card, ahead of
+     the rest of the sidebar. The columns dissolve so their cards can be
+     reordered. */
+  .left-col, .right-col { display: contents; }
+  .main-area > * , .left-col > *, .right-col > * { order: 3; }
+  .left-col > .bio-card { order: 1; }
+  .right-col > .bio-card { order: 2; }
 }
 
 /* {1 Layout experiments}
