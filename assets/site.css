@@ -12,9 +12,10 @@
   --paper: wheat; /* #f5deb3, as on the original site */
   /* Boldness of the tan map lines on the page (0 = flat wheat). */
   --paper-lines: 40;
-  --card: #fffbef;
-  /* Outline colour for the "flat" card style. */
-  --card-border: #e3cf85;
+  /* "Vellum": translucent cream, so the map lines show faintly through. */
+  --card: rgba(255, 251, 239, 0.72);
+  /* Card outline ("pale"). */
+  --card-border: #efe2bd;
   --ink: #222;
   --ink-soft: #444;
   --muted: #888;
@@ -145,14 +146,14 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 15px 0; }
 .card {
   background: var(--card);
   padding: 15px;
-  box-shadow: 0 2px tan;
+  border: 1px solid var(--card-border);
   font-size: 11pt;
   margin-bottom: 15px;
 }
 
 .bio-card {
   color: white;
-  box-shadow: none;
+  border: none;
 }
 .bio-card h2 { color: white; }
 .bio-card a { font-weight: normal; color: #f0ffb6; }
@@ -223,7 +224,7 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 15px 0; }
 .content-grid > article,
 .content-grid > aside:not(:empty) {
   background: var(--card);
-  box-shadow: 0 2px tan;
+  border: 1px solid var(--card-border);
   padding: 15px 20px;
 }
 .content-grid > aside:empty { display: none; }
@@ -334,10 +335,10 @@ footer a { font-weight: 600; }
   border-radius: 2px;
   box-shadow: 0 1px 2px rgba(60, 40, 10, 0.12), 0 6px 18px rgba(60, 40, 10, 0.1);
 }
-:root[data-cards="flat"] .card:not(.bio-card),
-:root[data-cards="flat"] .content-grid > article {
-  box-shadow: none;
-  border: 1px solid var(--card-border);
+:root[data-cards="shadow"] .card:not(.bio-card),
+:root[data-cards="shadow"] .content-grid > article {
+  border: none;
+  box-shadow: 0 2px tan;
 }
 
 /* {1 Design preview}

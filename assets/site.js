@@ -55,7 +55,7 @@
     { label: "layout", attr: "data-layout", key: "layout", options: [
       ["default", "stack"], ["columns", "2 columns"], ["grid", "grid"], ["three", "3 columns"] ] },
     { label: "cards", attr: "data-cards", key: "cards", options: [
-      ["default", "tan shadow"], ["index", "index card"], ["flat", "flat"] ] },
+      ["default", "flat"], ["shadow", "tan shadow"], ["index", "index card"] ] },
   ];
   var bar = document.createElement("div");
   bar.className = "design-switcher";
@@ -139,7 +139,7 @@
   crow.appendChild(cpick); crow.appendChild(cval);
   bar.appendChild(crow);
   if (get("cardColor")) setCard(get("cardColor"), get("cardColorName"));
-  else setCard("#fffbef", "cream");
+  else setCard("rgba(255, 251, 239, 0.72)", "vellum");
 
   // outline colour for the flat card style (sets --card-border)
   var orow = document.createElement("div");
@@ -172,7 +172,7 @@
   orow.appendChild(opick); orow.appendChild(oval);
   bar.appendChild(orow);
   if (get("cardBorder")) setOutline(get("cardBorder"), get("cardBorderName"));
-  else setOutline("#e3cf85", "gold");
+  else setOutline("#efe2bd", "pale");
 
   // boldness of the tan map lines on the page background
   var lrow = document.createElement("div");
