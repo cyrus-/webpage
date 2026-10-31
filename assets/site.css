@@ -141,6 +141,7 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 15px 0; }
   grid-template-columns: 320px minmax(0, 1fr);
   column-gap: 15px;
   max-width: 1280px;
+  margin: 0 auto;
 }
 
 .card {
@@ -250,8 +251,9 @@ article img { max-width: 100%; height: auto; }
 .paper-authors { color: var(--ink-soft); }
 .me-author { text-decoration: underline; }
 /* PDF / DOI / BIB / URL, under the venue */
-.paper-venue .paper-links { font-size: 80%; font-weight: normal; padding-right: 10px; }
-.paper-venue .paper-links a { font-weight: 600; }
+.paper-venue .paper-links { font-size: 80%; font-weight: normal; padding-right: 10px; color: var(--muted); }
+.paper-venue .paper-links a { font-weight: normal; color: var(--venue); }
+.paper-venue .paper-links a:hover { color: var(--link); }
 
 /* arod's own paper markup on /papers and paper pages */
 .paper-info p { margin-bottom: 2px; }
@@ -289,6 +291,7 @@ blockquote { margin: 10px 0; padding-left: 12px; border-left: 3px solid var(--ru
 
 footer {
   max-width: 1280px;
+  margin: 0 auto;
   padding: 0 15px 30px calc(320px + 30px);
   color: var(--muted);
   font-size: 90%;
@@ -340,6 +343,16 @@ footer a { font-weight: 600; }
   border: none;
   box-shadow: 0 2px tan;
 }
+
+/* Intro card (top of the right column): light instead of dark. */
+:root[data-intro="light"] .right-col > .card.bio-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  color: var(--ink);
+}
+:root[data-intro="light"] .right-col > .card.bio-card::before { display: none; }
+:root[data-intro="light"] .right-col > .card.bio-card a { color: var(--link); font-weight: bold; }
+:root[data-intro="light"] .right-col > .card.bio-card a:hover { color: var(--link-hover); }
 
 /* {1 Design preview}
 
