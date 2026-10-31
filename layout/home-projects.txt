@@ -1,5 +1,6 @@
 # Project cards on the home page, in order. One project slug per line.
-# Each card lists that project's papers that are marked `selected: true`.
+# Each card lists papers marked `selected: true` whose first `projects`
+# entry is that project.
 hazel
 tylr
 grove

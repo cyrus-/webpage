@@ -115,7 +115,9 @@ let set_frame () =
 (** {1 Home page}
 
     One card per project (in the order of layout/home-projects.txt), each
-    listing that project's papers marked [selected]. *)
+    listing the papers marked [selected] whose primary project (the first
+    in [projects]) is that project. Other project tags only affect project
+    pages and tag listings. *)
 
 let author_name = "Cyrus Omar"
 
@@ -181,7 +183,9 @@ let project_card cfg proj =
   let slug = Bushel.Project.slug proj in
   let papers =
     Arod.Model.papers ()
-    |> List.filter (fun p -> Bushel.Paper.selected p && List.mem slug (Bushel.Paper.project_slugs p))
+    |> List.filter (fun p ->
+           Bushel.Paper.selected p
+           && match Bushel.Paper.project_slugs p with primary :: _ -> primary = slug | [] -> false)
     |> List.sort (fun a b -> compare (Bushel.Paper.year b, Bushel.Paper.slug b) (Bushel.Paper.year a, Bushel.Paper.slug a))
   in
   El.div ~at:[ At.class' "card project-card"; At.id slug ]
