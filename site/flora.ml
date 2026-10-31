@@ -597,6 +597,10 @@ let cx = 170.
 (* Where the main stem ends and the crown begins. *)
 let crown_base = function Purkinje -> 338. | Tree -> 372. | Bloom -> 130.
 
+(* Where the stem meets the crown: off centre for the Purkinje cell, whose
+   soma sits right of the middle, with its long limb sweeping left. *)
+let stem_top_x = function Purkinje -> cx +. 28. | Tree | Bloom -> cx
+
 (* Where flowers and leaves stop on the stem (above: axon, trunk or bare stem). *)
 let plant_top = function Purkinje -> 500. | Tree -> 430. | Bloom -> 250.
 
@@ -612,7 +616,7 @@ let main_stem r crown =
          let t = float i /. float (k - 1) in
          let amp = 74. *. ((1. -. t) ** 0.6) in
          let jit = Rng.range (Rng.nth (Rng.key r "stem") i) (-8.) 8. in
-         if i = k - 1 then v cx y else v (cx +. (amp *. sin (1.9 +. (1.25 *. float i))) +. jit) y)
+         if i = k - 1 then v (stem_top_x crown) y else v (cx +. (amp *. sin (1.9 +. (1.25 *. float i))) +. jit) y)
        ys)
 
 type node = { back : string list; front : string list }
@@ -822,35 +826,59 @@ let soma_at c =
    thick limbs spreading sideways from it, and from those, wavy dendrites
    rising to fill a square block, fuzzy with spiny branchlets. *)
 let purkinje pal r =
-  let soma = v cx (crown_base Purkinje -. 8.) in
-  let root = { id = 0; pos = soma +: v 0. (-24.); parent = -1 } in
-  (* the main limbs, drawn by hand: two sweeping out sideways, one up the
-     middle that forks; the rest grows from these *)
+  let soma = v (stem_top_x Purkinje) (crown_base Purkinje -. 8.) in
+  let root = { id = 0; pos = soma +: v 0. (-22.); parent = -1 } in
+  (* the main limbs, drawn by hand and lopsided as in Cajal's drawing: one
+     long heavy limb sweeping far out to the left, with limbs of its own
+     rising from it, and shorter, uneven ones to the right; the rest grows
+     from these *)
   let chain parent first heading length =
     curve ~step:3. parent.pos length heading
     |> List.tl
     |> List.mapi (fun i p -> { id = first + i; pos = p; parent = (if i = 0 then parent.id else first + i - 1) })
   in
-  let last l = List.nth l (List.length l - 1) in
-  let wave s = 0.12 *. sin (s /. 9.) in
-  let left = chain root 1 (fun s -> up -. 1.18 +. (0.0045 *. s) +. wave s) 126. in
-  let right = chain root 100 (fun s -> up +. 1.08 -. (0.0045 *. s) -. wave s) 116. in
-  let middle = chain root 200 (fun s -> up +. 0.06 +. (0.002 *. s) +. wave s) 50. in
-  let fork_l = chain (last middle) 300 (fun s -> up -. 0.55 +. (0.006 *. s) -. wave s) 48. in
-  let fork_r = chain (last middle) 400 (fun s -> up +. 0.5 -. (0.006 *. s) +. wave s) 44. in
-  let seed = (root :: left) @ right @ middle @ fork_l @ fork_r in
+  let at l i = List.nth l (min (List.length l - 1) i) in
+  let wave ph s = (0.1 *. sin ((s /. 11.) +. ph)) +. (0.05 *. sin ((s /. 4.3) +. (2. *. ph))) in
+  let left = chain root 1 (fun s -> up -. 1.36 +. (0.0032 *. s) +. wave 0.3 s) 180. in
+  let left_up = chain (at left 22) 100 (fun s -> up -. 0.35 +. (0.004 *. s) +. wave 1.7 s) 58. in
+  let left_far = chain (at left 44) 150 (fun s -> up -. 0.15 +. wave 2.2 s) 30. in
+  let right = chain root 200 (fun s -> up +. 0.95 -. (0.006 *. s) -. wave 0.9 s) 78. in
+  let middle = chain root 300 (fun s -> up +. 0.22 -. (0.003 *. s) +. wave 2.9 s) 42. in
+  let middle_side = chain (at middle 9) 400 (fun s -> up -. 0.5 +. (0.008 *. s) +. wave 4.1 s) 30. in
+  let seed = (root :: left) @ left_up @ left_far @ right @ middle @ middle_side in
+  (* Where the dendrites go: denser in some patches than others, with small
+     voids (where, in the cerebellum, other cells sit) that they grow
+     around, and little below the main limbs. *)
   let ra = Rng.key r "attractors" in
+  let ph k = Rng.range (Rng.nth (Rng.key ra "ph") k) 0. 6.28 in
+  let density p =
+    0.68
+    +. (0.18 *. sin ((p.x /. 31.) +. ph 0) *. sin ((p.y /. 43.) +. ph 1))
+    +. (0.14 *. sin (((p.x +. p.y) /. 23.) +. ph 2))
+  in
+  let voids =
+    List.init 70 (fun k ->
+        let rk = Rng.nth (Rng.key ra "voids") k in
+        ( v (Rng.range (Rng.key rk "x") 10. (width -. 10.)) (Rng.range (Rng.key rk "y") 20. (soma.y -. 30.)),
+          Rng.range (Rng.key rk "rx") 4. 10.,
+          Rng.range (Rng.key rk "ry") 7. 17. ))
+  in
   let attractors =
-    List.init 3400 (fun k ->
+    List.init 7000 (fun k ->
         let rk = Rng.nth ra k in
-        v (Rng.range (Rng.key rk "x") 8. (width -. 8.)) (Rng.range (Rng.key rk "y") 14. (soma.y -. 4.)))
-    (* little grows below the main limbs: keep above a shallow V over the soma *)
-    |> List.filter (fun p -> p.y < soma.y -. 18. -. (0.2 *. Float.abs (p.x -. cx)))
+        (v (Rng.range (Rng.key rk "x") 8. (width -. 8.)) (Rng.range (Rng.key rk "y") 14. (soma.y -. 4.)), Rng.unit (Rng.key rk "keep")))
+    |> List.filter_map (fun (p, u) ->
+           if
+             u < density p
+             && p.y < soma.y -. 16. -. (0.18 *. Float.abs (p.x -. soma.x))
+             && not (List.exists (fun (c, rx, ry) -> in_ellipse c rx ry p) voids)
+           then Some p
+           else None)
   in
   let rw = Rng.key r "wobble" in
   let nodes =
-    colonize ~attractors ~seed ~influence:24. ~kill:5. ~step:2.5 ~lift:0.6
-      ~wobble:(fun n -> Rng.range (Rng.nth rw n.id) (-0.3) 0.3)
+    colonize ~attractors ~seed ~influence:24. ~kill:5. ~step:2.5 ~lift:0.55
+      ~wobble:(fun n -> Rng.range (Rng.nth rw n.id) (-0.4) 0.4)
       ~rounds:500
     |> smooth
   in
