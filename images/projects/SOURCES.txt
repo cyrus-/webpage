@@ -3,7 +3,7 @@ from one of the project's recent papers, rendered from the PDF in static/papers/
 at 300 dpi and scaled to 300px. Shown as a circle on the project card.
 
 
-hazel: evaluation around a hole, `map([1, 2, 3], fun x -> x * 10 + ?)` = `[10 + ?, 20 + ?, 30 + ?]`, https://hazel.org/build/dev/ scratchpad, Oct 2026
+hazel: live probes drawing samples as cards, sparklines and colours, Fig. 2 of the Live Probes draft (OOPSLA 2027 submission; ~/projects/flight-papers/live-probes, page 3), Oct 2026
 tylr: the backpack in Hazel (typing `let x = 5 in let y = if x < (`, leaving a hole; obligations `) then • else • in •` float above the cursor), https://hazel.org/build/dev/ scratchpad, Oct 2026
 grove: 2025-grove-popl, page 9
 chatlsp: 2024-chatlsp-oopsla, page 2
