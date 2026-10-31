@@ -552,6 +552,14 @@ let width = 340.
 let height = 1000.
 let cx = 170.
 
+(* Vines and blooms hang from the header bar above the margin; a tree
+   stands. A hanging plant is composed upright and mirrored: [fy] flips
+   heights and [fa] flips headings (and anything else that turns, such as
+   a curl or a bend). *)
+let hangs = function Tree -> false | Vine | Bloom -> true
+let fy crown y = if hangs crown then height -. y else y
+let fa crown a = if hangs crown then -.a else a
+
 (* Where the main stem ends and the crown begins. *)
 let crown_base = function Vine -> 50. | Tree -> 372. | Bloom -> 130.
 
@@ -570,7 +578,7 @@ let main_stem r crown =
          let t = float i /. float (k - 1) in
          let amp = 74. *. ((1. -. t) ** 0.6) in
          let jit = Rng.range (Rng.nth (Rng.key r "stem") i) (-8.) 8. in
-         if i = k - 1 then v cx y else v (cx +. (amp *. sin (1.9 +. (1.25 *. float i))) +. jit) y)
+         v (if i = k - 1 then cx else cx +. (amp *. sin (1.9 +. (1.25 *. float i))) +. jit) (fy crown y))
        ys)
 
 type node = { back : string list; front : string list }
@@ -578,7 +586,8 @@ type node = { back : string list; front : string list }
 (* One node of the stem: a leaf on one side; on the other, a branch with a
    leaf and a flower (or umbel, or berries...) at its end; sometimes a
    tendril. *)
-let node pal r ~i ~at ~headroom =
+let node pal r ~crown ~i ~at ~headroom =
+  let f = fa crown in
   let base_side = if i mod 2 = 0 then 1. else -1. in
   let side = if at.x < 100. then 1. else if at.x > width -. 100. then -1. else base_side in
   let room s = (if s > 0. then width -. at.x else at.x) -. 22. in
@@ -588,13 +597,13 @@ let node pal r ~i ~at ~headroom =
   let ph = Rng.range (Rng.key rb "ph") 0. 6.28 in
   let pts =
     Array.of_list
-      (curve at len (fun s -> a0 -. (side *. 0.008 *. s) +. (0.1 *. sin ((s /. 13.) +. ph))))
+      (curve at len (fun s -> f (a0 -. (side *. 0.008 *. s) +. (0.1 *. sin ((s /. 13.) +. ph)))))
   in
   let n = Array.length pts in
   let tip = pts.(n - 1) and tip_heading = heading_at pts (n - 1) in
   let edge = Float.min (tip.x -. 4.) (width -. 4. -. tip.x) in
   let rf = Rng.key r "flower" in
-  let tilt lo hi = Rng.range (Rng.key rf "t") lo hi in
+  let tilt lo hi = f (Rng.range (Rng.key rf "t") lo hi) in
   let flower =
     (* near the top, nothing tall (umbels, cymes, sprigs) that would reach the crown *)
     let k = i mod 8 in
@@ -602,40 +611,40 @@ let node pal r ~i ~at ~headroom =
     | 0 ->
         let radius = Float.min (Rng.range rf 22. 27.) edge in
         [ flower5 pal rf ~grad:"pa" ~at:tip ~radius ~tilt:(tilt (-30.) 30.) ~squash:0.8 ]
-    | 1 -> umbel pal rf ~at:tip ~heading:(lerp tip_heading up 0.6) ~length:(Float.min 30. edge)
-    | 2 -> cyme pal rf ~at:tip ~heading:tip_heading ~length:46. ~curl:side
+    | 1 -> umbel pal rf ~at:tip ~heading:(lerp tip_heading (f up) 0.6) ~length:(Float.min 30. edge)
+    | 2 -> cyme pal rf ~at:tip ~heading:tip_heading ~length:46. ~curl:(f side)
     | 3 -> [ bell pal ~grad:"pa" ~at:tip ~heading:tip_heading ~length:23. ]
     | 4 -> berries pal rf ~at:tip ~heading:tip_heading
     | 5 ->
         let radius = Float.min 18. edge in
         [ flower5 pal rf ~grad:"pb" ~at:tip ~radius ~tilt:(tilt (-40.) 40.) ~squash:0.75 ]
-    | 6 -> sprig pal ~at:tip ~heading:tip_heading ~length:38. ~bend:(-.side *. 0.5)
+    | 6 -> sprig pal ~at:tip ~heading:tip_heading ~length:38. ~bend:(f (-.side *. 0.5))
     | _ -> [ bell pal ~grad:"pb" ~at:tip ~heading:tip_heading ~length:20. ]
   in
   let branch = path (closed_d (ribbon (Array.to_list pts) (fun t -> lerp 2.6 1.0 t))) [ fill pal.ink ] in
   let branch_leaf =
     leaf pal ~at:pts.(n / 2)
-      ~heading:(heading_at pts (n / 2) +. (side *. 0.9))
+      ~heading:(heading_at pts (n / 2) +. f (side *. 0.9))
       ~length:(Rng.range (Rng.key r "bl") 20. 28.)
-      ~bend:(-.side *. 0.3) ()
+      ~bend:(f (-.side *. 0.3)) ()
   in
   let rl = Rng.key r "leaf" in
   let node_leaf =
     leaf pal ~at
-      ~heading:(up -. (side *. Rng.range (Rng.key rl "a") 0.8 1.2))
+      ~heading:(f (up -. (side *. Rng.range (Rng.key rl "a") 0.8 1.2)))
       ~length:(Float.min (Rng.range (Rng.key rl "l") 34. 48.) (room (-.side) *. 0.85))
-      ~bend:(side *. 0.35) ()
+      ~bend:(f (side *. 0.35)) ()
   in
   let low_leaf =
     if Rng.chance (Rng.key rl "low") 0.5 then
       leaf pal ~at
-        ~heading:(up +. (side *. Rng.range (Rng.key rl "b") 1.6 2.0))
+        ~heading:(f (up +. (side *. Rng.range (Rng.key rl "b") 1.6 2.0)))
         ~length:(Rng.range (Rng.key rl "m") 20. 28.)
-        ~bend:(-.side *. 0.4) ()
+        ~bend:(f (-.side *. 0.4)) ()
     else []
   in
   let tendrils =
-    if i mod 3 = 2 then [ tendril pal ~at ~heading:(up -. (side *. 0.4)) ~length:32. ~curl:(-.side) ]
+    if i mod 3 = 2 then [ tendril pal ~at ~heading:(f (up -. (side *. 0.4))) ~length:32. ~curl:(f (-.side)) ]
     else []
   in
   {
@@ -644,13 +653,13 @@ let node pal r ~i ~at ~headroom =
   }
 
 (* The second, thinner vine twining around the first. *)
-let second_vine pal r =
+let second_vine pal r ~crown =
+  let f = fa crown in
   let pts =
     spline
-      [
-        v (cx +. 50.) 1040.; v (cx -. 30.) 945.; v (cx +. 70.) 850.; v (cx -. 50.) 750.;
-        v (cx +. 40.) 660.; v (cx -. 10.) 600.;
-      ]
+      (List.map
+         (fun (x, y) -> v (cx +. x) (fy crown y))
+         [ (50., 1040.); (-30., 945.); (70., 850.); (-50., 750.); (40., 660.); (-10., 600.) ])
   in
   let a = Array.of_list pts in
   let n = Array.length a in
@@ -662,14 +671,14 @@ let second_vine pal r =
         else
           let side = if k mod 2 = 0 then -1. else 1. in
           leaf pal ~at:a.(i)
-            ~heading:(heading_at a i +. (side *. 0.9))
+            ~heading:(heading_at a i +. f (side *. 0.9))
             ~length:(Rng.range (Rng.nth (Rng.key r "v2") k) 18. 26.)
-            ~bend:(-.side *. 0.3) ())
+            ~bend:(f (-.side *. 0.3)) ())
     |> List.concat
   in
   {
     back = stem :: leaves;
-    front = cyme pal (Rng.key r "v2c") ~at:a.(n - 1) ~heading:(heading_at a (n - 1)) ~length:36. ~curl:(-1.);
+    front = cyme pal (Rng.key r "v2c") ~at:a.(n - 1) ~heading:(heading_at a (n - 1)) ~length:36. ~curl:(f (-1.));
   }
 
 (* A tree: the stem thickens into a trunk that branches into a round,
@@ -726,11 +735,14 @@ let tree pal r =
 
 (* The vine simply ends in a flower. *)
 let vine_top pal r =
-  ([], [ flower5 pal (Rng.key r "top") ~grad:"pa" ~at:(v cx (crown_base Vine)) ~radius:26. ~tilt:(-18.) ~squash:0.82 ])
+  ([], [ flower5 pal (Rng.key r "top") ~grad:"pa" ~at:(v cx (fy Vine (crown_base Vine))) ~radius:26. ~tilt:(fa Vine (-18.)) ~squash:0.82 ])
 
 (* One big open flower with two buds, as at the head of an engraved border. *)
 let bloom pal r =
-  let c = v cx (crown_base Bloom) in
+  let f = fa Bloom in
+  (* a point [y] below the flower's centre (upright) *)
+  let o x y = v (cx +. x) (fy Bloom (crown_base Bloom +. y)) in
+  let c = o 0. 0. in
   let bud at heading =
     let p x y = at +: ((x *. 18.) *: dir heading) +: ((y *. 8.) *: dir (heading +. (pi /. 2.))) in
     [
@@ -739,15 +751,15 @@ let bloom pal r =
       path (cubic_d at [ (p 0.15 (-0.9), p 0.3 (-0.7), p 0.4 (-0.3)); (p 0.3 0., p 0.3 0., at) ]) ([ fill pal.leaf ] @ stroke pal.ink 0.4);
     ]
   in
-  let stalk from a l = Array.of_list (curve from l (fun s -> a +. (s *. 0.012))) in
-  let s1 = stalk (c +: v 4. 84.) (up +. 0.95) 60. and s2 = stalk (c +: v (-3.) 108.) (up -. 1.0) 54. in
+  let stalk from a l = Array.of_list (curve from l (fun s -> f (a +. (s *. 0.012)))) in
+  let s1 = stalk (o 4. 84.) (up +. 0.95) 60. and s2 = stalk (o (-3.) 108.) (up -. 1.0) 54. in
   let stalk_path s = path (line_d (Array.to_list s)) ([ no_fill ] @ stroke pal.ink 1.3 @ round) in
   let last s = s.(Array.length s - 1) and last_h s = heading_at s (Array.length s - 1) in
   ( [ stalk_path s1; stalk_path s2 ]
-    @ leaf pal ~at:(c +: v 0. 50.) ~heading:(up -. 1.15) ~length:56. ~bend:0.4 ()
-    @ leaf pal ~at:(c +: v 0. 64.) ~heading:(up +. 1.1) ~length:50. ~bend:(-0.4) (),
+    @ leaf pal ~at:(o 0. 50.) ~heading:(f (up -. 1.15)) ~length:56. ~bend:(f 0.4) ()
+    @ leaf pal ~at:(o 0. 64.) ~heading:(f (up +. 1.1)) ~length:50. ~bend:(f (-0.4)) (),
     bud (last s1) (last_h s1) @ bud (last s2) (last_h s2)
-    @ [ flower5 pal (Rng.key r "big") ~grad:"pa" ~at:c ~radius:70. ~tilt:(-12.) ~squash:0.86 ] )
+    @ [ flower5 pal (Rng.key r "big") ~grad:"pa" ~at:c ~radius:70. ~tilt:(f (-12.)) ~squash:0.86 ] )
 
 (* The vine trails off at the bottom rather than stopping at the edge. *)
 let fade =
@@ -765,7 +777,7 @@ let svg ~crown pal =
   let lengths = arc_lengths a in
   (* the first point above the leafy part *)
   let split =
-    let rec go i = if i >= Array.length a - 1 || a.(i).y < plant_top crown then i else go (i + 1) in
+    let rec go i = if i >= Array.length a - 1 || fy crown a.(i).y < plant_top crown then i else go (i + 1) in
     go 0
   in
   let plant = List.filteri (fun i _ -> i <= split) stem in
@@ -780,7 +792,7 @@ let svg ~crown pal =
     let ns = normals a in
     List.init (max 0 (split - 14)) (fun k ->
         let i = k + 10 in
-        a.(i) +: ((lerp w0 w1 (float i /. float split) /. 4.) *: ns.(i)))
+        a.(i) +: ((lerp w0 w1 (float i /. float split) /. fa crown 4.) *: ns.(i)))
     |> fun l -> path (line_d l) ([ no_fill; ("opacity", ".85") ] @ stroke pal.leaf_lit 0.7 @ round)
   in
   let rn = Rng.key r "nodes" in
@@ -795,10 +807,10 @@ let svg ~crown pal =
     List.mapi
       (fun i s ->
         let at = a.(index_at_length lengths s) in
-        node pal (Rng.nth rn i) ~i ~at ~headroom:(at.y -. plant_top crown))
+        node pal (Rng.nth rn i) ~crown ~i ~at ~headroom:(fy crown at.y -. plant_top crown))
       positions
   in
-  let vine = second_vine pal (Rng.key r "vine") in
+  let vine = second_vine pal (Rng.key r "vine") ~crown in
   let crown_back, crown_front =
     match crown with Vine -> vine_top pal r | Tree -> tree pal r | Bloom -> bloom pal r
   in
@@ -811,10 +823,12 @@ let svg ~crown pal =
   in
   Printf.sprintf
     "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 %d %d\" width=\"%d\" \
-     height=\"%d\"><defs>%s%s%s</defs><g mask=\"url(#fade)\"><g filter=\"url(#grain)\">%s</g></g></svg>"
+     height=\"%d\"><defs>%s%s%s</defs><g%s><g filter=\"url(#grain)\">%s</g></g></svg>"
     (int_of_float width) (int_of_float height) (int_of_float width) (int_of_float height)
     (gradients pal) fade
     (grain_filter ~w:(int_of_float width) ~h:(int_of_float height))
+    (* a standing plant trails off at the bottom; a hanging one comes out of the bar *)
+    (if hangs crown then "" else " mask=\"url(#fade)\"")
     (String.concat "" body)
 
 let crowns = [ ("vine", Vine); ("tree", Tree); ("bloom", Bloom) ]

@@ -306,9 +306,9 @@ footer a { font-weight: 600; }
 /* {1 Flora}
 
    A botanical border (drawn by site/flora.ml) in the right margin, only
-   when the window is wide enough for a third column. It stays in view as
-   the page scrolls; the image is absolutely placed so it never makes the
-   page taller. */
+   when the window is wide enough for a third column. It starts flush with
+   the header, so a hanging vine grows out of the bar, and scrolls with it;
+   the image is absolutely placed so it never makes the page taller. */
 
 .flora { display: none; }
 
@@ -319,10 +319,10 @@ footer a { font-weight: 600; }
   }
   .flora {
     display: block;
-    position: sticky;
-    top: 0;
+    position: relative;
+    margin-top: -15px; /* up through .main-area's padding */
     align-self: start;
-    height: min(100vh, 100%);
+    height: 100vh;
   }
   .flora img {
     position: absolute;
