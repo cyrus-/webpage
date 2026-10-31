@@ -195,6 +195,18 @@ let project_card cfg proj =
      ]
     @ List.map (paper_card_entry cfg) papers)
 
+(* A page whose content is a list of cards, laid out by the card-list
+   styles (see the layout options in site.css). *)
+let card_page cfg ~title ~kind cards =
+  let open Htmlit in
+  let page =
+    Arod.Page.page ~title ~description:cfg.Arod.Config.site.description
+      ~page_footer:(Arod.Footer.footer ())
+      ~page_content:(El.div ~at:[ At.class' ("card-list " ^ kind) ] cards)
+      ()
+  in
+  Route.Response.html (El.to_string ~doctype:true page)
+
 let home cfg _req =
   let open Htmlit in
   let order =
@@ -207,20 +219,68 @@ let home cfg _req =
       (fun slug -> List.find_opt (fun p -> Bushel.Project.slug p = slug) projects |> Option.map (project_card cfg))
       order
   in
-  let page =
-    Arod.Page.page ~title:cfg.Arod.Config.site.name ~description:cfg.site.description
-      ~page_footer:(Arod.Footer.footer ())
-      ~page_content:(El.div ~at:[ At.class' "project-cards" ] cards)
-      ()
-  in
-  Route.Response.html (El.to_string ~doctype:true page)
+  card_page cfg ~title:cfg.Arod.Config.site.name ~kind:"project-cards" cards
 
-(** Our routes: the home page first, then arod's, then (for local preview)
+(** {1 Papers and Talks tabs}
+
+    One card per paper (newest first, same format as the home cards) and
+    one card per talk (YouTube thumbnail linking to the video). *)
+
+let papers_tab cfg _req =
+  let open Htmlit in
+  let cards =
+    Arod.Model.papers ()
+    |> List.sort (fun a b ->
+           compare (Bushel.Paper.year b, Bushel.Paper.slug b) (Bushel.Paper.year a, Bushel.Paper.slug a))
+    |> List.map (fun p -> El.div ~at:[ At.class' "card paper-card" ] [ paper_card_entry cfg p ])
+  in
+  card_page cfg ~title:"Papers" ~kind:"paper-cards" cards
+
+let months = [| "Jan"; "Feb"; "Mar"; "Apr"; "May"; "Jun"; "Jul"; "Aug"; "Sep"; "Oct"; "Nov"; "Dec" |]
+
+let talks_tab cfg _req =
+  let open Htmlit in
+  let title_of slug f =
+    match Arod.Model.lookup slug with Some (`Paper p) -> Some (f p) | _ -> None
+  in
+  let card v =
+    let id = Bushel.Video.uuid v in
+    let y, m, _ = Bushel.Video.date v in
+    let watch = "https://www.youtube.com/watch?v=" ^ id in
+    let paper =
+      Option.bind (Bushel.Video.paper v) (fun slug ->
+          title_of slug (fun p ->
+              El.div ~at:[ At.class' "talk-paper" ]
+                [ El.txt "Paper: "; El.a ~at:[ At.href ("/papers/" ^ slug) ] [ El.txt (Bushel.Paper.title p) ] ]))
+    in
+    El.div ~at:[ At.class' "card talk-card" ]
+      ([
+         El.a ~at:[ At.class' "talk-thumb"; At.href watch ]
+           [ El.img ~at:[ At.src (Printf.sprintf "https://i.ytimg.com/vi/%s/hqdefault.jpg" id);
+                          At.alt (Bushel.Video.title v); At.v "loading" "lazy" ] () ];
+         El.div ~at:[ At.class' "talk-title" ] [ El.a ~at:[ At.href watch ] [ El.txt (Bushel.Video.title v) ] ];
+         El.div ~at:[ At.class' "talk-date" ] [ El.txt (Printf.sprintf "%s %d" months.(m - 1) y) ];
+       ]
+      @ Option.to_list paper)
+  in
+  let cards =
+    Arod.Model.videos ()
+    |> List.sort (fun a b -> compare (Bushel.Video.date b) (Bushel.Video.date a))
+    |> List.map card
+  in
+  card_page cfg ~title:"Talks" ~kind:"talk-cards" cards
+
+(** Our routes: the home page and Papers/Talks tabs first, then arod's, then (for local preview)
     files from public/ and the CV PDF, which the static build copies in. *)
 let routes cfg =
   let arod = Route.Routes.fold (fun r acc -> r :: acc) (Arod.Handlers.all_routes cfg) [] in
   Route.Routes.of_list
-    ([ Route.get_ [] (home cfg) ]
+    ([
+       Route.get_ [] (home cfg);
+       Route.get_ [ "papers" ] (papers_tab cfg);
+       Route.get_ [ "talks" ] (talks_tab cfg);
+       Route.get_ [ "videos" ] (talks_tab cfg);
+     ]
     @ arod
     @ [
         Route.get_ [ "omar-cv.pdf" ] (Arod.Handlers.static_file ~dir:"." "omar-cv.pdf");

@@ -190,7 +190,7 @@ article img { max-width: 100%; height: auto; }
 
 /* {1 Home: project cards} */
 
-.project-cards .card { margin-bottom: 15px; }
+.card-list .card { margin-bottom: 15px; }
 .project-card h2 a { color: var(--ink-soft); }
 .project-card h2 a:hover { color: var(--link); }
 
@@ -215,6 +215,21 @@ article img { max-width: 100%; height: auto; }
 .paper-title { font-family: Montserrat, sans-serif; margin-bottom: 2px; }
 .paper-info i { font-style: normal; color: var(--muted) !important; }
 .author { color: var(--ink-soft); }
+
+/* {2 Paper and talk cards} */
+
+.paper-card .paper { margin-top: 0; }
+
+.talk-card .talk-thumb img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  margin-bottom: 8px;
+}
+.talk-title { font-family: Montserrat, sans-serif; line-height: 1.35; }
+.talk-date { color: var(--muted); font-size: 90%; margin-top: 2px; }
+.talk-paper { font-size: 90%; margin-top: 4px; }
 
 /* {1 Notes, metadata, misc} */
 
@@ -246,25 +261,26 @@ footer a { font-weight: 600; }
 
 /* {1 Layout experiments}
 
-   Options for the home page's project cards and the card style, chosen with
-   the #design switcher (site.js). Remove the losers once one is chosen. */
+   Options for the card lists (home project cards, Papers and Talks tabs)
+   and the card style, chosen with the #design switcher (site.js). Remove
+   the losers once one is chosen. */
 
 /* Two columns of cards, packed top-to-bottom (masonry-style). */
-:root[data-layout="columns"] .project-cards { column-count: 2; column-gap: 15px; }
-:root[data-layout="columns"] .project-cards .card { break-inside: avoid; display: inline-block; width: 100%; }
+:root[data-layout="columns"] .card-list { column-count: 2; column-gap: 15px; }
+:root[data-layout="columns"] .card-list .card { break-inside: avoid; display: inline-block; width: 100%; }
 
 /* A grid of equal-width cards, as many columns as fit (2 at most widths). */
-:root[data-layout="grid"] .project-cards {
+:root[data-layout="grid"] .card-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
   gap: 15px;
   align-items: start;
 }
-:root[data-layout="grid"] .project-cards .card { margin-bottom: 0; }
+:root[data-layout="grid"] .card-list .card { margin-bottom: 0; }
 
 /* Three columns, packed top-to-bottom; papers wrap under their venue. */
-:root[data-layout="three"] .project-cards { column-count: 3; column-gap: 15px; }
-:root[data-layout="three"] .project-cards .card { break-inside: avoid; display: inline-block; width: 100%; }
+:root[data-layout="three"] .card-list { column-count: 3; column-gap: 15px; }
+:root[data-layout="three"] .card-list .card { break-inside: avoid; display: inline-block; width: 100%; }
 :root[data-layout="three"] .paper { grid-template-columns: 1fr; }
 :root[data-layout="three"] .paper-venue { min-width: 0; }
 
