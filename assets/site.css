@@ -22,7 +22,7 @@
   --header-bg: #223939;
   /* What the header actually looks like once the texture is overlaid
      (measured from a render); use this to match it elsewhere. */
-  --header-seen: #1c2e2e;
+  --header-seen: #233a3a;
   --header-ink: #fff;
   --header-accent: #d5ffb6;
   --tag-bg: #efe4c6;
@@ -62,30 +62,42 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 15px 0; }
 
 /* {1 Header} */
 
-.header {
-  /* Strength of the map lines: 0 = flat teal, 1 = strongest. */
-  --header-texture: 0.45;
+/* Header and bio card use the original site's background (a teal tint over
+   the cartographer texture over #223939). cartographer.png is very low
+   contrast (grey levels 30-46 of 255), so its lines barely show; a second,
+   contrast-lifted copy of it is overlaid to strengthen them. Its brightness
+   puts its mean at mid-grey, so the overlay leaves the overall colour as on
+   the original site. */
+.header,
+.card.bio-card {
+  /* Strength of the extra map lines: 0 = original site, 1 = strongest. */
+  --map-lines: 0.45;
   position: relative;
   isolation: isolate;
-  font-family: Montserrat, sans-serif;
-  font-size: 125%;
-  padding: 20px;
-  background: var(--header-bg);
-  color: var(--header-ink);
+  background:
+    linear-gradient(rgba(31, 122, 122, 0.25), rgba(31, 122, 122, 0.25)),
+    url("../images/cartographer.png"),
+    var(--header-bg);
 }
 
-/* cartographer.png is very low contrast (grey levels 30-46 of 255), so its
-   lines barely show. Lift and stretch it with filters, then overlay it on
-   the teal so the lines read without changing the overall colour. */
-.header::before {
+.header::before,
+.card.bio-card::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
   background: url("../images/cartographer.png");
-  filter: brightness(2.8) contrast(2.2) blur(0.5px);
+  filter: brightness(3.5) contrast(2.2) blur(0.5px);
   mix-blend-mode: overlay;
-  opacity: var(--header-texture);
+  opacity: var(--map-lines);
+  pointer-events: none;
+}
+
+.header {
+  font-family: Montserrat, sans-serif;
+  font-size: 125%;
+  padding: 20px;
+  color: var(--header-ink);
 }
 
 .header > h1 { margin: 0; font-weight: normal; font-size: 18pt; }
@@ -112,7 +124,6 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 15px 0; }
 }
 
 .bio-card {
-  background: var(--header-seen);
   color: white;
   box-shadow: none;
 }
