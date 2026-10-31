@@ -377,7 +377,7 @@ let soma_at r c ~trunks ~axon_heading =
   (* the bottom of the body, a little squashed, where the trunks meet *)
   let centre = c +: v (j "bx" (-0.5) 1.5) (j "by" 3. 4.5) in
   let rb = j "rb" 5.5 7. in
-  let rx = rb *. j "sx" 1.15 1.35 and ry = rb *. j "sy" 0.72 0.85 in
+  let rx = rb *. j "sx" 1.15 1.35 and ry = rb *. j "sy" 0.62 0.75 in
   let ex = rx *. cos axon_heading *. 0.85 and ey = ry *. sin axon_heading *. 0.85 in
   let base = centre +: v ex ey in
   let hillock = [ (centre +: (0.3 *: v ex ey), 1.5); (base +: (7. *: dir axon_heading), 0.6) ] in
@@ -392,7 +392,10 @@ let soma_at r c ~trunks ~axon_heading =
   let near_in = j "near_in" 6. 9. and near_out = j "near_out" 16. 22. in
   let f p =
     let t = clampf 0. 1. ((dist p centre -. near_in) /. (near_out -. near_in)) in
-    let k = lerp k_near k_far (t *. t *. (3. -. (2. *. t))) in
+    (* and only above the body, where the crotches are, so the belly
+       below keeps its own, squatter curve *)
+    let above = clampf 0. 1. ((centre.y -. p.y) /. 6.) in
+    let k = lerp k_far k_near (above *. (1. -. (t *. t *. (3. -. (2. *. t))))) in
     List.fold_left (fun d t -> smin k d (trunk_sdf p t)) (belly_sdf p ~centre ~rx ~ry_up:ry ~ry_down:ry ~flare:0.) (hillock :: trunks)
   in
   let pts = List.concat_map (List.map fst) trunks in
