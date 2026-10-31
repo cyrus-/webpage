@@ -215,7 +215,24 @@ let icon_link name href =
            (List.assoc name link_icons));
     ]
 
-let paper_card_entry cfg p =
+(* A paper's links as a row of icons. arod draws its paper listings (project
+   pages, a paper's own page) with these too; see [Arod.Papers.set_links]. *)
+let paper_links p =
+  let open Htmlit in
+  let slug = Bushel.Paper.slug p in
+  let cfg = Arod.Model.get_config () in
+  let pdf = Sys.file_exists (Filename.concat cfg.Arod.Config.paths.static_dir ("papers/" ^ slug ^ ".pdf")) in
+  El.span ~at:[ At.class' "paper-links" ]
+    (List.filter_map Fun.id
+       [
+         (if pdf then Some (icon_link "PDF" ("/papers/" ^ slug ^ ".pdf")) else None);
+         Option.map (fun d -> icon_link "DOI" ("https://doi.org/" ^ d)) (Bushel.Paper.doi p);
+         Some (icon_link "BIB" ("/papers/" ^ slug ^ ".bib"));
+         Option.map (fun u -> icon_link "URL" u) (Bushel.Paper.url p);
+         Option.map (fun v -> icon_link "VIDEO" ("https://www.youtube.com/watch?v=" ^ Bushel.Video.uuid v)) (paper_video p);
+       ])
+
+let paper_card_entry _cfg p =
   let open Htmlit in
   let slug = Bushel.Paper.slug p in
   let note = Bushel.Paper.note p in
@@ -225,24 +242,13 @@ let paper_card_entry cfg p =
     |> List.map (fun a -> if a = author_name then El.span ~at:[ At.class' "me-author" ] [ El.txt a ] else El.txt a)
     |> List.fold_left (fun acc a -> if acc = [] then [ a ] else acc @ [ El.txt ", "; a ]) []
   in
-  let pdf = Sys.file_exists (Filename.concat cfg.Arod.Config.paths.static_dir ("papers/" ^ slug ^ ".pdf")) in
-  let links =
-    List.filter_map Fun.id
-      [
-        (if pdf then Some (icon_link "PDF" ("/papers/" ^ slug ^ ".pdf")) else None);
-        Option.map (fun d -> icon_link "DOI" ("https://doi.org/" ^ d)) (Bushel.Paper.doi p);
-        Some (icon_link "BIB" ("/papers/" ^ slug ^ ".bib"));
-        Option.map (fun u -> icon_link "URL" u) (Bushel.Paper.url p);
-        Option.map (fun v -> icon_link "VIDEO" ("https://www.youtube.com/watch?v=" ^ Bushel.Video.uuid v)) (paper_video p);
-      ]
-  in
   let venue_el =
     El.div ~at:[ At.class' "paper-venue" ]
       ((El.txt (venue p)
        :: (if note = Some "Conditionally accepted" then
              [ El.br (); El.span ~at:[ At.class' "venue-note" ] [ El.txt "Conditionally" ] ]
            else []))
-      @ [ El.div ~at:[ At.class' "paper-links" ] links ])
+      @ [ paper_links p ])
   in
   El.div ~at:[ At.class' "paper" ]
     [
@@ -465,6 +471,8 @@ let build cfg ~out ~prefix ~extra =
   let _entries = Arod.Model.init ~cfg fs in
   drop_drafts ();
   set_footer ();
+  Arod.Papers.set_links paper_links;
+  Arod.Papers.set_listing (paper_card_entry cfg);
   set_frame ~live:false ();
   let routes = routes cfg in
   let pages = pages () in
@@ -534,6 +542,8 @@ let serve_cmd =
     Eio_main.run @@ fun env ->
     let _entries = Arod.Model.init ~cfg (Eio.Stdenv.fs env) in
     set_footer ();
+  Arod.Papers.set_links paper_links;
+  Arod.Papers.set_listing (paper_card_entry cfg);
     set_frame ~live:true ();
     let memo_cache = Arod.Memo.create ~ttl:0. () in
     let started = Unix.gettimeofday () in

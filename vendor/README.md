@@ -45,3 +45,9 @@ Local changes to these packages should be kept small and noted here.
   plain links to the entry, showing its title when the link has no text of
   its own, so they work without arod's sidenote script.
 - `arod/lib/arod_notes.ml`: a note's page starts with its title and date.
+- `arod/lib/arod_papers.ml`: the site can draw a paper's links
+  (`set_links`) and a paper in a list (`set_listing`) itself, so arod's
+  pages (project references, a paper's own page, tag listings) match the
+  site's own paper listings.
+- `arod/lib/arod_projects.ml`: no type icon before each item in a
+  project's activity list.

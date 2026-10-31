@@ -66,7 +66,6 @@ let one_project_full p =
     if recent_activity = [] then El.splice []
     else
       let activity_items = List.map (fun ent ->
-        let icon_name = Arod_view.ent_to_icon ent in
         let date_str = Arod_view.ptime_date ~with_d:false (Arod_model.Entry.date ent) in
 
         let lookup_title slug =
@@ -83,12 +82,8 @@ let one_project_full p =
           | `Project pr -> Bushel.Description.project_description pr
         in
 
+        (* Local change (webpage fork): no type icon before each item. *)
         El.li [
-          El.img ~at:[
-            At.alt "icon";
-            At.class' "inline-icon";
-            At.src (sprintf "/assets/%s" icon_name)
-          ] ();
           El.a ~at:[At.href (Arod_model.Entry.site_url ent)] [
             El.txt (Arod_model.Entry.title ent)
           ];

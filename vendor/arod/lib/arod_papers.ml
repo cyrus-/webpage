@@ -87,8 +87,26 @@ let host_without_www u =
       String.sub h 4 (String.length h - 4)
     else h
 
+(* Local change (webpage fork): the site can draw a paper's links itself
+   (via [set_links]), so they match its own paper listings. Older versions
+   of a paper ([nopdf]) keep arod's own. *)
+let links : (MP.t -> El.html) option ref = ref None
+
+let set_links f = links := Some f
+
+(* Likewise a paper in a list (a project's references, tag listings), via
+   [set_listing]. *)
+let listing : (MP.t -> El.html) option ref = ref None
+
+let set_listing f = listing := Some f
+
 (** Render the links bar (URL, DOI, BIB, PDF) *)
-let paper_bar_for_feed ?(nopdf=false) p =
+let rec paper_bar_for_feed ?(nopdf=false) p =
+  match !links with
+  | Some f when not nopdf -> f p
+  | _ -> arod_paper_bar ~nopdf p
+
+and arod_paper_bar ~nopdf p =
   let cfg = Arod_model.get_config () in
   let pdf =
     let pdf_path = Filename.concat cfg.paths.static_dir (sprintf "papers/%s.pdf" (MP.slug p)) in
@@ -126,6 +144,7 @@ let paper_bar_for_feed ?(nopdf=false) p =
 
 (** Render paper for feed/listing (blockquote style) *)
 let paper_for_feed p =
+  match !listing with Some f -> (f p, None) | None ->
   let title_el = El.p ~at:[At.class' "paper-title"] [
     El.a ~at:[At.href (Arod_model.Entry.site_url (`Paper p))] [El.txt (MP.title p)]
   ] in
@@ -140,6 +159,7 @@ let paper_for_feed p =
 
 (** Render paper for entry listing *)
 let paper_for_entry ?nopdf p =
+  match !listing, nopdf with Some f, None -> (f p, None) | _ ->
   (El.div ~at:[At.class' "paper"] [
     El.div ~at:[At.class' "paper-info"] [
       El.p ~at:[At.class' "paper-title"] [

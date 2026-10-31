@@ -254,15 +254,17 @@ article img { max-width: 100%; height: auto; }
   grid-template-columns: auto 1fr;
   line-height: 1.5;
 }
-.paper-venue { color: var(--venue); font-weight: bold; min-width: 110px; }
+.paper-venue { color: var(--venue); font-weight: bold; min-width: 110px; padding-right: 10px; }
 .venue-note { color: var(--muted); font-weight: normal; }
 .paper-authors { color: var(--ink-soft); }
 .me-author { text-decoration: underline; }
 /* PDF / DOI / BIB / URL / video icons, under the venue */
-.paper-venue .paper-links { display: flex; gap: 7px; margin: 3px 0 2px; padding-right: 10px; }
-.paper-venue .paper-links svg { display: block; width: 15px; height: 15px; }
-.paper-venue .paper-links a { font-weight: normal; color: var(--venue); }
-.paper-venue .paper-links a:hover { color: var(--link); }
+.paper-links { display: flex; gap: 7px; margin: 3px 0 2px; }
+.paper-links svg { display: block; width: 15px; height: 15px; }
+.paper-links a { font-weight: normal; color: var(--venue); }
+.paper-links a:hover { color: var(--link); }
+/* in arod's paper listings (project pages, a paper's own page) */
+.paper-info .paper-links { margin: 4px 0 12px; }
 
 /* arod's own paper markup on /papers and paper pages */
 .paper-info p { margin-bottom: 2px; }
