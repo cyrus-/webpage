@@ -322,6 +322,14 @@ footer a { font-weight: 600; }
 .flora { display: none; }
 
 @media (min-width: 1500px) {
+  /* The page is at least the window's height: the header, then the main
+     area taking the rest. The border fills the main area (up to a window's
+     height), so a short page doesn't scroll just to fit the border. */
+  body {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+  }
   .main-area {
     max-width: none;
     grid-template-columns: 320px minmax(0, 915px) minmax(0, 1fr);
@@ -331,7 +339,8 @@ footer a { font-weight: 600; }
     position: relative;
     margin-top: -15px; /* up through .main-area's padding */
     align-self: start;
-    height: 100vh;
+    height: calc(100% + 15px);
+    max-height: 100vh;
   }
   .flora img {
     position: absolute;
