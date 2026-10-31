@@ -292,6 +292,10 @@ pre { background: rgba(0, 0, 0, 0.04); padding: 10px 12px; overflow-x: auto; }
 blockquote { margin: 10px 0; padding-left: 12px; border-left: 3px solid var(--rule); color: var(--ink-soft); }
 .project-dates, .timeline-year, .timeline-duration { color: var(--muted); }
 
+/* arod puts a search box on every page; the site has no search backend
+   (bushel's typesense indexing is not vendored) and nothing opens it. */
+.search-modal { display: none; }
+
 /* {1 Footer} */
 
 footer {
