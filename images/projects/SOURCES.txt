@@ -5,7 +5,7 @@ at 300 dpi and scaled to 300px. Shown as a circle on the project card.
 
 hazel: live probes drawing samples as cards, sparklines and colours, Fig. 2 of the Live Probes draft (OOPSLA 2027 submission; ~/projects/flight-papers/live-probes, page 3), Oct 2026
 tylr: the backpack in Hazel (typing `let x = 5 in let y = if x < (`, leaving a hole; obligations `) then • else • in •` float above the cursor), https://hazel.org/build/dev/ scratchpad, Oct 2026
-grove: 2025-grove-popl, page 9
+grove: 2025-grove-popl, page 9 (Fig. 7c, the "(c)" label masked)
 chatlsp: 2024-chatlsp-oopsla, page 2 (Fig. 1, framed on the Language Server)
 livelits: the gradebook in Hazel's Tables docs, every age made a slider (set to varied values) (option-L) above the Table projector and a live projection, https://hazel.org/build/dev/, Oct 2026
 hazel-tutor: the conjunction commutativity derivation, https://hazel.org/build/dev/ (documentation: derivations), Oct 2026
