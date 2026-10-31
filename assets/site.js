@@ -56,8 +56,6 @@
       ["default", "stack"], ["columns", "2 columns"], ["grid", "grid"], ["three", "3 columns"] ] },
     { label: "cards", attr: "data-cards", key: "cards", options: [
       ["default", "flat"], ["shadow", "tan shadow"], ["index", "index card"] ] },
-    { label: "intro", attr: "data-intro", key: "intro", options: [
-      ["default", "dark"], ["light", "light"] ] },
   ];
   var bar = document.createElement("div");
   bar.className = "design-switcher";
