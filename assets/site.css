@@ -31,11 +31,31 @@
 * { box-sizing: border-box; }
 
 body {
+  /* Strength of the map lines on the page background: 0 = flat wheat. */
+  --paper-texture: 0.3;
   margin: 0;
-  background: var(--paper);
   color: var(--ink);
   font-family: "Open Sans", Arial, sans-serif;
   font-size: 11pt;
+}
+
+/* The page colour lives on <html> (the canvas), so the texture below blends
+   with it; an isolated <body> would blend with nothing and just grey it. */
+html { background: var(--paper); }
+
+/* The cartographer texture over the page background, contrast-lifted with
+   its mean at mid-grey so the overlay keeps the wheat colour (and
+   brightness) the same on average. Fixed, so it stays put while scrolling. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: url("../images/cartographer.png");
+  filter: brightness(3.5) contrast(2.2) blur(0.5px);
+  mix-blend-mode: overlay;
+  opacity: var(--paper-texture);
+  pointer-events: none;
 }
 
 h1, h2, h3, h4, h5, h6 { font-family: Montserrat, sans-serif; }
