@@ -114,7 +114,7 @@
   var llab = document.createElement("span");
   llab.textContent = "lines";
   var slider = document.createElement("input");
-  slider.type = "range"; slider.min = "0"; slider.max = "30"; slider.step = "1";
+  slider.type = "range"; slider.min = "0"; slider.max = "100"; slider.step = "1";
   var lval = document.createElement("code");
   function setLines(v) {
     root.style.setProperty("--paper-lines", v);
