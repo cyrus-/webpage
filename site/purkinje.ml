@@ -312,49 +312,6 @@ let sample f ~lo ~hi ~h =
   let nx = int_of_float ((hi.x -. lo.x) /. h) and ny = int_of_float ((hi.y -. lo.y) /. h) in
   Array.init (nx + 1) (fun i -> Array.init (ny + 1) (fun j -> f (v (lo.x +. (float i *. h)) (lo.y +. (float j *. h)))))
 
-(* Morphological closing of a sampled field: grow the shape by [radius],
-   then shrink it back by as much. Whatever is convex comes back as it
-   was, but a concave crotch narrower than the pen of that radius stays
-   filled, as if webbed. *)
-let closing g ~h ~radius =
-  let nx = Array.length g and ny = Array.length g.(0) in
-  let k = int_of_float (Float.ceil (radius /. h)) + 1 in
-  (* the neighbourhood, nearest first *)
-  let offsets =
-    List.init ((2 * k) + 1) (fun a -> List.init ((2 * k) + 1) (fun b -> (a - k, b - k, h *. Float.hypot (float (a - k)) (float (b - k)))))
-    |> List.concat
-    |> List.filter (fun (_, _, d) -> d <= float k *. h)
-    |> List.sort (fun (_, _, a) (_, _, b) -> compare a b)
-  in
-  let grown i j = g.(i).(j) -. radius in
-  Array.init nx (fun i ->
-      Array.init ny (fun j ->
-          if grown i j > 0. then g.(i).(j)
-          else
-            (* how far in from the edge of the grown shape *)
-            let e =
-              match
-                List.find_opt
-                  (fun (a, b, _) ->
-                    let i' = i + a and j' = j + b in
-                    i' >= 0 && j' >= 0 && i' < nx && j' < ny && grown i' j' > 0.)
-                  offsets
-              with
-              | Some (a, b, d) -> d -. (grown (i + a) (j + b) /. (grown (i + a) (j + b) -. grown i j) *. h)
-              | None -> float k *. h
-            in
-            radius -. e))
-
-(* A 3x3 box blur, which rounds off any kinks left in a field. *)
-let blur g =
-  let nx = Array.length g and ny = Array.length g.(0) in
-  let at i j = g.(max 0 (min (nx - 1) i)).(max 0 (min (ny - 1) j)) in
-  Array.init nx (fun i ->
-      Array.init ny (fun j ->
-          List.fold_left (fun s (a, b) -> s +. at (i + a) (j + b)) 0.
-            [ (-1, -1); (0, -1); (1, -1); (-1, 0); (0, 0); (1, 0); (-1, 1); (0, 1); (1, 1) ]
-          /. 9.))
-
 (* The closed curves where the sampled field [g] is zero (it must be
    positive at the border). Edge (i, j, 0) runs from grid point (i, j) to (i+1, j), and
    (i, j, 1) from (i, j) to (i, j+1). *)
@@ -428,32 +385,22 @@ let soma_at r c ~trunks ~axon_heading =
      stroke, so the body is where their broad bases overlap and its sides
      are the trunks' own edges *)
   let trunks = List.map (fun t -> (centre, 0.85 *. rb) :: t) trunks in
-  let k = j "k" 2.5 4. in
+  (* webbing: the blend is broad near the body, so the crotches between
+     the trunks fill with wide curved fillets there, and tightens further
+     out, so the trunks soon part as separate limbs *)
+  let k_near = j "k_near" 6. 9. and k_far = j "k_far" 2.5 4. in
+  let near_in = j "near_in" 6. 9. and near_out = j "near_out" 16. 22. in
   let f p =
+    let t = clampf 0. 1. ((dist p centre -. near_in) /. (near_out -. near_in)) in
+    let k = lerp k_near k_far (t *. t *. (3. -. (2. *. t))) in
     List.fold_left (fun d t -> smin k d (trunk_sdf p t)) (belly_sdf p ~centre ~rx ~ry_up:ry ~ry_down:ry ~flare:0.) (hillock :: trunks)
   in
   let pts = List.concat_map (List.map fst) trunks in
   let lo = List.fold_left (fun m q -> v (Float.min m.x q.x) (Float.min m.y q.y)) (c -: v 20. 20.) pts -: v 14. 14. in
   let hi = List.fold_left (fun m q -> v (Float.max m.x q.x) (Float.max m.y q.y)) (c +: v 20. 20.) pts +: v 14. 14. in
   let h = 0.5 in
-  let raw = sample f ~lo ~hi ~h in
-  (* webbing: close up the tightest crotches between the trunks and the
-     body, near the body only, fading out further up the trunks *)
-  let closed = closing raw ~h ~radius:(j "web" 3.5 5.5) in
-  let near_in = j "near_in" 8. 11. and near_out = j "near_out" 17. 23. in
-  let webbed =
-    Array.mapi
-      (fun i col ->
-        Array.mapi
-          (fun j' x ->
-            let p = v (lo.x +. (float i *. h)) (lo.y +. (float j' *. h)) in
-            let t = clampf 0. 1. ((dist p centre -. near_in) /. (near_out -. near_in)) in
-            lerp closed.(i).(j') x (t *. t *. (3. -. (2. *. t))))
-          col)
-      raw
-  in
   let outline =
-    contours (blur (blur (blur webbed))) ~lo ~h
+    contours (sample f ~lo ~hi ~h) ~lo ~h
     |> List.filter (fun l -> List.length l > 8)
     |> List.map (fun l -> closed_spline (List.filteri (fun i _ -> i mod 2 = 0) (relax (relax l))))
     |> String.concat ""
