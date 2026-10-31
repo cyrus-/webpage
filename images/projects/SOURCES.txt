@@ -3,12 +3,12 @@ from one of the project's recent papers, rendered from the PDF in static/papers/
 at 300 dpi and scaled to 300px. Shown as a circle on the project card.
 
 
-hazel: 2026-typed-tables-oopsla, page 2
-tylr: 2025-syntactic-completions-oopsla, page 2
+hazel: the Hazel editor, https://hazel.org/build/dev/ (tutorial: holes), Oct 2026
+tylr: the tylr logo, https://tylr.fun/, Oct 2026
 grove: 2025-grove-popl, page 9
 chatlsp: 2024-chatlsp-oopsla, page 2
-livelits: 2021-livelits-pldi, page 3
-hazel-tutor: 2025-hazel-deriver-vlhcc, page 3
+livelits: the emotion livelit, docs/livelits-slide-emotion.png on hazelgrove/hazel branch integration/livelits-modular-editors (Matthew Hammer), Oct 2026
+hazel-tutor: the conjunction commutativity derivation, https://hazel.org/build/dev/ (documentation: derivations), Oct 2026
 bastion: 2024-bastion-hope, page 2
 deckflow: 2025-deckflow-vlhcc, page 1
 rustviz: 2022-rustviz-vlhcc, page 3
