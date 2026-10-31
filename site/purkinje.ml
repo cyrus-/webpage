@@ -249,17 +249,42 @@ let smooth nodes =
       | _ -> n)
     nodes
 
-(* A rounded triangle, broad shoulders up top where the limbs leave and a
-   point below where the axon does. *)
-let soma_at c =
-  let v x y = v (1.3 *. x) (1.3 *. y) in
-  cubic_d (c +: v (-12.) (-6.))
-    [
-      (c +: v (-8.) (-12.), c +: v 8. (-12.), c +: v 12. (-6.));
-      (c +: v 13. (-2.), c +: v 6. 7., c +: v 1.2 13.);
-      (c +: v 0.4 14., c +: v (-0.4) 14., c +: v (-1.2) 13.);
-      (c +: v (-6.) 7., c +: v (-13.) (-2.), c +: v (-12.) (-6.));
-    ]
+(* A closed Catmull-Rom curve through the points. *)
+let closed_spline pts =
+  let a = Array.of_list pts in
+  let n = Array.length a in
+  let p i = a.(((i mod n) + n) mod n) in
+  cubic_d (p 0)
+    (List.init n (fun i ->
+         ( p i +: ((1. /. 6.) *: (p (i + 1) -: p (i - 1))),
+           p (i + 1) -: ((1. /. 6.) *: (p (i + 2) -: p i)),
+           p (i + 1) )))
+  ^ "Z"
+
+(* The cell body: a lumpy, seed-shaped pear, never quite the same twice. It
+   swells into a shoulder wherever a main limb leaves, so the limbs flow
+   out of it, and draws down into a hillock where the axon starts. Returns
+   the outline and the tip of the hillock. *)
+let soma_at r c ~limbs =
+  let r = Rng.key r "soma" in
+  let j k lo hi = Rng.range (Rng.key r k) lo hi in
+  let radius = j "r" 8.5 11. and aspect = j "aspect" 0.78 1.12 and tilt = j "tilt" (-0.3) 0.3 in
+  let wobble = List.map (fun k -> (k, j ("a" ^ string_of_int k) 0. (0.14 /. float (k - 1)), j ("p" ^ string_of_int k) 0. 6.3)) [ 2; 3; 4; 5 ] in
+  let bump width d = exp (-.((Flora.turn_to 0. d /. width) ** 2.)) in
+  let shoulders = List.mapi (fun i a -> (a, j ("s" ^ string_of_int i) 3. 7.5, j ("sw" ^ string_of_int i) 0.28 0.45)) limbs in
+  let hillock = ((pi /. 2.) -. 0.25 +. j "ha" (-0.15) 0.15, j "h" 4. 7., j "hw" 0.18 0.3) in
+  (* a tilted ellipse, in polar form, so the bumps stay where they belong *)
+  let ellipse t =
+    let a = radius /. sqrt aspect and b = radius *. sqrt aspect in
+    a *. b /. Float.hypot (b *. cos (t -. tilt)) (a *. sin (t -. tilt))
+  in
+  let rho t =
+    ellipse t *. List.fold_left (fun acc (k, amp, ph) -> acc +. (amp *. cos ((float k *. t) +. ph))) 1. wobble
+    +. List.fold_left (fun acc (a, amp, width) -> acc +. (amp *. bump width (t -. a))) 0. (hillock :: shoulders)
+  in
+  let at t = c +: (rho t *: dir t) in
+  let ha, _, _ = hillock in
+  (closed_spline (List.init 40 (fun i -> at (2. *. pi *. float i /. 40.))), at ha)
 
 let w = 340.
 let top = 14.
@@ -340,8 +365,7 @@ let draw ~seed:s pal =
   let tips = tips (List.filter (fun n -> not n.fine) nodes) and kids = children nodes in
   let tips_of n = Option.value (Ids.find_opt n.id tips) ~default:1 in
   let kids_of n = Option.value (Ids.find_opt n.id kids) ~default:[] in
-  (* how far each node's dendrite (not branchlet) subtree reaches, in nodes;
-     short stubs are drawn fine, so dendrites read as smooth strokes *)
+  (* how far each node's dendrite (not branchlet) subtree reaches, in nodes *)
   let reach =
     List.sort (fun a b -> compare b.id a.id) nodes
     |> List.fold_left
@@ -352,15 +376,21 @@ let draw ~seed:s pal =
            else Ids.update n.parent (fun s -> Some (max d (Option.value s ~default:0))) m)
          Ids.empty
   in
-  let stub n = Option.value (Ids.find_opt n.id reach) ~default:0 < 12 in
-  (* pen width in tenths, after the pipe model: thick where many tips are fed *)
-  (* hairs fine; dendrites at least a medium weight, heavier the more they feed *)
+  let reach_of n = Option.value (Ids.find_opt n.id reach) ~default:0 in
+  (* pen width in tenths. Cajal's dendrites keep their weight: the trunks
+     are only somewhat heavier than the branches they feed (a flat pipe
+     model), and each dendrite stays medium weight until near its end,
+     where it tapers over its last few dozen steps to a rounded tip *)
   let pen n =
-    if n.fine || stub n then 5. else Float.round (10. *. clampf 2. 5.5 (0.8 *. (float (tips_of n) ** 0.38)))
+    if n.fine then 5.
+    else
+      let base = clampf 1.9 4.4 (1.35 *. (float (tips_of n) ** 0.27)) in
+      let taper = Float.min 1. (float (reach_of n) /. 22.) ** 0.55 in
+      2. *. Float.round (5. *. (1.1 +. ((base -. 1.1) *. taper)))
   in
   (* unbranched runs, each one polyline of one width *)
   let rec runs from n =
-    let rec follow n acc = match kids_of n with [ c ] -> follow c (c.pos :: acc) | _ -> (n, List.rev acc) in
+    let rec follow n acc = match kids_of n with [ c ] when pen c = pen n -> follow c (c.pos :: acc) | _ -> (n, List.rev acc) in
     let last, pts = follow n [ n.pos ] in
     (pen n, line_d (from :: pts)) :: List.concat_map (runs last.pos) (kids_of last)
   in
@@ -380,9 +410,10 @@ let draw ~seed:s pal =
            let d = List.filter_map (fun (pw', s) -> if pw' = pw then Some s else None) segments in
            path (String.concat "" d) ([ no_fill ] @ stroke pal.ink (pw /. 10.) @ round))
   in
+  let outline, hillock = soma_at r soma ~limbs:(List.map (fun l -> angle_of ((at l 4).pos -: soma)) [ left; right; middle ]) in
   (* the axon, falling away below with one recurrent collateral *)
   let axon =
-    let pts = curve ~step:2. (soma +: v 0. 16.) axon_length (fun s -> (pi /. 2.) -. 0.4 +. (0.1 *. sin (s /. 13.))) in
+    let pts = curve ~step:2. hillock axon_length (fun s -> (pi /. 2.) -. 0.4 +. (0.1 *. sin (s /. 13.))) in
     let a = Array.of_list pts in
     let j = Array.length a / 2 in
     let collateral = curve ~step:1.5 a.(j) (axon_length *. 0.9) (fun s -> (pi /. 2.) +. 1.05 -. (s *. 0.004) +. (0.12 *. sin (s /. 9.))) in
@@ -391,7 +422,7 @@ let draw ~seed:s pal =
       path (line_d collateral) ([ no_fill ] @ stroke pal.ink 0.6 @ round);
     ]
   in
-  let body = dendrites @ blots @ [ path (soma_at soma) ([ fill pal.ink ] @ stroke pal.ink 0.6) ] @ axon in
+  let body = dendrites @ blots @ [ path outline ([ fill pal.ink ] @ stroke pal.ink 0.6) ] @ axon in
   let wi = int_of_float (Float.ceil w) and hi = int_of_float (Float.ceil h) in
   Printf.sprintf
     "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 %d %d\" width=\"%d\" \
