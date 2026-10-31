@@ -3,7 +3,7 @@ from one of the project's recent papers, rendered from the PDF in static/papers/
 at 300 dpi and scaled to 300px. Shown as a circle on the project card.
 
 
-hazel: the Table projector, https://hazel.org/build/dev/ (documentation: tables; from the OOPSLA 2026 lively typed tables work), Oct 2026
+hazel: evaluation around a hole, `map([1, 2, 3], fun x -> x * 10 + ?)` = `[10 + ?, 20 + ?, 30 + ?]`, https://hazel.org/build/dev/ scratchpad, Oct 2026
 tylr: the backpack in Hazel (typing `let y = if x < (1`; obligations `) then • else • in •` float above the cursor), https://hazel.org/build/dev/ scratchpad, Oct 2026
 grove: 2025-grove-popl, page 9
 chatlsp: 2024-chatlsp-oopsla, page 2
