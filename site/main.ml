@@ -100,7 +100,7 @@ let live_reload_script =
   check();
 })();|}
 
-(* The botanical border drawn by default; the design switcher can swap it. *)
+(* The botanical border (site/flora.ml draws the other variants too). *)
 let flora_default = "/flora/bloom-forest.svg"
 
 (* Set while rendering a page that should be framed for reading: a note on
