@@ -739,29 +739,15 @@ let tree pal r =
 let vine_top pal r =
   ([], [ flower5 pal (Rng.key r "top") ~grad:"pa" ~at:(v cx (fy Vine (crown_base Vine))) ~radius:26. ~tilt:(fa Vine (-18.)) ~squash:0.82 ])
 
-(* One big open flower with two buds, as at the head of an engraved border. *)
+(* One big open flower, as at the head of an engraved border. *)
 let bloom pal r =
   let f = fa Bloom in
   (* a point [y] below the flower's centre (upright) *)
   let o x y = v (cx +. x) (fy Bloom (crown_base Bloom +. y)) in
   let c = o 0. 0. in
-  let bud at heading =
-    let p x y = at +: ((x *. 18.) *: dir heading) +: ((y *. 8.) *: dir (heading +. (pi /. 2.))) in
-    [
-      path (cubic_d at [ (p 0.2 (-1.), p 0.8 (-0.8), p 1. 0.); (p 0.8 0.8, p 0.2 1., at) ]) ([ fill "url(#pa)" ] @ stroke pal.ink 0.55);
-      path (seg_d (p 0.1 0.) (p 0.85 0.)) ([ ("opacity", ".7") ] @ stroke pal.paper 0.45);
-      path (cubic_d at [ (p 0.15 (-0.9), p 0.3 (-0.7), p 0.4 (-0.3)); (p 0.3 0., p 0.3 0., at) ]) ([ fill pal.leaf ] @ stroke pal.ink 0.4);
-    ]
-  in
-  let stalk from a l = Array.of_list (curve from l (fun s -> f (a +. (s *. 0.012)))) in
-  let s1 = stalk (o 4. 84.) (up +. 0.95) 60. and s2 = stalk (o (-3.) 108.) (up -. 1.0) 54. in
-  let stalk_path s = path (line_d (Array.to_list s)) ([ no_fill ] @ stroke pal.ink 1.3 @ round) in
-  let last s = s.(Array.length s - 1) and last_h s = heading_at s (Array.length s - 1) in
-  ( [ stalk_path s1; stalk_path s2 ]
-    @ leaf pal ~at:(o 0. 50.) ~heading:(f (up -. 1.15)) ~length:56. ~bend:(f 0.4) ()
+  ( leaf pal ~at:(o 0. 50.) ~heading:(f (up -. 1.15)) ~length:56. ~bend:(f 0.4) ()
     @ leaf pal ~at:(o 0. 64.) ~heading:(f (up +. 1.1)) ~length:50. ~bend:(f (-0.4)) (),
-    bud (last s1) (last_h s1) @ bud (last s2) (last_h s2)
-    @ [ flower5 pal (Rng.key r "big") ~grad:"pa" ~at:c ~radius:70. ~tilt:(f (-12.)) ~squash:0.86 ] )
+    [ flower5 pal (Rng.key r "big") ~grad:"pa" ~at:c ~radius:70. ~tilt:(f (-12.)) ~squash:0.86 ] )
 
 (* The vine trails off at the bottom rather than stopping at the edge. *)
 let fade =
