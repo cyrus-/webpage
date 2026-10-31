@@ -276,7 +276,6 @@ article img { max-width: 100%; height: auto; }
 
 /* {2 Paper and talk cards} */
 
-.paper-card .paper { margin-top: 0; }
 
 .talk-card .talk-thumb img {
   display: block;

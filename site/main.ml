@@ -312,11 +312,22 @@ let home cfg _req =
 
 let papers_tab cfg _req =
   let open Htmlit in
-  let cards =
+  (* one card per year, newest first, headed like the project cards *)
+  let papers =
     Arod.Model.papers ()
     |> List.sort (fun a b ->
            compare (Bushel.Paper.year b, Bushel.Paper.slug b) (Bushel.Paper.year a, Bushel.Paper.slug a))
-    |> List.map (fun p -> El.div ~at:[ At.class' "card paper-card" ] [ paper_card_entry cfg p ])
+  in
+  let years = List.sort_uniq (fun a b -> compare b a) (List.map Bushel.Paper.year papers) in
+  let cards =
+    List.map
+      (fun y ->
+        El.div ~at:[ At.class' "card paper-year" ]
+          (El.h2 [ El.txt (string_of_int y) ]
+          :: List.filter_map
+               (fun p -> if Bushel.Paper.year p = y then Some (paper_card_entry cfg p) else None)
+               papers))
+      years
   in
   card_page cfg ~title:"Papers" ~kind:"paper-cards" cards
 
