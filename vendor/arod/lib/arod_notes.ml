@@ -31,5 +31,6 @@ let one_note_full n =
      card title (arod shows it in a page header the site replaces). *)
   El.div ~at:[At.class' "note"] [
     El.h2 [El.txt n.Arod_model.Note.title];
+    El.div ~at:[At.class' "note-date"] [El.txt (Arod_view.ptime_date ~with_d:true n.Arod_model.Note.date)];
     El.unsafe_raw (Arod_view.md_to_html body_with_ref)
   ]

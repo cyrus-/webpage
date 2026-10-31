@@ -95,6 +95,14 @@ let live_reload_script =
 (* The botanical border drawn by default; the design switcher can swap it. *)
 let flora_default = "/flora/bloom-forest.svg"
 
+(* Set while rendering a page that should be framed for reading: a note on
+   its own page, as shared by its link. *)
+let reading = ref false
+
+let as_reading_page render =
+  reading := true;
+  Fun.protect ~finally:(fun () -> reading := false) render
+
 let set_frame ~live () =
   let open Htmlit in
   let header = read_file "layout/header.html" in
@@ -104,19 +112,31 @@ let set_frame ~live () =
     El.nav ~at:[ At.class' "tab-bar" ]
       (List.map (fun (label, href) -> El.a ~at:[ At.class' "tab"; At.href href ] [ El.txt label ]) tabs)
   in
+  (* botanical border, shown only on wide windows (see Flora) *)
+  let flora =
+    El.aside
+      ~at:[ At.class' "flora"; At.v "aria-hidden" "true" ]
+      [ El.img ~at:[ At.src flora_default; At.v "alt" ""; At.v "loading" "lazy" ] () ]
+  in
   Arod.Page.set_frame (fun ~header:_ ~content ~footer ->
       [
         El.unsafe_raw header;
-        El.div ~at:[ At.class' "main-area" ]
-          [
-            El.div ~at:[ At.class' "left-col" ] [ El.unsafe_raw sidebar ];
-            El.div ~at:[ At.class' "right-col" ]
-              [ El.unsafe_raw intro; tab_bar; El.div ~at:[ At.class' "content-grid" ] [ content ] ];
-            (* botanical border, shown only on wide windows (see Flora) *)
-            El.aside
-              ~at:[ At.class' "flora"; At.v "aria-hidden" "true" ]
-              [ El.img ~at:[ At.src flora_default; At.v "alt" ""; At.v "loading" "lazy" ] () ];
-          ];
+        (if !reading then
+           (* just the note, in a column of its own: no sidebar, intro or tabs *)
+           El.div ~at:[ At.class' "reading-area" ]
+             [
+               El.div ~at:[ At.class' "reading" ]
+                 [ El.a ~at:[ At.class' "back"; At.href "/notes" ] [ El.txt "← All notes" ]; content ];
+               flora;
+             ]
+         else
+           El.div ~at:[ At.class' "main-area" ]
+             [
+               El.div ~at:[ At.class' "left-col" ] [ El.unsafe_raw sidebar ];
+               El.div ~at:[ At.class' "right-col" ]
+                 [ El.unsafe_raw intro; tab_bar; El.div ~at:[ At.class' "content-grid" ] [ content ] ];
+               flora;
+             ]);
         footer;
       ]
       @ if live then [ El.script [ El.unsafe_raw live_reload_script ] ] else [])
@@ -323,6 +343,14 @@ let talks_tab cfg _req =
 
 (** Our routes: the home page and Papers/Talks tabs first, then arod's, then (for local preview)
     files from public/ and the CV PDF, which the static build copies in. *)
+(* A note on its own page gets the reading frame. (The notes feeds live
+   under /notes/ too.) *)
+let note_page cfg slug req =
+  match slug with
+  | "atom.xml" -> Arod.Handlers.atom_feed cfg req
+  | "feed.json" -> Arod.Handlers.json_feed cfg req
+  | _ -> as_reading_page (fun () -> Arod.Handlers.note ((), slug) req)
+
 let routes cfg =
   let arod = Route.Routes.fold (fun r acc -> r :: acc) (Arod.Handlers.all_routes cfg) [] in
   Route.Routes.of_list
@@ -331,6 +359,8 @@ let routes cfg =
        Route.get_ [ "papers" ] (papers_tab cfg);
        Route.get_ [ "talks" ] (talks_tab cfg);
        Route.get_ [ "videos" ] (talks_tab cfg);
+       Route.get Route.(exact "notes" @/ param) (fun ((), slug) req -> note_page cfg slug req);
+       Route.get Route.(exact "notes" @/ param @/ exact "") (fun ((), (slug, ())) req -> note_page cfg slug req);
      ]
     @ List.map
         (fun (name, svg) ->

@@ -133,7 +133,8 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 15px 0; }
 
 .header > h1 { margin: 0; font-weight: normal; font-size: 18pt; }
 .header strong { font-weight: normal; }
-.header > h1 > strong:first-child { font-weight: bold; }
+.header .home strong { font-weight: bold; }
+.header a.home, .header a.home:hover { color: inherit; }
 #tagline-1 { color: var(--header-accent); }
 
 /* {1 Two-column layout} */
@@ -427,4 +428,35 @@ footer a { font-weight: 600; }
 .design-switcher button.reset {
   background: var(--header-accent);
   color: var(--header-seen);
+}
+
+/* {1 Reading page}
+
+   A note on its own page (as shared by its link): the header bar, then just
+   the note in a column of its own, with the botanical border on wide
+   windows. */
+
+.reading-area {
+  padding: 15px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+.reading { max-width: 760px; }
+.reading .back { display: inline-block; margin: 4px 0 12px 2px; font-weight: normal; }
+.reading article {
+  background: var(--card);
+  padding: 22px 26px;
+  border: 1px solid var(--card-border);
+  border-radius: var(--card-radius);
+  font-size: 105%;
+  line-height: 1.6;
+}
+.reading article h2 { font-size: 150%; border: 0; margin: 0; padding: 0; }
+.reading .note-date { color: var(--muted); margin: 2px 0 16px; padding-bottom: 12px; border-bottom: 1px solid var(--rule); }
+/* arod's line under the note repeats the date; the rule under it closes nothing */
+.reading .note-meta, .reading article > hr { display: none; }
+
+@media (min-width: 1500px) {
+  /* the border sits where it does on the other pages */
+  .reading-area { grid-template-columns: minmax(0, 1265px) minmax(0, 1fr); }
 }

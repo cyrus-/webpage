@@ -44,4 +44,4 @@ Local changes to these packages should be kept small and noted here.
 - `arod/lib/arod_view.ml`: sidenote triggers (`[:slug]`, `[@@handle]`) are
   plain links to the entry, showing its title when the link has no text of
   its own, so they work without arod's sidenote script.
-- `arod/lib/arod_notes.ml`: a note's page starts with its title.
+- `arod/lib/arod_notes.ml`: a note's page starts with its title and date.
