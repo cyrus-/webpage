@@ -249,8 +249,8 @@ article img { max-width: 100%; height: auto; }
 .project-image { float: right; margin: 0 0 8px 14px; }
 .project-image img {
   display: block;
-  width: 96px;
-  height: 96px;
+  width: 115px;
+  height: 115px;
   border-radius: 50%;
   border: 1px solid #576f6f;
   padding: 1px;
