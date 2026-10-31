@@ -412,6 +412,8 @@ footer a { font-weight: 600; }
 .reading .note-date { color: var(--muted); margin: 2px 0 16px; padding-bottom: 12px; border-bottom: 1px solid var(--rule); }
 /* arod's line under the note repeats the date; the rule under it closes nothing */
 .reading .note-meta, .reading article > hr { display: none; }
+.reading article ul { margin: 10px 0 14px; }
+.reading article li { margin-bottom: 6px; }
 
 @media (min-width: 1500px) {
   /* the border sits where it does on the other pages */
