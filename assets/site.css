@@ -13,6 +13,8 @@
   /* Boldness of the tan map lines on the page (0 = flat wheat). */
   --paper-lines: 40;
   --card: #fffbef;
+  /* Outline colour for the "flat" card style. */
+  --card-border: #e3cf85;
   --ink: #222;
   --ink-soft: #444;
   --muted: #888;
@@ -335,7 +337,7 @@ footer a { font-weight: 600; }
 :root[data-cards="flat"] .card:not(.bio-card),
 :root[data-cards="flat"] .content-grid > article {
   box-shadow: none;
-  border: 1px solid #e3cf85;
+  border: 1px solid var(--card-border);
 }
 
 /* {1 Design preview}

@@ -141,6 +141,39 @@
   if (get("cardColor")) setCard(get("cardColor"), get("cardColorName"));
   else setCard("#fffbef", "cream");
 
+  // outline colour for the flat card style (sets --card-border)
+  var orow = document.createElement("div");
+  orow.className = "row";
+  var olab = document.createElement("span");
+  olab.textContent = "outline";
+  orow.appendChild(olab);
+  var outlinePresets = [
+    ["gold", "#e3cf85"], ["tan", "#d2b48c"], ["dark wheat", "#d6bd8a"], ["brown", "#a68a64"],
+    ["teal", "#233a3a"], ["soft teal", "#6f8f86"], ["pale", "#efe2bd"],
+  ];
+  var opick = document.createElement("input");
+  opick.type = "color";
+  var oval = document.createElement("code");
+  var obuttons = [];
+  function setOutline(v, name) {
+    root.style.setProperty("--card-border", v);
+    oval.textContent = name || v;
+    opick.value = v;
+    set("cardBorder", v); set("cardBorderName", name || "");
+    obuttons.forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.v === v)); });
+  }
+  outlinePresets.forEach(function (c) {
+    var b = document.createElement("button");
+    b.textContent = c[0]; b.dataset.v = c[1];
+    b.onclick = function () { setOutline(c[1], c[0]); };
+    obuttons.push(b); orow.appendChild(b);
+  });
+  opick.oninput = function () { setOutline(opick.value); };
+  orow.appendChild(opick); orow.appendChild(oval);
+  bar.appendChild(orow);
+  if (get("cardBorder")) setOutline(get("cardBorder"), get("cardBorderName"));
+  else setOutline("#e3cf85", "gold");
+
   // boldness of the tan map lines on the page background
   var lrow = document.createElement("div");
   lrow.className = "row";
