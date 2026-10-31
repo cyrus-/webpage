@@ -664,9 +664,11 @@ let second_vine pal r ~crown =
   let a = Array.of_list pts in
   let n = Array.length a in
   let stem = path (closed_d (ribbon pts (fun t -> lerp 3. 1.0 t))) [ fill pal.ink ] in
+  (* a hanging vine comes out of the bar bare for a little way *)
+  let first = if hangs crown then 48 else 18 in
   let leaves =
     List.init (n / 30) (fun k ->
-        let i = 18 + (k * 30) in
+        let i = first + (k * 30) in
         if i >= n - 8 then []
         else
           let side = if k mod 2 = 0 then -1. else 1. in
@@ -801,7 +803,9 @@ let svg ~crown pal =
     let rec go s i acc =
       if s > top then List.rev acc else go (s +. Rng.range (Rng.nth rn i) 46. 58.) (i + 1) (s :: acc)
     in
-    go 50. 0 []
+    (* the stem starts 40 above the top edge; a hanging one comes out of the
+       bar bare, its first leaves well clear of it *)
+    go (if hangs crown then 110. else 50.) 0 []
   in
   let nodes =
     List.mapi
