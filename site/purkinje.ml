@@ -261,22 +261,22 @@ let closed_spline pts =
            p (i + 1) )))
   ^ "Z"
 
-(* The cell body: a smooth, elongated pear, never quite the same twice. It
+(* The cell body: a smooth oval, squashed flat, never quite the same twice. It
    leans a little, rises broadly into the trunk where the main limbs leave,
    and draws down into a hillock where the axon starts. Returns
    the outline and the tip of the hillock. *)
 let soma_at r c ~limbs =
   let r = Rng.key r "soma" in
   let j k lo hi = Rng.range (Rng.key r k) lo hi in
-  let radius = j "r" 8. 10. and aspect = j "aspect" 1.25 1.6 and tilt = j "tilt" (-0.2) 0.2 in
+  let radius = j "r" 8.5 10.5 and aspect = j "aspect" 0.58 0.78 and tilt = j "tilt" (-0.25) 0.25 in
   let wobble = List.map (fun k -> (k, j ("a" ^ string_of_int k) 0. 0.04, j ("p" ^ string_of_int k) 0. 6.3)) [ 2; 3 ] in
   let bump width d = exp (-.((Flora.turn_to 0. d /. width) ** 2.)) in
   (* one broad swelling toward the limbs, not a lump for each *)
   let trunk =
     let x, y = List.fold_left (fun (x, y) a -> (x +. cos a, y +. sin a)) (0., 0.) limbs in
-    (Float.atan2 y x, j "t" 2. 4., j "tw" 0.6 0.8)
+    (Float.atan2 y x, j "t" 1.5 3., j "tw" 0.6 0.8)
   in
-  let hillock = ((pi /. 2.) -. 0.25 +. j "ha" (-0.15) 0.15, j "h" 5. 8., j "hw" 0.26 0.34) in
+  let hillock = ((pi /. 2.) -. 0.25 +. j "ha" (-0.15) 0.15, j "h" 1.5 3., j "hw" 0.4 0.5) in
   (* a tilted ellipse, in polar form, so the bumps stay where they belong *)
   let ellipse t =
     let a = radius /. sqrt aspect and b = radius *. sqrt aspect in
@@ -287,7 +287,7 @@ let soma_at r c ~limbs =
     +. List.fold_left (fun acc (a, amp, width) -> acc +. (amp *. bump width (t -. a))) 0. [ hillock; trunk ]
   in
   (* broad above, narrowing below: a teardrop *)
-  let pear = j "pear" 0.15 0.3 in
+  let pear = j "pear" 0. 0.12 in
   let at t =
     let q = rho t *: dir t in
     c +: v (q.x *. (1. -. (pear *. q.y /. radius))) q.y
@@ -304,7 +304,7 @@ let draw ~seed:s pal =
   let soma = v (0.58 *. w) (top +. (0.95 *. w)) in
   let axon_length = 110. in
   let h = soma.y +. 16. +. axon_length in
-  let root = { id = 0; pos = soma +: v 0. (-7.); parent = -1; fine = false } in
+  let root = { id = 0; pos = soma +: v 0. (-2.); parent = -1; fine = false } in
   (* the main limbs, placed by hand and lopsided as in Cajal's drawing: one
      long heavy limb sweeping out to the left with limbs of its own rising
      from it, and shorter, uneven ones to the right *)
