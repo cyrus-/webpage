@@ -116,7 +116,7 @@
   crow.appendChild(clab);
   var cardPresets = [
     ["cream", "#fffbef"], ["white", "#ffffff"], ["ivory", "#fbf6e6"], ["linen", "#faf1de"],
-    ["parchment", "#f7ecd2"], ["pale wheat", "#fcf0d4"], ["vellum", "rgba(255, 251, 239, 0.72)"],
+    ["parchment", "#f7ecd2"], ["pale wheat", "#fcf0d4"], ["warm vellum", "rgba(255, 251, 239, 0.72)"], ["vellum", "rgba(255, 255, 255, 0.72)"],
   ];
   var cpick = document.createElement("input");
   cpick.type = "color";
@@ -139,7 +139,7 @@
   crow.appendChild(cpick); crow.appendChild(cval);
   bar.appendChild(crow);
   if (get("cardColor")) setCard(get("cardColor"), get("cardColorName"));
-  else setCard("rgba(255, 251, 239, 0.72)", "vellum");
+  else setCard("rgba(255, 255, 255, 0.72)", "vellum");
 
   // outline colour for the flat card style (sets --card-border)
   var orow = document.createElement("div");
