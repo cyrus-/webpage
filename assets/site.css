@@ -55,7 +55,7 @@ body::before {
   inset: 0;
   z-index: -1;
   background: url("../images/cartographer.png");
-  filter: blur(0.6px) invert(1) brightness(0.583) contrast(8);
+  filter: blur(0.7px) invert(1) brightness(0.583) contrast(12);
   mix-blend-mode: soft-light;
   opacity: var(--paper-texture);
   pointer-events: none;
