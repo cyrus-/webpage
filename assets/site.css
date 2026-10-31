@@ -245,6 +245,18 @@ article img { max-width: 100%; height: auto; }
 .card-list .card { margin-bottom: 15px; }
 .project-card h2 a { color: var(--ink-soft); }
 .project-card h2 a:hover { color: var(--link); }
+/* a figure from one of the project's papers, in a circle like the portrait */
+.project-image { float: right; margin: 0 0 8px 14px; }
+.project-image img {
+  display: block;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  border: 1px solid #576f6f;
+  padding: 1px;
+  background: #fff;
+}
+.project-card::after { content: ""; display: block; clear: both; }
 
 /* {2 Papers (home cards and arod listings)} */
 

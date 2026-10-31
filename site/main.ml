@@ -272,8 +272,16 @@ let project_card cfg proj =
            && match Bushel.Paper.project_slugs p with primary :: _ -> primary = slug | [] -> false)
     |> List.sort (fun a b -> compare (Bushel.Paper.year b, Bushel.Paper.slug b) (Bushel.Paper.year a, Bushel.Paper.slug a))
   in
+  (* a figure from one of its papers, if there is one (images/projects/) *)
+  let image =
+    if Sys.file_exists (Filename.concat cfg.Arod.Config.paths.images_dir ("projects/" ^ slug ^ ".jpg")) then
+      [ El.a ~at:[ At.class' "project-image"; At.href ("/projects/" ^ slug) ]
+          [ El.img ~at:[ At.src ("/images/projects/" ^ slug ^ ".jpg"); At.v "alt" ""; At.v "loading" "lazy" ] () ] ]
+    else []
+  in
   El.div ~at:[ At.class' "card project-card"; At.id slug ]
-    ([
+    (image
+    @ [
        El.h2 [ El.a ~at:[ At.href ("/projects/" ^ slug) ] [ El.txt (Bushel.Project.title proj) ] ];
        El.unsafe_raw (Arod.View.md_to_html (Bushel.Project.body proj));
      ]
