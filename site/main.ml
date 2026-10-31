@@ -163,6 +163,21 @@ let venue p =
   let name = Option.value (List.assoc_opt key venues) ~default:(String.uppercase_ascii key) in
   Printf.sprintf "%s %d" name (Bushel.Paper.year p)
 
+(* The recorded talk for a paper, if any. When there are several (say a
+   conference talk and a longer one elsewhere), the one from the paper's own
+   venue, which its title names. *)
+let paper_video p =
+  let slug = Bushel.Paper.slug p in
+  let at_venue v =
+    let t = Bushel.Video.title v and s = venue p in
+    let n = String.length s in
+    let rec go i = i + n <= String.length t && (String.sub t i n = s || go (i + 1)) in
+    go 0
+  in
+  match List.filter (fun v -> Bushel.Video.paper v = Some slug) (Arod.Model.videos ()) with
+  | [] -> None
+  | vs -> Some (Option.value (List.find_opt at_venue vs) ~default:(List.hd vs))
+
 let paper_card_entry cfg p =
   let open Htmlit in
   let slug = Bushel.Paper.slug p in
@@ -181,6 +196,10 @@ let paper_card_entry cfg p =
         Option.map (fun d -> El.a ~at:[ At.href ("https://doi.org/" ^ d) ] [ El.txt "DOI" ]) (Bushel.Paper.doi p);
         Some (El.a ~at:[ At.href ("/papers/" ^ slug ^ ".bib") ] [ El.txt "BIB" ]);
         Option.map (fun u -> El.a ~at:[ At.href u ] [ El.txt "URL" ]) (Bushel.Paper.url p);
+        Option.map
+          (fun v ->
+            El.a ~at:[ At.href ("https://www.youtube.com/watch?v=" ^ Bushel.Video.uuid v) ] [ El.txt "VIDEO" ])
+          (paper_video p);
       ]
     |> List.fold_left (fun acc a -> if acc = [] then [ a ] else acc @ [ El.txt " · "; a ]) []
   in
