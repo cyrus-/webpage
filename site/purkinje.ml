@@ -261,39 +261,141 @@ let closed_spline pts =
            p (i + 1) )))
   ^ "Z"
 
-(* The cell body: a smooth oval, squashed flat, never quite the same twice. It
-   leans a little, rises broadly into the trunk where the main limbs leave,
-   and draws down into a hillock where the axon starts. Returns
-   the outline and the tip of the hillock. *)
-let soma_at r c ~limbs =
+(* {2 The soma}
+
+   Cajal's cell body is not a shape set down beneath the dendrites: it is
+   where the primary trunks meet. The heaviest trunk, rising to the left,
+   is nearly as broad as the body itself and flows straight out of it;
+   the others leave as tapering cones; and underneath hangs a squat belly
+   with the axon leaving from its lower side. So the soma is drawn as a
+   smooth union of the belly with the bases of the trunks, as a distance
+   field, which fills the crotches between them with curved fillets, and
+   its outline traced with marching squares. *)
+
+let dot a b = (a.x *. b.x) +. (a.y *. b.y)
+
+(* Polynomial smooth minimum: a union with fillets of size about [k]. *)
+let smin k a b =
+  if a = infinity then b
+  else
+    let h = clampf 0. 1. (0.5 +. (0.5 *. (b -. a) /. k)) in
+    lerp b a h -. (k *. h *. (1. -. h))
+
+(* Signed distance to a cone segment from [a] (radius [ra]) to [b] ([rb]). *)
+let cone_sdf p (a, ra) (b, rb) =
+  let ab = b -: a in
+  let t = clampf 0. 1. (dot (p -: a) ab /. Float.max 1e-6 (dot ab ab)) in
+  dist p (a +: (t *: ab)) -. lerp ra rb t
+
+(* A tapering trunk: a chain of cone segments, blended so the joints
+   between them do not show. *)
+let trunk_sdf p = function
+  | [] -> infinity
+  | first :: rest -> fst (List.fold_left (fun (d, prev) q -> (smin 1.5 d (cone_sdf p prev q), q)) (infinity, first) rest)
+
+(* A squat egg, broad across the top and rounding to a bulge below;
+   roughly signed distance. *)
+let belly_sdf p ~centre ~rx ~ry_up ~ry_down ~flare =
+  let ry = if p.y < centre.y then ry_up else ry_down in
+  let rx = rx *. clampf 0.6 1.5 (1. -. (flare *. (p.y -. centre.y) /. ry_down)) in
+  let q = v ((p.x -. centre.x) /. rx) ((p.y -. centre.y) /. ry) in
+  (Float.hypot q.x q.y -. 1.) *. Float.min rx ry
+
+module Edges = Map.Make (struct
+  type t = int * int * int
+
+  let compare = compare
+end)
+
+(* The closed curves where [f] is zero, sampled on a grid of spacing [h]
+   over the box from [lo] to [hi] (where [f] must be positive at the
+   border). Edge (i, j, 0) runs from grid point (i, j) to (i+1, j), and
+   (i, j, 1) from (i, j) to (i, j+1). *)
+let contours f ~lo ~hi ~h =
+  let nx = int_of_float ((hi.x -. lo.x) /. h) and ny = int_of_float ((hi.y -. lo.y) /. h) in
+  let at i j = v (lo.x +. (float i *. h)) (lo.y +. (float j *. h)) in
+  let g = Array.init (nx + 1) (fun i -> Array.init (ny + 1) (fun j -> f (at i j))) in
+  let point (i, j, d) =
+    let i', j' = if d = 0 then (i + 1, j) else (i, j + 1) in
+    let a = g.(i).(j) and b = g.(i').(j') in
+    let t = a /. (a -. b) in
+    at i j +: ((t *. h) *: (at i' j' -: at i j))
+  in
+  let crosses (i, j, d) =
+    let i', j' = if d = 0 then (i + 1, j) else (i, j + 1) in
+    g.(i).(j) < 0. <> (g.(i').(j') < 0.)
+  in
+  let segments i j =
+    let top = (i, j, 0) and right = (i + 1, j, 1) and bottom = (i, j + 1, 0) and left = (i, j, 1) in
+    match List.filter crosses [ top; right; bottom; left ] with
+    | [ a; b ] -> [ (a, b) ]
+    | [ _; _; _; _ ] ->
+        (* a saddle: decide by the centre which corners are joined *)
+        let centre = (g.(i).(j) +. g.(i + 1).(j) +. g.(i + 1).(j + 1) +. g.(i).(j + 1)) /. 4. in
+        if centre < 0. = (g.(i).(j) < 0.) then [ (top, right); (bottom, left) ] else [ (left, top); (right, bottom) ]
+    | _ -> []
+  in
+  let links =
+    List.init nx (fun i -> List.init ny (fun j -> segments i j))
+    |> List.concat |> List.concat
+    |> List.fold_left
+         (fun m (a, b) ->
+           let add k x m = Edges.update k (fun l -> Some (x :: Option.value l ~default:[])) m in
+           add a b (add b a m))
+         Edges.empty
+  in
+  let rec walk start prev e acc seen =
+    let seen = Edges.add e () seen in
+    match List.filter (fun x -> x <> prev) (Edges.find e links) with
+    | next :: _ when next <> start && not (Edges.mem next seen) -> walk start e next (point e :: acc) seen
+    | _ -> (List.rev (point e :: acc), seen)
+  in
+  Edges.fold
+    (fun e _ (loops, seen) ->
+      if Edges.mem e seen then (loops, seen)
+      else
+        let loop, seen = walk e e e [] seen in
+        (loop :: loops, seen))
+    links ([], Edges.empty)
+  |> fst
+
+(* Ease the staircase out of a traced loop. *)
+let relax l =
+  let a = Array.of_list l in
+  let n = Array.length a in
+  List.init n (fun i -> (0.25 *: a.((i + n - 1) mod n)) +: (0.5 *: a.(i)) +: (0.25 *: a.((i + 1) mod n)))
+
+(* The soma's outline, from the trunks (each a list of points leaving the
+   centre, with radii) and the way the axon leaves. Returns the path and
+   where the axon starts. *)
+let soma_at r c ~trunks ~axon_heading =
   let r = Rng.key r "soma" in
   let j k lo hi = Rng.range (Rng.key r k) lo hi in
-  let radius = j "r" 8.5 10.5 and aspect = j "aspect" 0.58 0.78 and tilt = j "tilt" (-0.25) 0.25 in
-  let wobble = List.map (fun k -> (k, j ("a" ^ string_of_int k) 0. 0.04, j ("p" ^ string_of_int k) 0. 6.3)) [ 2; 3 ] in
-  let bump width d = exp (-.((Flora.turn_to 0. d /. width) ** 2.)) in
-  (* one broad swelling toward the limbs, not a lump for each *)
-  let trunk =
-    let x, y = List.fold_left (fun (x, y) a -> (x +. cos a, y +. sin a)) (0., 0.) limbs in
-    (Float.atan2 y x, j "t" 1.5 3., j "tw" 0.6 0.8)
+  (* the bottom of the body, a little squashed, where the trunks meet *)
+  let centre = c +: v (j "bx" (-0.5) 1.5) (j "by" 3. 4.5) in
+  let rb = j "rb" 5.5 7. in
+  let rx = rb *. j "sx" 1.15 1.35 and ry = rb *. j "sy" 0.72 0.85 in
+  let ex = rx *. cos axon_heading *. 0.85 and ey = ry *. sin axon_heading *. 0.85 in
+  let base = centre +: v ex ey in
+  let hillock = [ (centre +: (0.3 *: v ex ey), 1.5); (base +: (7. *: dir axon_heading), 0.6) ] in
+  (* each trunk is one cone running from the bottom of the body out to its
+     stroke, so the body is where their broad bases overlap and its sides
+     are the trunks' own edges *)
+  let trunks = List.map (fun t -> (centre, 0.85 *. rb) :: t) trunks in
+  let k = j "k" 2.5 4. in
+  let f p =
+    List.fold_left (fun d t -> smin k d (trunk_sdf p t)) (belly_sdf p ~centre ~rx ~ry_up:ry ~ry_down:ry ~flare:0.) (hillock :: trunks)
   in
-  let hillock = ((pi /. 2.) -. 0.25 +. j "ha" (-0.15) 0.15, j "h" 1.5 3., j "hw" 0.4 0.5) in
-  (* a tilted ellipse, in polar form, so the bumps stay where they belong *)
-  let ellipse t =
-    let a = radius /. sqrt aspect and b = radius *. sqrt aspect in
-    a *. b /. Float.hypot (b *. cos (t -. tilt)) (a *. sin (t -. tilt))
+  let pts = List.concat_map (List.map fst) trunks in
+  let lo = List.fold_left (fun m q -> v (Float.min m.x q.x) (Float.min m.y q.y)) (c -: v 20. 20.) pts -: v 8. 8. in
+  let hi = List.fold_left (fun m q -> v (Float.max m.x q.x) (Float.max m.y q.y)) (c +: v 20. 20.) pts +: v 8. 8. in
+  let outline =
+    contours f ~lo ~hi ~h:0.5
+    |> List.filter (fun l -> List.length l > 8)
+    |> List.map (fun l -> closed_spline (List.filteri (fun i _ -> i mod 2 = 0) (relax (relax l))))
+    |> String.concat ""
   in
-  let rho t =
-    ellipse t *. List.fold_left (fun acc (k, amp, ph) -> acc +. (amp *. cos ((float k *. t) +. ph))) 1. wobble
-    +. List.fold_left (fun acc (a, amp, width) -> acc +. (amp *. bump width (t -. a))) 0. [ hillock; trunk ]
-  in
-  (* broad above, narrowing below: a teardrop *)
-  let pear = j "pear" 0. 0.12 in
-  let at t =
-    let q = rho t *: dir t in
-    c +: v (q.x *. (1. -. (pear *. q.y /. radius))) q.y
-  in
-  let ha, _, _ = hillock in
-  (closed_spline (List.init 40 (fun i -> at (2. *. pi *. float i /. 40.))), at ha)
+  (outline, base +: (6. *: dir axon_heading))
 
 let w = 340.
 let top = 14.
@@ -319,10 +421,10 @@ let draw ~seed:s pal =
   (* each seed bends and stretches the limbs a little differently *)
   let jig k lo hi = Rng.range (Rng.key rl k) lo hi in
   let wave ph s = 0.2 *. (sin ((s /. 14.) +. ph +. jig "ph" 0. 6.) +. (0.35 *. sin ((s /. 5.) +. (2. *. ph)))) in
-  let left = chain root 1 (fun s -> up -. 1.42 +. jig "la" (-0.06) 0.06 +. (0.0016 *. s) +. wave 0.3 s) (190. *. jig "ll" 0.85 1.05) in
+  let left = chain root 1 (fun s -> up -. 1.42 +. jig "la" (-0.06) 0.06 +. (0.0016 *. s) +. (jig "lb" 0.25 0.45 *. exp (-.s /. 22.)) +. wave 0.3 s) (190. *. jig "ll" 0.85 1.05) in
   let left_up = chain (at left (int_of_float (jig "lui" 16. 28.))) 100 (fun s -> up -. 0.35 +. jig "lua" (-0.2) 0.2 +. (0.004 *. s) +. wave 1.7 s) (58. *. jig "lul" 0.7 1.3) in
   let left_far = chain (at left (int_of_float (jig "lfi" 38. 52.))) 150 (fun s -> up -. 0.15 +. jig "lfa" (-0.2) 0.2 +. wave 2.2 s) (30. *. jig "lfl" 0.7 1.4) in
-  let right = chain root 200 (fun s -> up +. 1.25 +. jig "ra" (-0.1) 0.1 -. (0.004 *. s) -. wave 0.9 s) (110. *. jig "rl" 0.8 1.15) in
+  let right = chain root 200 (fun s -> up +. 1.25 +. jig "ra" (-0.1) 0.1 -. (0.004 *. s) -. (jig "rb" 0.15 0.35 *. exp (-.s /. 18.)) -. wave 0.9 s) (110. *. jig "rl" 0.8 1.15) in
   let middle = chain root 300 (fun s -> up +. 0.22 +. jig "ma" (-0.25) 0.25 -. (0.003 *. s) +. wave 2.9 s) (42. *. jig "ml" 0.7 1.4) in
   let middle_side = chain (at middle 9) 400 (fun s -> up -. 0.5 +. (0.008 *. s) +. wave 4.1 s) 30. in
   let limbs = [ left; left_up; left_far; right; middle; middle_side ] in
@@ -419,10 +521,31 @@ let draw ~seed:s pal =
            let d = List.filter_map (fun (pw', s) -> if pw' = pw then Some s else None) segments in
            path (String.concat "" d) ([ no_fill ] @ stroke pal.ink (pw /. 10.) @ round))
   in
-  let outline, hillock = soma_at r soma ~limbs:(List.map (fun l -> angle_of ((at l 4).pos -: soma)) [ left; right; middle ]) in
+  (* the bases of the primary trunks, broad at the soma and narrowing to
+     their stroke width: the left one heaviest and longest *)
+  let trunk key l r0 (lo, hi) =
+    let length = jig key lo hi in
+    let pts = root :: List.filter (fun n -> dist n.pos root.pos < length) l in
+    let r_end = pen (last pts) /. 20. in
+    List.map
+      (fun n ->
+        let t = clampf 0. 1. (dist n.pos root.pos /. length) in
+        (n.pos, lerp r0 r_end (t *. t *. (3. -. (2. *. t)))))
+      pts
+  in
+  let axon_heading = (pi /. 2.) -. 0.45 in
+  let outline, axon_start =
+    soma_at r soma ~axon_heading
+      ~trunks:
+        [
+          trunk "lt" left (jig "lr" 3.6 4.6) (20., 28.);
+          trunk "mt" middle (jig "mr" 1.8 2.6) (10., 15.);
+          trunk "rt" right (jig "rr" 2.8 3.6) (14., 20.);
+        ]
+  in
   (* the axon, falling away below with one recurrent collateral *)
   let axon =
-    let pts = curve ~step:2. hillock axon_length (fun s -> (pi /. 2.) -. 0.4 +. (0.1 *. sin (s /. 13.))) in
+    let pts = curve ~step:2. axon_start axon_length (fun s -> axon_heading +. 0.05 +. (0.1 *. sin (s /. 13.))) in
     let a = Array.of_list pts in
     let j = Array.length a / 2 in
     let collateral = curve ~step:1.5 a.(j) (axon_length *. 0.9) (fun s -> (pi /. 2.) +. 1.05 -. (s *. 0.004) +. (0.12 *. sin (s /. 9.))) in
@@ -431,7 +554,7 @@ let draw ~seed:s pal =
       path (line_d collateral) ([ no_fill ] @ stroke pal.ink 0.6 @ round);
     ]
   in
-  let body = dendrites @ blots @ [ path outline ([ fill pal.ink ] @ stroke pal.ink 0.6) ] @ axon in
+  let body = dendrites @ blots @ [ path outline [ fill pal.ink ] ] @ axon in
   let wi = int_of_float (Float.ceil w) and hi = int_of_float (Float.ceil h) in
   Printf.sprintf
     "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 %d %d\" width=\"%d\" \
