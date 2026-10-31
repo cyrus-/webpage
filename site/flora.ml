@@ -822,6 +822,16 @@ let svg ~crown pal =
     (if hangs crown then "" else " mask=\"url(#fade)\"")
     (String.concat "" body)
 
+(* The bloom's big flower on its own (the same one, from the same seed, but
+   seen face on), for the favicon. *)
+let icon pal =
+  let r = Rng.make 3 in
+  Printf.sprintf
+    "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"-73 -73 146 146\" width=\"146\" \
+     height=\"146\"><defs>%s</defs>%s</svg>"
+    (gradients pal)
+    (flower5 pal (Rng.key r "big") ~grad:"pa" ~at:(v 0. 0.) ~radius:70. ~tilt:(fa Bloom (-12.)) ~squash:1.)
+
 let crowns = [ ("vine", Vine); ("tree", Tree); ("bloom", Bloom) ]
 let palettes = [ forest; indigo ]
 
@@ -831,3 +841,4 @@ let variants =
     (fun (cname, crown) ->
       List.map (fun pal -> (Printf.sprintf "%s-%s.svg" cname pal.name, lazy (svg ~crown pal))) palettes)
     crowns
+  @ [ ("bloom-icon.svg", lazy (icon forest)) ]
