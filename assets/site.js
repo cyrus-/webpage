@@ -201,6 +201,33 @@
   if (get("paperLines")) setLines(get("paperLines"));
   else { var v0 = getComputedStyle(root).getPropertyValue("--paper-lines").trim(); slider.value = v0; lval.textContent = v0; }
 
+  // corner rounding for cards (sets --card-radius)
+  var rrow = document.createElement("div");
+  rrow.className = "row";
+  var rlab = document.createElement("span");
+  rlab.textContent = "corners";
+  var rslider = document.createElement("input");
+  rslider.type = "range"; rslider.min = "0"; rslider.max = "24"; rslider.step = "1";
+  var rval = document.createElement("code");
+  function setRadius(v) {
+    root.style.setProperty("--card-radius", v + "px");
+    rslider.value = v; rval.textContent = v + "px"; set("cardRadius", v);
+  }
+  rslider.oninput = function () { setRadius(rslider.value); };
+  var rreset = document.createElement("button");
+  rreset.className = "reset";
+  rreset.textContent = "reset";
+  rreset.onclick = function () {
+    root.style.removeProperty("--card-radius");
+    try { localStorage.removeItem("cardRadius"); } catch (e) {}
+    var v = parseInt(getComputedStyle(root).getPropertyValue("--card-radius"), 10) || 0;
+    rslider.value = v; rval.textContent = v + "px";
+  };
+  [rlab, rslider, rval, rreset].forEach(function (el) { rrow.appendChild(el); });
+  bar.appendChild(rrow);
+  if (get("cardRadius")) setRadius(get("cardRadius"));
+  else { var r0 = parseInt(getComputedStyle(root).getPropertyValue("--card-radius"), 10) || 0; rslider.value = r0; rval.textContent = r0 + "px"; }
+
   document.body.appendChild(bar);
   if (get("paperColor")) setPaper(get("paperColor")); else show(current());
 

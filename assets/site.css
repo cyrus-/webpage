@@ -16,6 +16,8 @@
   --card: rgba(255, 253, 247, 0.72);
   /* Card outline ("pale"). */
   --card-border: #efe2bd;
+  /* Corner rounding for cards (px). */
+  --card-radius: 0px;
   --ink: #222;
   --ink-soft: #444;
   --muted: #888;
@@ -114,6 +116,7 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 15px 0; }
   position: absolute;
   inset: 0;
   z-index: -1;
+  border-radius: inherit;
   background: url("../images/cartographer.png");
   filter: brightness(3.5) contrast(2.2) blur(0.5px);
   mix-blend-mode: overlay;
@@ -147,6 +150,7 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 15px 0; }
   background: var(--card);
   padding: 15px;
   border: 1px solid var(--card-border);
+  border-radius: var(--card-radius);
   font-size: 11pt;
   margin-bottom: 15px;
 }
@@ -225,6 +229,7 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 15px 0; }
 .content-grid > aside:not(:empty) {
   background: var(--card);
   border: 1px solid var(--card-border);
+  border-radius: var(--card-radius);
   padding: 15px 20px;
 }
 .content-grid > aside:empty { display: none; }
@@ -333,7 +338,7 @@ footer a { font-weight: 600; }
 :root[data-cards="index"] .content-grid > article {
   background: var(--card);
   border-top: 3px solid var(--header-seen);
-  border-radius: 2px;
+  border-radius: max(2px, var(--card-radius));
   box-shadow: 0 1px 2px rgba(60, 40, 10, 0.12), 0 6px 18px rgba(60, 40, 10, 0.1);
 }
 :root[data-cards="shadow"] .card:not(.bio-card),
