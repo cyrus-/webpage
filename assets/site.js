@@ -108,6 +108,39 @@
   [lab, input, hex, reset].forEach(function (el) { row.appendChild(el); });
   bar.appendChild(row);
 
+  // card background: presets and a picker (sets --card)
+  var crow = document.createElement("div");
+  crow.className = "row";
+  var clab = document.createElement("span");
+  clab.textContent = "card";
+  crow.appendChild(clab);
+  var cardPresets = [
+    ["cream", "#fffbef"], ["white", "#ffffff"], ["ivory", "#fbf6e6"], ["linen", "#faf1de"],
+    ["parchment", "#f7ecd2"], ["pale wheat", "#fcf0d4"], ["vellum", "rgba(255, 251, 239, 0.72)"],
+  ];
+  var cpick = document.createElement("input");
+  cpick.type = "color";
+  var cval = document.createElement("code");
+  var cbuttons = [];
+  function setCard(v, name) {
+    root.style.setProperty("--card", v);
+    cval.textContent = name || v;
+    if (/^#/.test(v)) cpick.value = v;
+    set("cardColor", v); set("cardColorName", name || "");
+    cbuttons.forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.v === v)); });
+  }
+  cardPresets.forEach(function (c) {
+    var b = document.createElement("button");
+    b.textContent = c[0]; b.dataset.v = c[1];
+    b.onclick = function () { setCard(c[1], c[0]); };
+    cbuttons.push(b); crow.appendChild(b);
+  });
+  cpick.oninput = function () { setCard(cpick.value); };
+  crow.appendChild(cpick); crow.appendChild(cval);
+  bar.appendChild(crow);
+  if (get("cardColor")) setCard(get("cardColor"), get("cardColorName"));
+  else setCard("#fffbef", "cream");
+
   // boldness of the tan map lines on the page background
   var lrow = document.createElement("div");
   lrow.className = "row";

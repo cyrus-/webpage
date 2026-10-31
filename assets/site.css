@@ -327,7 +327,7 @@ footer a { font-weight: 600; }
 /* Card styles. */
 :root[data-cards="index"] .card:not(.bio-card),
 :root[data-cards="index"] .content-grid > article {
-  background: #fffefa;
+  background: var(--card);
   border-top: 3px solid var(--header-seen);
   border-radius: 2px;
   box-shadow: 0 1px 2px rgba(60, 40, 10, 0.12), 0 6px 18px rgba(60, 40, 10, 0.1);
