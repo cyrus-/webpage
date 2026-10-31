@@ -7,7 +7,7 @@ hazel: live probes drawing samples as cards, sparklines and colours, Fig. 2 of t
 tylr: the backpack in Hazel (typing `let x = 5 in let y = if x < (`, leaving a hole; obligations `) then • else • in •` float above the cursor), https://hazel.org/build/dev/ scratchpad, Oct 2026
 grove: 2025-grove-popl, page 9
 chatlsp: 2024-chatlsp-oopsla, page 2
-livelits: the gradebook in Hazel's Tables docs, one age made a slider (option-L) above the Table projector and a live projection, https://hazel.org/build/dev/, Oct 2026
+livelits: the gradebook in Hazel's Tables docs, every age made a slider (option-L) above the Table projector and a live projection, https://hazel.org/build/dev/, Oct 2026
 hazel-tutor: the conjunction commutativity derivation, https://hazel.org/build/dev/ (documentation: derivations), Oct 2026
 bastion: 2024-bastion-hope, page 2
 deckflow: 2025-deckflow-vlhcc, page 1
