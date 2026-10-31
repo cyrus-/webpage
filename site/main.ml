@@ -314,46 +314,6 @@ let routes cfg =
                 ~headers:[ ("content-type", "image/svg+xml") ]
                 (Lazy.force svg)))
         Flora.variants
-    @ [
-        (* work in progress, not in the static build: a Cajal-style Purkinje
-           cell; ?seed=N&ink=sepia|forest|indigo *)
-        Route.get_ [ "purkinje.svg" ] (fun req ->
-            let q = Route.Request.query req in
-            let seed = Option.bind (List.assoc_opt "seed" q) int_of_string_opt |> Option.value ~default:1 in
-            let svg = Purkinje.draw ~seed (Purkinje.ink_of_query q) in
-            Route.Response.raw ~status:200 ~headers:[ ("content-type", "image/svg+xml") ] svg);
-        (* a page of them: ?from=N shows seeds N to N+7 *)
-        Route.get_ [ "purkinje" ] (fun req ->
-            let q = Route.Request.query req in
-            let from = Option.bind (List.assoc_opt "from" q) int_of_string_opt |> Option.value ~default:1 in
-            let ink = Option.value (List.assoc_opt "ink" q) ~default:"sepia" in
-            let open Htmlit in
-            let link label from' ink' =
-              El.a ~at:[ At.href (Printf.sprintf "/purkinje?from=%d&ink=%s" from' ink') ] [ El.txt label ]
-            in
-            let cell seed =
-              let src = Printf.sprintf "/purkinje.svg?seed=%d&ink=%s" seed ink in
-              El.figure
-                [ El.a ~at:[ At.href src ] [ El.img ~at:[ At.src src; At.v "alt" "" ] () ];
-                  El.figcaption [ El.txt (Printf.sprintf "seed %d" seed) ] ]
-            in
-            let style =
-              "body{background:#f5deb3;font:14px system-ui;margin:16px;color:#2b1d12}\
-               nav a{margin-right:12px;color:#2b1d12}\
-               main{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}\
-               figure{margin:0}img{width:100%;display:block}figcaption{opacity:.6}"
-            in
-            let page =
-              El.html
-                [ El.head [ El.title [ El.txt "Purkinje cells" ]; El.style [ El.unsafe_raw style ] ];
-                  El.body
-                    [ El.nav
-                        ([ link "← previous" (max 1 (from - 8)) ink; link "next →" (from + 8) ink ]
-                        @ List.map (fun i -> link i from i) [ "sepia"; "forest"; "indigo" ]);
-                      El.main (List.init 8 (fun i -> cell (from + i))) ] ]
-            in
-            Route.Response.html (El.to_string ~doctype:true page));
-      ]
     @ arod
     @ [
         Route.get_ [ "omar-cv.pdf" ] (Arod.Handlers.static_file ~dir:"." "omar-cv.pdf");
