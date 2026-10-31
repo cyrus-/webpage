@@ -58,10 +58,18 @@ let prefix_links ~prefix body =
 
 (** {1 Footer}
 
-    Just the feed links; the social links are in the sidebar
-    (layout/sidebar.html). *)
+    Just the feed links, under the page content; the social links are in
+    the sidebar (layout/sidebar.html). arod's feeds carry only notes, so
+    that is what the footer calls them. *)
 
-let set_footer () = Arod.Footer.set Arod.Footer.feeds
+let set_footer () =
+  let open Htmlit in
+  let feed href label =
+    El.a ~at:[ At.href href ]
+      [ El.txt (label ^ " "); El.img ~at:[ At.class' "inline-icon"; At.alt ""; At.src "/assets/rss.svg" ] () ]
+  in
+  Arod.Footer.set
+    (El.p [ El.em [ El.txt "Notes feed ("; feed "/news.xml" "Atom"; El.txt " / "; feed "/feed.json" "JSON"; El.txt ")" ] ])
 
 (** {1 Layout}
 
@@ -126,7 +134,7 @@ let set_frame ~live () =
            El.div ~at:[ At.class' "reading-area" ]
              [
                El.div ~at:[ At.class' "reading" ]
-                 [ El.a ~at:[ At.class' "back"; At.href "/notes" ] [ El.txt "← All notes" ]; content ];
+                 [ El.a ~at:[ At.class' "back"; At.href "/notes" ] [ El.txt "← All notes" ]; content; footer ];
                flora;
              ]
          else
@@ -134,10 +142,9 @@ let set_frame ~live () =
              [
                El.div ~at:[ At.class' "left-col" ] [ El.unsafe_raw sidebar ];
                El.div ~at:[ At.class' "right-col" ]
-                 [ El.unsafe_raw intro; tab_bar; El.div ~at:[ At.class' "content-grid" ] [ content ] ];
+                 [ El.unsafe_raw intro; tab_bar; El.div ~at:[ At.class' "content-grid" ] [ content ]; footer ];
                flora;
              ]);
-        footer;
       ]
       @ if live then [ El.script [ El.unsafe_raw live_reload_script ] ] else [])
 

@@ -302,9 +302,9 @@ blockquote { margin: 10px 0; padding-left: 12px; border-left: 3px solid var(--ru
 
 /* {1 Footer} */
 
+/* under the page content, in its column */
 footer {
-  max-width: 1280px;
-  padding: 0 15px 30px calc(320px + 30px);
+  padding: 6px 0 30px;
   color: var(--muted);
   font-size: 90%;
 }
@@ -348,7 +348,6 @@ footer a { font-weight: 600; }
 
 @media (max-width: 900px) {
   .main-area { grid-template-columns: minmax(0, 1fr); }
-  footer { padding-left: 15px; }
 }
 
 /* {1 Layout experiments}
