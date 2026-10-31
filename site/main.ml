@@ -91,7 +91,25 @@ let read_file f = In_channel.with_open_bin f In_channel.input_all
 
 let tabs = [ ("Projects", "/"); ("Papers", "/papers"); ("Talks", "/talks"); ("Notes", "/notes") ]
 
-let set_frame () =
+(* Preview only: poll /__live and reload the page when its token changes
+   (assets edited, or the server restarted by dev.sh). *)
+let live_reload_script =
+  {|(function () {
+  var token = null;
+  function check() {
+    fetch("/__live", { cache: "no-store" })
+      .then(function (r) { return r.text(); })
+      .then(function (t) {
+        if (token === null) token = t;
+        else if (t !== token) location.reload();
+      })
+      .catch(function () {})
+      .finally(function () { setTimeout(check, 700); });
+  }
+  check();
+})();|}
+
+let set_frame ~live () =
   let open Htmlit in
   let header = read_file "layout/header.html" in
   let sidebar = read_file "layout/sidebar.html" in
@@ -110,7 +128,8 @@ let set_frame () =
               [ El.unsafe_raw intro; tab_bar; El.div ~at:[ At.class' "content-grid" ] [ content ] ];
           ];
         footer;
-      ])
+      ]
+      @ if live then [ El.script [ El.unsafe_raw live_reload_script ] ] else [])
 
 (** {1 Home page}
 
@@ -355,7 +374,7 @@ let build cfg ~out ~prefix ~extra =
   let fs = Eio.Stdenv.fs env in
   let _entries = Arod.Model.init ~cfg fs in
   set_footer ();
-  set_frame ();
+  set_frame ~live:false ();
   let routes = routes cfg in
   let pages = pages () in
   let ok = List.filter (render routes ~prefix ~out) pages |> List.length in
@@ -407,6 +426,16 @@ let build_cmd =
   Cmd.v (Cmd.info "build" ~doc:"Render the whole site to static files.")
     Term.(const run $ logging_t $ config_t $ out $ prefix $ extra)
 
+(* The live-reload token: when this server started, plus the newest
+   modification time under the assets directory (which the server reads from
+   disk on every request, so asset edits need no restart). *)
+let rec newest_mtime path =
+  match Sys.is_directory path with
+  | true ->
+      Array.fold_left (fun acc f -> Float.max acc (newest_mtime (Filename.concat path f))) 0. (Sys.readdir path)
+  | false -> (Unix.stat path).Unix.st_mtime
+  | exception Sys_error _ -> 0.
+
 let serve_cmd =
   let run () config =
     let cfg = load_config config in
@@ -414,9 +443,16 @@ let serve_cmd =
     Eio_main.run @@ fun env ->
     let _entries = Arod.Model.init ~cfg (Eio.Stdenv.fs env) in
     set_footer ();
-    set_frame ();
+    set_frame ~live:true ();
     let memo_cache = Arod.Memo.create ~ttl:0. () in
-    match Arod_server.run ~config:cfg ~memo_cache (routes cfg) with
+    let started = Unix.gettimeofday () in
+    let live _req =
+      Route.Response.raw ~status:200
+        ~headers:[ ("content-type", "text/plain"); ("cache-control", "no-store") ]
+        (Printf.sprintf "%.0f-%.3f" started (newest_mtime cfg.Arod.Config.paths.assets_dir))
+    in
+    let routes = Route.Routes.add (Route.get_ [ "__live" ] live) (routes cfg) in
+    match Arod_server.run ~config:cfg ~memo_cache routes with
     | Ok () -> ()
     | Error e -> Log.err (fun m -> m "Server error: %s" (Printexc.to_string e))
   in
