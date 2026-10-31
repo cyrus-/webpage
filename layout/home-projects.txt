@@ -7,9 +7,9 @@ grove
 chatlsp
 livelits
 hazel-tutor
+bastion
 deckflow
 rustviz
-bastion
 relit
 typy
 sciunit
