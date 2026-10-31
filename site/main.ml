@@ -178,6 +178,31 @@ let paper_video p =
   | [] -> None
   | vs -> Some (Option.value (List.find_opt at_venue vs) ~default:(List.hd vs))
 
+(* The links under a paper's venue are small line icons, named in a tooltip. *)
+let link_icons =
+  [
+    ("PDF", {|<path d="M4 1.5h5.5L13 5v9.5H4z"/><path d="M9.5 1.5V5H13M6.2 8.5h4.6M6.2 11h4.6"/>|});
+    ("DOI", {|<path d="M9 2h5v5M14 2 7.5 8.5"/><path d="M12 9.5V14H2V4h4.5"/>|});
+    ( "BIB",
+      {|<path d="M6 2c-1.6 0-2 .6-2 2v2.2c0 1-.6 1.6-1.6 1.8 1 .2 1.6.8 1.6 1.8V12c0 1.4.4 2 2 2M10 2c1.6 0 2 .6 2 2v2.2c0 1 .6 1.6 1.6 1.8-1 .2-1.6.8-1.6 1.8V12c0 1.4-.4 2-2 2"/>|}
+    );
+    ("VIDEO", {|<rect x="1.5" y="3" width="13" height="10" rx="2.5"/><path d="M6.6 5.7v4.6L10.4 8z" fill="currentColor"/>|});
+    ( "URL",
+      {|<circle cx="8" cy="8" r="6.3"/><path d="M1.7 8h12.6M8 1.7c1.8 1.8 2.7 3.9 2.7 6.3S9.8 12.5 8 14.3C6.2 12.5 5.3 10.4 5.3 8S6.2 3.5 8 1.7"/>|}
+    );
+  ]
+
+let icon_link name href =
+  let open Htmlit in
+  El.a
+    ~at:[ At.href href; At.title name; At.v "aria-label" name ]
+    [
+      El.unsafe_raw
+        (Printf.sprintf
+           {|<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">%s</svg>|}
+           (List.assoc name link_icons));
+    ]
+
 let paper_card_entry cfg p =
   let open Htmlit in
   let slug = Bushel.Paper.slug p in
@@ -192,16 +217,12 @@ let paper_card_entry cfg p =
   let links =
     List.filter_map Fun.id
       [
-        (if pdf then Some (El.a ~at:[ At.href ("/papers/" ^ slug ^ ".pdf") ] [ El.txt "PDF" ]) else None);
-        Option.map (fun d -> El.a ~at:[ At.href ("https://doi.org/" ^ d) ] [ El.txt "DOI" ]) (Bushel.Paper.doi p);
-        Some (El.a ~at:[ At.href ("/papers/" ^ slug ^ ".bib") ] [ El.txt "BIB" ]);
-        Option.map (fun u -> El.a ~at:[ At.href u ] [ El.txt "URL" ]) (Bushel.Paper.url p);
-        Option.map
-          (fun v ->
-            El.a ~at:[ At.href ("https://www.youtube.com/watch?v=" ^ Bushel.Video.uuid v) ] [ El.txt "VIDEO" ])
-          (paper_video p);
+        (if pdf then Some (icon_link "PDF" ("/papers/" ^ slug ^ ".pdf")) else None);
+        Option.map (fun d -> icon_link "DOI" ("https://doi.org/" ^ d)) (Bushel.Paper.doi p);
+        Some (icon_link "BIB" ("/papers/" ^ slug ^ ".bib"));
+        Option.map (fun u -> icon_link "URL" u) (Bushel.Paper.url p);
+        Option.map (fun v -> icon_link "VIDEO" ("https://www.youtube.com/watch?v=" ^ Bushel.Video.uuid v)) (paper_video p);
       ]
-    |> List.fold_left (fun acc a -> if acc = [] then [ a ] else acc @ [ El.txt " · "; a ]) []
   in
   let venue_el =
     El.div ~at:[ At.class' "paper-venue" ]

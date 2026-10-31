@@ -254,8 +254,9 @@ article img { max-width: 100%; height: auto; }
 .venue-note { color: var(--muted); font-weight: normal; }
 .paper-authors { color: var(--ink-soft); }
 .me-author { text-decoration: underline; }
-/* PDF / DOI / BIB / URL, under the venue */
-.paper-venue .paper-links { font-size: 80%; font-weight: normal; padding-right: 10px; color: var(--muted); }
+/* PDF / DOI / BIB / URL / video icons, under the venue */
+.paper-venue .paper-links { display: flex; gap: 7px; margin: 3px 0 2px; padding-right: 10px; }
+.paper-venue .paper-links svg { display: block; width: 15px; height: 15px; }
 .paper-venue .paper-links a { font-weight: normal; color: var(--venue); }
 .paper-venue .paper-links a:hover { color: var(--link); }
 
