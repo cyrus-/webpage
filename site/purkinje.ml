@@ -35,7 +35,7 @@ end)
 
 module Ids = Map.Make (Int)
 
-type node = { id : int; pos : v; parent : int (* -1 for the root *) }
+type node = { id : int; pos : v; parent : int; (* -1 for the root *) fine : bool (* grown by a branchlet *) }
 
 let unit_v a =
   let l = Float.hypot a.x a.y in
@@ -81,27 +81,27 @@ let style = function
   | Dendrite ->
       {
         step = 2.;
-        feel = 8.;
-        blocked_at = 2.6;
-        avoidance = 0.6;
+        feel = 12.;
+        blocked_at = 4.;
+        avoidance = 0.25;
         turn_noise = 0.1;
         turn_memory = 0.9;
         max_turn = 0.3;
         fork = 0.06;
         fork_angle = (0.9, 1.5);
         fork_skew = (0.08, 0.3);
-        stop = 0.0015;
+        stop = 0.0008;
       }
   | Branchlet ->
       {
-        step = 1.2;
-        feel = 4.;
-        blocked_at = 1.4;
-        avoidance = 1.2;
-        turn_noise = 0.4;
-        turn_memory = 0.35;
-        max_turn = 0.5;
-        fork = 0.09;
+        step = 1.;
+        feel = 3.5;
+        blocked_at = 1.3;
+        avoidance = 1.;
+        turn_noise = 0.3;
+        turn_memory = 0.55;
+        max_turn = 0.45;
+        fork = 0.;
         fork_angle = (0.5, 1.1);
         fork_skew = (0.25, 0.75);
         stop = 0.09;
@@ -143,18 +143,22 @@ let advance r ~inside ~obstacles ~lift (w, cones) cone =
     clampf (-.s.max_turn) s.max_turn
       ((s.turn_memory *. cone.turning) +. Rng.range (Rng.key r "turn") (-.s.turn_noise) s.turn_noise)
   in
-  let lift = match cone.kind with Dendrite -> lift p | Branchlet -> 1.8 *. lift p in
+  let lift = match cone.kind with Dendrite -> lift p | Branchlet -> 0.6 *. lift p in
   let want = unit_v (dir (cone.heading +. turning) +: (lift *: v 0. (-1.)) +: (s.avoidance *: push)) in
   let a = cone.heading +. clampf (-.s.max_turn) s.max_turn (Flora.turn_to cone.heading (angle_of want)) in
   let q = p +: (s.step *: dir a) in
-  let hemmed =
-    (not (inside q))
-    || List.exists (fun o -> dist q o.centre < o.radius) obstacles
-    || List.exists (fun n -> not (kin 4 n)) (near w.grid q s.blocked_at)
-  in
-  if hemmed then (w, cones)
+  let walled = (not (inside q)) || List.exists (fun o -> dist q o.centre < o.radius) obstacles in
+  let touching = near w.grid q s.blocked_at |> List.filter (fun n -> not (kin 4 n)) in
+  if walled then (w, cones)
+  else if touching <> [] then
+    (* run into another dendrite: in a drawing of a flattened cell, branches
+       that touch read as joined, which is what closes Cajal's loops *)
+    match (cone.kind, touching) with
+    | Dendrite, m :: _ when Rng.chance (Rng.key r "join") 0.85 ->
+        (add_node w { id = w.next; pos = m.pos; parent = cone.at.id; fine = false }, cones)
+    | _ -> (w, cones)
   else
-    let n = { id = w.next; pos = q; parent = cone.at.id } in
+    let n = { id = w.next; pos = q; parent = cone.at.id; fine = cone.kind = Branchlet } in
     let w = add_node w n in
     let trail = List.filteri (fun i _ -> i < 6) (n.id :: cone.trail) in
     let crowding = Float.min 1. (float (List.length others) /. 10.) in
@@ -174,7 +178,7 @@ let advance r ~inside ~obstacles ~lift (w, cones) cone =
 
 (* New cones from the sides of existing dendrites, into free space. *)
 let sprouts r ~inside ~obstacles ~kind ~tries w =
-  let probe_at, free = match kind with Dendrite -> (7.5, 5.5) | Branchlet -> (3.5, 2.6) in
+  let probe_at, free = match kind with Dendrite -> (11., 9.) | Branchlet -> (2.5, 1.8) in
   List.init tries (fun i ->
       let ri = Rng.nth r i in
       let id = int_of_float (Rng.range (Rng.key ri "id") 0. (float w.next)) in
@@ -210,7 +214,7 @@ let grow r ~seed ~cones ~inside ~obstacles ~lift ~rounds ~branchlets_from =
       in
       let fresh =
         if t < branchlets_from then sprouts (Rng.key rt "dendrites") ~inside ~obstacles ~kind:Dendrite ~tries:40 w
-        else sprouts (Rng.key rt "branchlets") ~inside ~obstacles ~kind:Branchlet ~tries:120 w
+        else sprouts (Rng.key rt "branchlets") ~inside ~obstacles ~kind:Branchlet ~tries:170 w
       in
       go (t + 1) w (fresh @ cones)
   in
@@ -266,14 +270,14 @@ let draw ~seed:s pal =
   let soma = v (0.58 *. w) (top +. (0.95 *. w)) in
   let axon_length = 110. in
   let h = soma.y +. 16. +. axon_length in
-  let root = { id = 0; pos = soma +: v 0. (-7.); parent = -1 } in
+  let root = { id = 0; pos = soma +: v 0. (-7.); parent = -1; fine = false } in
   (* the main limbs, placed by hand and lopsided as in Cajal's drawing: one
      long heavy limb sweeping out to the left with limbs of its own rising
      from it, and shorter, uneven ones to the right *)
   let chain parent first heading length =
     curve ~step:3. parent.pos length heading
     |> List.tl
-    |> List.mapi (fun i q -> { id = first + i; pos = q; parent = (if i = 0 then parent.id else first + i - 1) })
+    |> List.mapi (fun i q -> { id = first + i; pos = q; parent = (if i = 0 then parent.id else first + i - 1); fine = false })
   in
   let at l i = List.nth l (min (List.length l - 1) i) in
   let last l = List.nth l (List.length l - 1) in
@@ -298,17 +302,17 @@ let draw ~seed:s pal =
   let inside q = q.x > 6. && q.x < w -. 6. && q.y > top && q.y < soma.y -. 14. -. (0.07 *. Float.abs (q.x -. soma.x)) in
   let ro = Rng.key r "obstacles" in
   let obstacles =
-    List.init 36 (fun i ->
+    List.init 70 (fun i ->
         let ri = Rng.nth ro i in
         { centre = v (Rng.range (Rng.key ri "x") 10. (w -. 10.)) (Rng.range (Rng.key ri "y") (top +. 10.) (soma.y -. 50.));
-          radius = Rng.range (Rng.key ri "r") 3.5 8. })
+          radius = Rng.range (Rng.key ri "r") 4. 10. })
     |> List.filter (fun o -> List.for_all (fun l -> List.for_all (fun n -> dist n.pos o.centre > o.radius +. 4.) l) limbs)
   in
   (* growth drifts upward, more so higher up, and turns straight up just
      below the surface of the layer *)
   let lift q =
     let rise = clampf 0. 1. ((soma.y -. q.y) /. (soma.y -. top)) in
-    0.04 +. (0.17 *. rise) +. (0.9 *. (Float.max 0. ((rise -. 0.86) /. 0.14) ** 2.))
+    0.1 +. (0.2 *. rise) +. (0.9 *. (Float.max 0. ((rise -. 0.86) /. 0.14) ** 2.))
   in
   let world = grow (Rng.key r "grow") ~seed ~cones ~inside ~obstacles ~lift ~rounds:500 ~branchlets_from:330 in
   let nodes = Ids.fold (fun _ n acc -> n :: acc) world.by_id [] |> smooth |> smooth in
@@ -316,7 +320,10 @@ let draw ~seed:s pal =
   let tips_of n = Option.value (Ids.find_opt n.id tips) ~default:1 in
   let kids_of n = Option.value (Ids.find_opt n.id kids) ~default:[] in
   (* pen width in tenths, after the pipe model: thick where many tips are fed *)
-  let pen n = Float.round (10. *. clampf 0.45 5. (0.6 *. (float (tips_of n) ** 0.37))) in
+  (* hairs fine; dendrites at least a medium weight, heavier the more they feed *)
+  let pen n =
+    if n.fine then 5. else Float.round (10. *. clampf 1.5 5. (0.85 *. (float (tips_of n) ** 0.27)))
+  in
   (* unbranched runs, each one polyline of one width *)
   let rec runs from n =
     let rec follow n acc = match kids_of n with [ c ] -> follow c (c.pos :: acc) | _ -> (n, List.rev acc) in
