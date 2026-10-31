@@ -414,6 +414,10 @@ footer a { font-weight: 600; }
 .reading .note-meta, .reading article > hr { display: none; }
 .reading article ul { margin: 10px 0 14px; }
 .reading article li { margin-bottom: 6px; }
+/* screenshots in notes: ![%c](/images/notes/x.png "caption") */
+.reading figure { margin: 16px 0; }
+.reading figure img { display: block; max-width: 100%; height: auto; margin: 0 auto; border: 1px solid var(--card-border); }
+.reading figcaption { color: var(--muted); font-size: 90%; line-height: 1.45; margin-top: 6px; text-align: center; }
 
 @media (min-width: 1500px) {
   /* the border sits where it does on the other pages */
