@@ -4,7 +4,7 @@ at 300 dpi and scaled to 300px. Shown as a circle on the project card.
 
 
 hazel: evaluation around a hole, `map([1, 2, 3], fun x -> x * 10 + ?)` = `[10 + ?, 20 + ?, 30 + ?]`, https://hazel.org/build/dev/ scratchpad, Oct 2026
-tylr: the backpack in Hazel (typing `let y = if x < (1`; obligations `) then • else • in •` float above the cursor), https://hazel.org/build/dev/ scratchpad, Oct 2026
+tylr: the backpack in Hazel (typing `let x = 5 in let y = if x < (1`; obligations `) then • else • in •` float above the cursor), https://hazel.org/build/dev/ scratchpad, Oct 2026
 grove: 2025-grove-popl, page 9
 chatlsp: 2024-chatlsp-oopsla, page 2
 livelits: the color picker livelit, two uses, on hazelgrove/hazel branch integration/livelits-modular-editors (Matthew Hammer), build.hazel.org, Oct 2026
