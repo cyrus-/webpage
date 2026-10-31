@@ -232,8 +232,8 @@
   // crown and ink, e.g. /flora/purkinje-forest.svg)
   var floraImg = document.querySelector(".flora img");
   if (floraImg) {
-    var flora = { crown: get("floraCrown") || "vine", ink: get("floraInk") || "forest" };
-    if (["vine", "tree", "bloom", "off"].indexOf(flora.crown) < 0) flora.crown = "vine";
+    var flora = { crown: get("floraCrown") || "bloom", ink: get("floraInk") || "forest" };
+    if (["vine", "tree", "bloom", "off"].indexOf(flora.crown) < 0) flora.crown = "bloom";
     var showFlora = function () {
       if (flora.crown === "off") { root.setAttribute("data-flora", "off"); return; }
       root.removeAttribute("data-flora");

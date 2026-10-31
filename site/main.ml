@@ -110,7 +110,7 @@ let live_reload_script =
 })();|}
 
 (* The botanical border drawn by default; the design switcher can swap it. *)
-let flora_default = "/flora/vine-forest.svg"
+let flora_default = "/flora/bloom-forest.svg"
 
 let set_frame ~live () =
   let open Htmlit in
