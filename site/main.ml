@@ -142,13 +142,6 @@ let paper_card_entry cfg p =
   let slug = Bushel.Paper.slug p in
   let note = Bushel.Paper.note p in
   let award = match note with Some n when n <> "Conditionally accepted" -> Some n | _ -> None in
-  let venue_el =
-    El.div ~at:[ At.class' "paper-venue" ]
-      (El.txt (venue p)
-      :: (if note = Some "Conditionally accepted" then
-            [ El.br (); El.span ~at:[ At.class' "venue-note" ] [ El.txt "Conditionally" ] ]
-          else []))
-  in
   let authors =
     Bushel.Paper.authors p
     |> List.map (fun a -> if a = author_name then El.span ~at:[ At.class' "me-author" ] [ El.txt a ] else El.txt a)
@@ -165,6 +158,14 @@ let paper_card_entry cfg p =
       ]
     |> List.fold_left (fun acc a -> if acc = [] then [ a ] else acc @ [ El.txt " · "; a ]) []
   in
+  let venue_el =
+    El.div ~at:[ At.class' "paper-venue" ]
+      ((El.txt (venue p)
+       :: (if note = Some "Conditionally accepted" then
+             [ El.br (); El.span ~at:[ At.class' "venue-note" ] [ El.txt "Conditionally" ] ]
+           else []))
+      @ [ El.div ~at:[ At.class' "paper-links" ] links ])
+  in
   El.div ~at:[ At.class' "paper" ]
     [
       venue_el;
@@ -174,8 +175,7 @@ let paper_card_entry cfg p =
              [ El.a ~at:[ At.class' "major-paper"; At.href ("/papers/" ^ slug) ] [ El.txt (Bushel.Paper.title p) ] ];
            El.div ~at:[ At.class' "paper-authors" ] authors;
          ]
-        @ (match award with Some a -> [ El.div ~at:[ At.class' "paper-award" ] [ El.txt a ] ] | None -> [])
-        @ [ El.div ~at:[ At.class' "paper-links" ] links ]);
+        @ match award with Some a -> [ El.div ~at:[ At.class' "paper-award" ] [ El.txt a ] ] | None -> []);
     ]
 
 let project_card cfg proj =

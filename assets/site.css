@@ -206,8 +206,9 @@ article img { max-width: 100%; height: auto; }
 .venue-note { color: var(--muted); font-weight: normal; }
 .paper-authors { color: var(--ink-soft); }
 .me-author { text-decoration: underline; }
-.paper-links { font-size: 90%; }
-.paper-links a { font-weight: 600; }
+/* PDF / DOI / BIB / URL, under the venue */
+.paper-venue .paper-links { font-size: 80%; font-weight: normal; padding-right: 10px; }
+.paper-venue .paper-links a { font-weight: 600; }
 
 /* arod's own paper markup on /papers and paper pages */
 .paper-info p { margin-bottom: 2px; }
