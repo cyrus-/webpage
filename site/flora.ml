@@ -328,6 +328,41 @@ let flower5 pal r ~grad ~at ~radius ~tilt ~squash =
         circle (v 0. 0.) (radius *. 0.045) [ fill pal.ink ];
       ])
 
+(* A plain, generic flower seen from above: [petals] rounded petals (each
+   [width] of its length wide) around a round gold centre, with just a few
+   faint veins. *)
+let plain_flower pal r ~grad ~at ~radius ~tilt ~squash ~petals ~width =
+  let petal k =
+    let rk = Rng.nth r k in
+    let th = (float k *. 360. /. float petals) +. Rng.range rk (-4.) 4. in
+    let l = radius *. Rng.range (Rng.key rk "l") 0.94 1.02 and w = radius *. width in
+    let p x y = v (x *. l) (y *. w) in
+    let shape =
+      cubic_d (v 0. 0.) [ (p 0.28 (-0.62), p 1.04 (-0.78), p 1. 0.); (p 1.04 0.78, p 0.28 0.62, p 0. 0.) ]
+    in
+    let veins = String.concat "" [ seg_d (p 0.3 0.) (p 0.8 0.); seg_d (p 0.32 (-0.08)) (p 0.7 (-0.3)); seg_d (p 0.32 0.08) (p 0.7 0.3) ] in
+    g
+      [ ("transform", Printf.sprintf "rotate(%s)" (num th)) ]
+      [
+        path shape ([ fill (Printf.sprintf "url(#%s)" grad) ] @ stroke pal.ink 0.6 @ round);
+        path veins ([ no_fill; ("opacity", ".45") ] @ stroke pal.paper 0.6 @ round);
+      ]
+  in
+  let c = radius *. 0.2 in
+  let dots =
+    List.init 10 (fun k ->
+        let a = (float k *. 2. *. pi /. 10.) +. 0.3 in
+        circle ((c *. 0.62) *: dir a) (c *. 0.09) [ fill pal.ink; ("opacity", ".55") ])
+  in
+  g
+    [
+      ( "transform",
+        Printf.sprintf "translate(%s) rotate(%s) scale(1 %s)" (pt at) (num tilt) (num squash) );
+    ]
+    (List.init petals petal
+    @ [ circle (v 0. 0.) c ([ fill pal.gold ] @ stroke pal.ink 0.6) ]
+    @ dots)
+
 (* A trumpet-shaped flower seen from the side, opening along [heading]. *)
 let bell pal ~grad ~at ~heading ~length =
   let (dark, _, _) = pal.bloom in
@@ -740,15 +775,25 @@ let tree pal r =
 let vine_top pal r =
   ([], [ flower5 pal (Rng.key r "top") ~grad:"pa" ~at:(v cx (fy Vine (crown_base Vine))) ~radius:26. ~tilt:(fa Vine (-18.)) ~squash:0.82 ])
 
+(* The big flower: a plain one ([style] gives its petals). *)
+type style = Engraved | Plain of int * float
+
+let default_style = Plain (5, 0.62)
+
+let big_flower ?(style = default_style) pal r ~at ~radius ~tilt ~squash =
+  match style with
+  | Engraved -> flower5 pal r ~grad:"pa" ~at ~radius ~tilt ~squash
+  | Plain (petals, width) -> plain_flower pal r ~grad:"pa" ~at ~radius ~tilt ~squash ~petals ~width
+
 (* One big open flower, as at the head of an engraved border. *)
-let bloom pal r =
+let bloom ?style pal r =
   let f = fa Bloom in
   (* a point [y] below the flower's centre (upright) *)
   let o x y = v (cx +. x) (fy Bloom (crown_base Bloom +. y)) in
   let c = o 0. 0. in
   ( leaf pal ~at:(o 0. 50.) ~heading:(f (up -. 1.15)) ~length:56. ~bend:(f 0.4) ()
     @ leaf pal ~at:(o 0. 64.) ~heading:(f (up +. 1.1)) ~length:50. ~bend:(f (-0.4)) (),
-    [ flower5 pal (Rng.key r "big") ~grad:"pa" ~at:c ~radius:70. ~tilt:(f (-12.)) ~squash:0.86 ] )
+    [ big_flower ?style pal (Rng.key r "big") ~at:c ~radius:70. ~tilt:(f (-12.)) ~squash:0.86 ] )
 
 (* The vine trails off at the bottom rather than stopping at the edge. *)
 let fade =
@@ -759,7 +804,7 @@ let fade =
      height=\"%d\" fill=\"url(#fadeg)\"/></mask>"
     (int_of_float width) (int_of_float height) (int_of_float width) (int_of_float height)
 
-let svg ~crown pal =
+let svg ?style ~crown pal =
   let r = Rng.make (match crown with Vine -> 1 | Tree -> 2 | Bloom -> 3) in
   let stem = main_stem r crown in
   let a = Array.of_list stem in
@@ -803,7 +848,7 @@ let svg ~crown pal =
   in
   let vine = second_vine pal (Rng.key r "vine") ~crown in
   let crown_back, crown_front =
-    match crown with Vine -> vine_top pal r | Tree -> tree pal r | Bloom -> bloom pal r
+    match crown with Vine -> vine_top pal r | Tree -> tree pal r | Bloom -> bloom ?style pal r
   in
   let body =
     vine.back @ crown_back
@@ -830,7 +875,7 @@ let icon pal =
     "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"-73 -73 146 146\" width=\"146\" \
      height=\"146\"><defs>%s</defs>%s</svg>"
     (gradients pal)
-    (flower5 pal (Rng.key r "big") ~grad:"pa" ~at:(v 0. 0.) ~radius:70. ~tilt:(fa Bloom (-12.)) ~squash:1.)
+    (big_flower pal (Rng.key r "big") ~at:(v 0. 0.) ~radius:70. ~tilt:(fa Bloom (-12.)) ~squash:1.)
 
 let crowns = [ ("vine", Vine); ("tree", Tree); ("bloom", Bloom) ]
 let palettes = [ forest; indigo ]

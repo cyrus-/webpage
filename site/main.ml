@@ -401,6 +401,12 @@ let routes cfg =
                 ~headers:[ ("content-type", "image/svg+xml") ]
                 (Lazy.force svg)))
         Flora.variants
+    @ [
+        Route.get_ [ "images"; "topo.svg" ] (fun _req ->
+            Route.Response.raw ~status:200
+              ~headers:[ ("content-type", "image/svg+xml") ]
+              (Lazy.force Topo.svg));
+      ]
     @ arod
     @ [
         Route.get_ [ "omar-cv.pdf" ] (Arod.Handlers.static_file ~dir:"." "omar-cv.pdf");
@@ -456,6 +462,7 @@ let pages () =
       entry_pages "projects" (List.map Bushel.Project.slug (Arod.Model.projects ()));
       entry_pages "videos" (List.map Bushel.Video.slug (Arod.Model.videos ()));
       List.map (fun (name, _) -> page ("/flora/" ^ name) ("flora/" ^ name)) Flora.variants;
+      [ page "/images/topo.svg" "images/topo.svg" ];
       List.map
         (fun f -> page ("/" ^ f) f)
         [ "news.xml"; "feed.json"; "perma.xml"; "perma.json"; "sitemap.xml"; "robots.txt";
